@@ -11,7 +11,7 @@ public class SceneOrientationManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            Destroy(gameObject); // DontDestroyOnLoad(gameObject);
         }
         else
         {
