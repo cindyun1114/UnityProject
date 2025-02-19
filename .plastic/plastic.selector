@@ -1,0 +1,4 @@
+repository "crayon_first_app_0113/crayon_first_app_0113@33262167011393@cloud"
+  path "/"
+    br "/main"
+    co "/main"

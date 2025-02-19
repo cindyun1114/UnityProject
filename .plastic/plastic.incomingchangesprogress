@@ -1,0 +1,28 @@
+[
+  {
+    "MountId": "56e62dd7-241f-41e9-8c6b-dd4ca4513e62",
+    "AncestorCsetIds": [
+      5
+    ],
+    "SourceCsetId": 6,
+    "DestinationCsetId": 5,
+    "FileConflicts": [
+      {
+        "Path": "/Assets/Scenes/2DScene.unity",
+        "ItemId": 1428,
+        "ParentItemId": 1134,
+        "BaseRevId": 2379,
+        "SourceRevId": 3730,
+        "DestinationRevId": 2379
+      },
+      {
+        "Path": "/Assets/TextMesh Pro/Resources/Fonts & Materials/中文字體/MSJHBD SDF.asset",
+        "ItemId": 2519,
+        "ParentItemId": 2485,
+        "BaseRevId": 2392,
+        "SourceRevId": 3731,
+        "DestinationRevId": 2392
+      }
+    ]
+  }
+]
