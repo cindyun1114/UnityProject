@@ -17,20 +17,31 @@ public class APIManager : MonoBehaviour
     public TMP_InputField loginPasswordInput;
     public Button loginButton;
 
+    [Header("登出按鈕")]
+    public Button logoutButton; // 新增登出按鈕
+
     [Header("頁面 Panel")]
     public GameObject SigninPanel;   // 註冊頁
     public GameObject LoginPanel;    // 登入頁
     public GameObject HomePagePanel; // 主頁 (登入成功後顯示)
 
     [Header("主頁 UI")]
-    public TMP_Text welcomeText;  // 用於顯示 "你好, {username}" 的 UI 元件
+    public TMP_Text welcomeText;  // 顯示 "你好, {username}"
+    public TMP_Text coinsText;    // 只顯示數值
+    public TMP_Text diamondsText; // 只顯示數值
 
-    private string baseUrl = "http://127.0.0.1:8000";  // Flask 伺服器運行中
+    private string baseUrl = "https://feyndora-api.onrender.com";  // Flask 伺服器運行中
 
     void Start()
     {
         registerButton.onClick.AddListener(() => StartCoroutine(RegisterUser()));
         loginButton.onClick.AddListener(() => StartCoroutine(LoginUser()));
+
+        // 綁定登出按鈕的事件
+        if (logoutButton != null)
+        {
+            logoutButton.onClick.AddListener(Logout);
+        }
 
         // 進入遊戲時顯示適當的頁面
         ShowCorrectPanel();
@@ -45,9 +56,14 @@ public class APIManager : MonoBehaviour
             LoginPanel.SetActive(false);
             HomePagePanel.SetActive(true);
 
-            // 顯示用戶名稱
+            // 顯示用戶資訊
             string username = PlayerPrefs.GetString("Username");
+            int coins = PlayerPrefs.GetInt("Coins", 0);
+            int diamonds = PlayerPrefs.GetInt("Diamonds", 0);
+
             welcomeText.text = "你好, " + username;
+            coinsText.text = coins.ToString();  // 只顯示數值
+            diamondsText.text = diamonds.ToString();  // 只顯示數值
         }
         else
         {
@@ -99,6 +115,8 @@ public class APIManager : MonoBehaviour
     {
         public int user_id;
         public string username;
+        public int coins;
+        public int diamonds;
     }
 
     IEnumerator LoginUser()
@@ -133,10 +151,14 @@ public class APIManager : MonoBehaviour
                 // 存入 PlayerPrefs
                 PlayerPrefs.SetInt("UserID", jsonResponse.user_id);
                 PlayerPrefs.SetString("Username", jsonResponse.username);
+                PlayerPrefs.SetInt("Coins", jsonResponse.coins);
+                PlayerPrefs.SetInt("Diamonds", jsonResponse.diamonds);
                 PlayerPrefs.Save();
 
-                // 更新主頁的用戶名稱
+                // 更新主頁的 UI
                 welcomeText.text = "你好, " + jsonResponse.username;
+                coinsText.text = jsonResponse.coins.ToString();  // 只顯示數值
+                diamondsText.text = jsonResponse.diamonds.ToString();  // 只顯示數值
 
                 LoginPanel.SetActive(false);
                 HomePagePanel.SetActive(true);
@@ -150,12 +172,21 @@ public class APIManager : MonoBehaviour
 
     public void Logout()
     {
+        // 清除本地登入資訊
         PlayerPrefs.DeleteKey("UserID");
         PlayerPrefs.DeleteKey("Username");
+        PlayerPrefs.DeleteKey("Coins");
+        PlayerPrefs.DeleteKey("Diamonds");
         PlayerPrefs.Save();
 
         Debug.Log("已登出，返回登入頁面");
-        welcomeText.text = "";  // 清空用戶名稱
+
+        // 更新 UI
+        welcomeText.text = "你好, ";
+        coinsText.text = "0";  // 重設金幣
+        diamondsText.text = "0";  // 重設鑽石
+
+        // 切換回登入畫面
         SigninPanel.SetActive(true);
         LoginPanel.SetActive(false);
         HomePagePanel.SetActive(false);
