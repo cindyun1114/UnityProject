@@ -18,32 +18,40 @@ public class APIManager : MonoBehaviour
     public Button loginButton;
 
     [Header("登出按鈕")]
-    public Button logoutButton; // 新增登出按鈕
+    public Button logoutButton;
+
+    [Header("手動刷新按鈕")]
+    public Button refreshButton;
 
     [Header("頁面 Panel")]
-    public GameObject SigninPanel;   // 註冊頁
-    public GameObject LoginPanel;    // 登入頁
-    public GameObject HomePagePanel; // 主頁 (登入成功後顯示)
+    public GameObject SigninPanel;
+    public GameObject LoginPanel;
+    public GameObject HomePagePanel;
+    public GameObject ProfilePanel;  // 個人檔案頁面
+    public GameObject SettingsPanel; // 設定頁面
 
     [Header("主頁 UI")]
-    public TMP_Text welcomeText;  // 顯示 "你好, {username}"
-    public TMP_Text coinsText;    // 只顯示數值
-    public TMP_Text diamondsText; // 只顯示數值
+    public TMP_Text welcomeText;
+    public TMP_Text coinsText;
+    public TMP_Text diamondsText;
 
-    private string baseUrl = "https://feyndora-api.onrender.com";  // Flask 伺服器運行中
+    private string baseUrl = "https://feyndora-api.onrender.com"; 
 
     void Start()
     {
         registerButton.onClick.AddListener(() => StartCoroutine(RegisterUser()));
         loginButton.onClick.AddListener(() => StartCoroutine(LoginUser()));
 
-        // 綁定登出按鈕的事件
         if (logoutButton != null)
         {
             logoutButton.onClick.AddListener(Logout);
         }
 
-        // 進入遊戲時顯示適當的頁面
+        if (refreshButton != null)
+        {
+            refreshButton.onClick.AddListener(() => StartCoroutine(FetchUserData()));
+        }
+
         ShowCorrectPanel();
     }
 
@@ -51,23 +59,17 @@ public class APIManager : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("UserID"))
         {
-            // 已經登入過，直接進入主頁
             SigninPanel.SetActive(false);
             LoginPanel.SetActive(false);
             HomePagePanel.SetActive(true);
 
-            // 顯示用戶資訊
-            string username = PlayerPrefs.GetString("Username");
-            int coins = PlayerPrefs.GetInt("Coins", 0);
-            int diamonds = PlayerPrefs.GetInt("Diamonds", 0);
+            welcomeText.text = "你好, " + PlayerPrefs.GetString("Username");
 
-            welcomeText.text = "你好, " + username;
-            coinsText.text = coins.ToString();  // 只顯示數值
-            diamondsText.text = diamonds.ToString();  // 只顯示數值
+            // **🚀 每次進入主頁時都重新從伺服器獲取最新數據**
+            StartCoroutine(FetchUserData());
         }
         else
         {
-            // 預設顯示登入頁
             SigninPanel.SetActive(true);
             LoginPanel.SetActive(false);
             HomePagePanel.SetActive(false);
@@ -145,20 +147,18 @@ public class APIManager : MonoBehaviour
             {
                 Debug.Log("登入成功！跳轉到主頁");
 
-                // 解析 JSON
                 LoginResponse jsonResponse = JsonUtility.FromJson<LoginResponse>(request.downloadHandler.text);
 
-                // 存入 PlayerPrefs
                 PlayerPrefs.SetInt("UserID", jsonResponse.user_id);
                 PlayerPrefs.SetString("Username", jsonResponse.username);
                 PlayerPrefs.SetInt("Coins", jsonResponse.coins);
                 PlayerPrefs.SetInt("Diamonds", jsonResponse.diamonds);
                 PlayerPrefs.Save();
 
-                // 更新主頁的 UI
                 welcomeText.text = "你好, " + jsonResponse.username;
-                coinsText.text = jsonResponse.coins.ToString();  // 只顯示數值
-                diamondsText.text = jsonResponse.diamonds.ToString();  // 只顯示數值
+
+                // **🚀 立即刷新 UI**
+                StartCoroutine(FetchUserData());
 
                 LoginPanel.SetActive(false);
                 HomePagePanel.SetActive(true);
@@ -170,25 +170,54 @@ public class APIManager : MonoBehaviour
         }
     }
 
-    public void Logout()
+    IEnumerator FetchUserData()
     {
-        // 清除本地登入資訊
-        PlayerPrefs.DeleteKey("UserID");
-        PlayerPrefs.DeleteKey("Username");
-        PlayerPrefs.DeleteKey("Coins");
-        PlayerPrefs.DeleteKey("Diamonds");
-        PlayerPrefs.Save();
+        int userID = PlayerPrefs.GetInt("UserID");
 
-        Debug.Log("已登出，返回登入頁面");
+        using (UnityWebRequest request = UnityWebRequest.Get(baseUrl + "/user/" + userID))
+        {
+            request.SetRequestHeader("Content-Type", "application/json");
+            yield return request.SendWebRequest();
 
-        // 更新 UI
-        welcomeText.text = "你好, ";
-        coinsText.text = "0";  // 重設金幣
-        diamondsText.text = "0";  // 重設鑽石
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                LoginResponse jsonResponse = JsonUtility.FromJson<LoginResponse>(request.downloadHandler.text);
 
-        // 切換回登入畫面
-        SigninPanel.SetActive(true);
-        LoginPanel.SetActive(false);
-        HomePagePanel.SetActive(false);
+                // **更新 UI**
+                coinsText.text = jsonResponse.coins.ToString();
+                diamondsText.text = jsonResponse.diamonds.ToString();
+
+                // **同步 PlayerPrefs**
+                PlayerPrefs.SetInt("Coins", jsonResponse.coins);
+                PlayerPrefs.SetInt("Diamonds", jsonResponse.diamonds);
+                PlayerPrefs.Save();
+
+                Debug.Log("🎉 成功刷新數據：" + jsonResponse.coins + " 金幣, " + jsonResponse.diamonds + " 鑽石");
+            }
+            else
+            {
+                Debug.LogError("❌ 獲取數據失敗：" + request.downloadHandler.text);
+            }
+        }
+    }
+    public void Logout()
+    {   
+    // **清除本地儲存的用戶數據**
+    PlayerPrefs.DeleteKey("UserID");
+    PlayerPrefs.DeleteKey("Username");
+    PlayerPrefs.DeleteKey("Coins");
+    PlayerPrefs.DeleteKey("Diamonds");
+    PlayerPrefs.Save(); 
+
+    Debug.Log("✅ 已登出，返回登入頁面");
+
+    // **關閉所有與登入後相關的頁面**
+    HomePagePanel.SetActive(false);
+    ProfilePanel.SetActive(false);
+    SettingsPanel.SetActive(false);
+
+    // **確保回到註冊頁**
+    SigninPanel.SetActive(true);
+    LoginPanel.SetActive(false);
     }
 }
