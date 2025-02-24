@@ -6,6 +6,8 @@ using UnityEngine.Networking;
 
 public class APIManager : MonoBehaviour
 {
+    public static APIManager Instance; // **✅ Singleton 設定**
+
     [Header("註冊 UI 元件")]
     public TMP_InputField registerUsernameInput;
     public TMP_InputField registerEmailInput;
@@ -37,7 +39,21 @@ public class APIManager : MonoBehaviour
 
     [Header("課程管理")]
     public CourseManager courseManager;
+
     private string baseUrl = "https://feyndora-api.onrender.com";
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
 
     void Start()
     {
@@ -166,7 +182,7 @@ public class APIManager : MonoBehaviour
         }
     }
 
-    IEnumerator FetchUserData()
+    public IEnumerator FetchUserData()
     {
         int userID = PlayerPrefs.GetInt("UserID");
 
@@ -182,9 +198,14 @@ public class APIManager : MonoBehaviour
                 coinsText.text = jsonResponse.coins.ToString();
                 diamondsText.text = jsonResponse.diamonds.ToString();
 
+                PlayerPrefs.SetString("Username", jsonResponse.username);
+                PlayerPrefs.SetString("UserEmail", jsonResponse.email);
                 PlayerPrefs.SetInt("Coins", jsonResponse.coins);
                 PlayerPrefs.SetInt("Diamonds", jsonResponse.diamonds);
                 PlayerPrefs.Save();
+
+                // **✅ 更新主頁暱稱**
+                welcomeText.text = "你好, " + jsonResponse.username;
             }
             else
             {
@@ -195,22 +216,37 @@ public class APIManager : MonoBehaviour
 
     public void Logout()
     {
-        PlayerPrefs.DeleteKey("UserID");
-        PlayerPrefs.DeleteKey("Username");
-        PlayerPrefs.DeleteKey("Coins");
-        PlayerPrefs.DeleteKey("Diamonds");
+        Debug.Log("🚀 執行登出，關閉所有頁面");
+
+        // **✅ 清除所有用戶資訊**
+        PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
 
-        Debug.Log("✅ 已登出，返回登入頁面");
+        // **✅ 清除課程 UI**
+        if (courseManager != null)
+        {
+            courseManager.ClearCourses(); // **✅ 保留原本清除課程的功能**
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ courseManager 為 null，無法清除課程 UI！");
+        }
 
-        courseManager.ClearCourses();  // ✅ 確保登出時清除課程 UI
+        // **✅ 確保 UI 狀態更新**
+        if (HomePagePanel != null) HomePagePanel.SetActive(false);
+        if (ProfilePanel != null) ProfilePanel.SetActive(false);
+        if (SettingsPanel != null) SettingsPanel.SetActive(false);
 
-        HomePagePanel.SetActive(false);
-        ProfilePanel.SetActive(false);
-        SettingsPanel.SetActive(false);
-
-        SigninPanel.SetActive(true);
-        LoginPanel.SetActive(false);
+        // **✅ 確保回到登入頁面**
+        if (SigninPanel != null) SigninPanel.SetActive(true);
+        if (LoginPanel != null)
+        {
+            LoginPanel.SetActive(true); // **✅ 讓登入頁顯示**
+        }
+        else
+        {
+            Debug.LogError("❌ LoginPanel 為 null，請確保已設置！");
+        }
     }
 
     [System.Serializable]
@@ -218,6 +254,7 @@ public class APIManager : MonoBehaviour
     {
         public int user_id;
         public string username;
+        public string email;
         public int coins;
         public int diamonds;
     }
