@@ -1,14 +1,42 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\user\\Desktop\\UnityProject\\",
+  "WorkspaceRootPath": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5B580621-09B4-68CB-B5F4-5B9DD210A60F}|Assembly-CSharp.csproj|c:\\users\\user\\desktop\\unityproject\\assets\\apimanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5B580621-09B4-68CB-B5F4-5B9DD210A60F}|Assembly-CSharp.csproj|solutionrelative:assets\\apimanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LayoutComponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\LayoutComponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5B580621-09B4-68CB-B5F4-5B9DD210A60F}|Assembly-CSharp.csproj|c:\\users\\user\\desktop\\unityproject\\assets\\coursemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5B580621-09B4-68CB-B5F4-5B9DD210A60F}|Assembly-CSharp.csproj|solutionrelative:assets\\coursemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LatoutComponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\LatoutComponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LayoutConponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\LayoutConponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\New Folder\\LayoutConponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\New Folder\\LayoutConponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\New Folder\\LayoutCompinent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\New Folder\\LayoutCompinent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\VRLessonManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\VRLessonManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\CourseManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\CourseManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\CourseItem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\CourseItem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\APIManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\APIManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,28 +51,108 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "APIManager.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Desktop\\UnityProject\\Assets\\APIManager.cs",
-              "RelativeDocumentMoniker": "Assets\\APIManager.cs",
-              "ToolTip": "C:\\Users\\user\\Desktop\\UnityProject\\Assets\\APIManager.cs",
-              "RelativeToolTip": "Assets\\APIManager.cs",
-              "ViewState": "AgIAAMUAAAAAAAAAAAAAwN8AAAABAAAAAAAAAA==",
+              "Title": "LayoutComponent.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LayoutComponent.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\LayoutComponent.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LayoutComponent.cs",
+              "RelativeToolTip": "Assets\\Scripts\\LayoutComponent.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-24T07:38:19.445Z",
+              "WhenOpened": "2025-02-26T14:57:22.848Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CourseManager.cs",
-              "DocumentMoniker": "C:\\Users\\user\\Desktop\\UnityProject\\Assets\\CourseManager.cs",
-              "RelativeDocumentMoniker": "Assets\\CourseManager.cs",
-              "ToolTip": "C:\\Users\\user\\Desktop\\UnityProject\\Assets\\CourseManager.cs",
-              "RelativeToolTip": "Assets\\CourseManager.cs",
-              "ViewState": "AgIAAIUAAAAAAAAAAAAkwPcAAAABAAAAAAAAAA==",
+              "Title": "LatoutComponent.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LatoutComponent.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\LatoutComponent.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LatoutComponent.cs",
+              "RelativeToolTip": "Assets\\Scripts\\LatoutComponent.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwB8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-24T07:36:42.167Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-26T14:56:39.405Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LayoutConponent.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LayoutConponent.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\LayoutConponent.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LayoutConponent.cs",
+              "RelativeToolTip": "Assets\\Scripts\\LayoutConponent.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-26T14:53:50.861Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LayoutConponent.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\New Folder\\LayoutConponent.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\New Folder\\LayoutConponent.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\New Folder\\LayoutConponent.cs",
+              "RelativeToolTip": "Assets\\Scripts\\New Folder\\LayoutConponent.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-26T14:33:14.822Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "LayoutCompinent.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\New Folder\\LayoutCompinent.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\New Folder\\LayoutCompinent.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\New Folder\\LayoutCompinent.cs",
+              "RelativeToolTip": "Assets\\Scripts\\New Folder\\LayoutCompinent.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-26T14:30:49.73Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "VRLessonManager.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\VRLessonManager.cs",
+              "RelativeDocumentMoniker": "Assets\\VRLessonManager.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\VRLessonManager.cs",
+              "RelativeToolTip": "Assets\\VRLessonManager.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAAAIwFEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-26T12:54:13.686Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CourseItem.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\CourseItem.cs",
+              "RelativeDocumentMoniker": "Assets\\CourseItem.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\CourseItem.cs",
+              "RelativeToolTip": "Assets\\CourseItem.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAwC0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-26T12:51:34.415Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "APIManager.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\APIManager.cs",
+              "RelativeDocumentMoniker": "Assets\\APIManager.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\APIManager.cs",
+              "RelativeToolTip": "Assets\\APIManager.cs",
+              "ViewState": "AgIAAOgAAAAAAAAAAAAAwAQBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-24T14:31:28.847Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CourseManager.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\CourseManager.cs",
+              "RelativeDocumentMoniker": "Assets\\CourseManager.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\CourseManager.cs",
+              "RelativeToolTip": "Assets\\CourseManager.cs",
+              "ViewState": "AgIAANgAAAAAAAAAAAAAwPQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-24T14:29:02.833Z"
             }
           ]
         }

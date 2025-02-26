@@ -86,6 +86,14 @@ public class CourseManager : MonoBehaviour
         // **🧹 清空舊課程**
         ClearCourses();
 
+        // **🔍 確保 VRLessonManager 存在**
+        VRLessonManager vrLessonManager = Object.FindFirstObjectByType<VRLessonManager>();
+        if (vrLessonManager == null)
+        {
+            Debug.LogError("❌ `VRLessonManager` 未找到，請確保 `VRLessonManager` 存在於場景中！");
+            return; // **直接返回，避免進入迴圈後報錯**
+        }
+
         foreach (Course course in courses)
         {
             GameObject courseItem = Instantiate(coursePrefab, courseListParent);
@@ -99,37 +107,24 @@ public class CourseManager : MonoBehaviour
             }
 
             // **設置課程名稱 & 創建時間**
-            recordButton.Find("CourseName").GetComponent<TMP_Text>().text = course.course_name;
-            recordButton.Find("CreatedAt").GetComponent<TMP_Text>().text = course.created_at;
+            TMP_Text courseNameText = recordButton.Find("CourseName")?.GetComponent<TMP_Text>();
+            TMP_Text createdAtText = recordButton.Find("CreatedAt")?.GetComponent<TMP_Text>();
 
-            // **✅ 修正進度條**
-            Transform progressBarContainer = recordButton.Find("ProgressBar");
+            if (courseNameText != null) courseNameText.text = course.course_name;
+            if (createdAtText != null) createdAtText.text = course.created_at;
+
+            // **✅ 設定進度條**
+            Slider progressBar = recordButton.Find("ProgressBar")?.GetComponent<Slider>();
             TMP_Text progressText = recordButton.Find("ProgressNum")?.GetComponent<TMP_Text>();
 
-            if (progressBarContainer != null)
+            if (progressBar != null)
             {
-                Slider progressBar = progressBarContainer.GetComponent<Slider>();
-                if (progressBar != null)
-                {
-                    progressBar.value = course.progress / 100f;  // ✅ 設定 Slider
-                }
-                else
-                {
-                    Debug.LogError("⚠ `ProgressBar` 存在，但不是 `Slider`，請檢查 Prefab 設置！");
-                }
-            }
-            else
-            {
-                Debug.LogError("⚠️ `ProgressBar` 找不到，請檢查 Unity 層級結構！");
+                progressBar.value = course.progress / 100f;
             }
 
             if (progressText != null)
             {
-                progressText.text = course.progress.ToString("0") + "%";  // ✅ 設定百分比
-            }
-            else
-            {
-                Debug.LogError("⚠️ `ProgressNum` 找不到，請檢查 Unity 層級結構！");
+                progressText.text = course.progress.ToString("0") + "%";
             }
 
             // **🎨 設置對應的課程圖標**
@@ -152,31 +147,32 @@ public class CourseManager : MonoBehaviour
                         break;
                 }
             }
-            else
-            {
-                Debug.LogError("⚠️ `Image` 找不到，請檢查 Unity 層級結構！");
-            }
 
             // **確保按鈕存在**
             Button favoriteButton = courseItem.transform.Find("FavoriteButton")?.GetComponent<Button>();
             Button deleteButton = courseItem.transform.Find("DeleteButton")?.GetComponent<Button>();
+            Button courseClickButton = recordButton.GetComponent<Button>(); // **點擊課程按鈕**
 
             if (favoriteButton != null)
             {
                 favoriteButton.onClick.AddListener(() => StartCoroutine(ToggleFavorite(course.course_id)));
-            }
-            else
-            {
-                Debug.LogError("⚠️ 找不到 FavoriteButton，請檢查 Unity 層級結構！");
             }
 
             if (deleteButton != null)
             {
                 deleteButton.onClick.AddListener(() => StartCoroutine(DeleteCourse(course.course_id, courseItem)));
             }
+
+            // **📌 點擊課程按鈕來觸發 VRLessonManager**
+            if (courseClickButton != null)
+            {
+                courseClickButton.onClick.AddListener(() =>
+                    vrLessonManager.OnCourseClicked(course.course_id, course.course_name, course.created_at, course.progress)
+                );
+            }
             else
             {
-                Debug.LogError("⚠️ 找不到 DeleteButton，請檢查 Unity 層級結構！");
+                Debug.LogError("⚠️ 找不到課程的 RecordButton，請檢查 Prefab 結構！");
             }
         }
     }
@@ -238,6 +234,7 @@ public class CourseManager : MonoBehaviour
         public string created_at;
         public float progress;
         public string file_type; // ✅ 加入 file_type
+        public bool is_vr_ready; // ✅ 新增這個欄位
     }
 
     [System.Serializable]
