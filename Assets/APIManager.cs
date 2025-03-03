@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public class APIManager : MonoBehaviour
 {
-    public static APIManager Instance; // **✅ Singleton 設定**
+    public static APIManager Instance;
 
     [Header("註冊 UI 元件")]
     public TMP_InputField registerUsernameInput;
@@ -40,6 +40,9 @@ public class APIManager : MonoBehaviour
     [Header("課程管理")]
     public CourseManager courseManager;
 
+    [Header("頭貼管理")]
+    public AvatarManager avatarManager;
+
     private string baseUrl = "https://feyndora-api.onrender.com";
 
     private void Awake()
@@ -57,6 +60,9 @@ public class APIManager : MonoBehaviour
 
     void Start()
     {
+        // 載入頭貼
+        avatarManager.UpdateHomePageAvatar(PlayerPrefs.GetInt("AvatarID", 1));
+
         registerButton.onClick.AddListener(() => StartCoroutine(RegisterUser()));
         loginButton.onClick.AddListener(() => StartCoroutine(LoginUser()));
 
@@ -65,13 +71,10 @@ public class APIManager : MonoBehaviour
             logoutButton.onClick.AddListener(Logout);
         }
 
+        // 修改：刷新按鈕按下時，呼叫 RefreshAllData 來同時更新用戶資料、進度與課程列表
         if (refreshButton != null)
         {
-            refreshButton.onClick.AddListener(() =>
-            {
-                StartCoroutine(FetchUserData());
-                StartCoroutine(courseManager.LoadCourses()); // ✅ 確保刷新時也更新課程
-            });
+            refreshButton.onClick.AddListener(() => StartCoroutine(RefreshAllData()));
         }
 
         ShowCorrectPanel();
@@ -87,8 +90,8 @@ public class APIManager : MonoBehaviour
 
             welcomeText.text = "你好, " + PlayerPrefs.GetString("Username");
 
-            StartCoroutine(FetchUserData());
-            StartCoroutine(courseManager.LoadCourses()); // ✅ 進入主頁時加載課程
+            // 登入後同步更新：用戶資料、進度與課程列表
+            StartCoroutine(RefreshAllData());
         }
         else
         {
@@ -96,6 +99,14 @@ public class APIManager : MonoBehaviour
             LoginPanel.SetActive(false);
             HomePagePanel.SetActive(false);
         }
+    }
+
+    // 新增：RefreshAllData，一次刷新用戶資料、進度與課程列表
+    IEnumerator RefreshAllData()
+    {
+        yield return StartCoroutine(FetchUserData());
+        yield return StartCoroutine(FetchCurrentStage());
+        yield return StartCoroutine(courseManager.LoadCourses());
     }
 
     IEnumerator RegisterUser()
@@ -166,12 +177,14 @@ public class APIManager : MonoBehaviour
                 PlayerPrefs.SetString("Username", jsonResponse.username);
                 PlayerPrefs.SetInt("Coins", jsonResponse.coins);
                 PlayerPrefs.SetInt("Diamonds", jsonResponse.diamonds);
+                PlayerPrefs.SetInt("AvatarID", jsonResponse.avatar_id); // 存avatar_id
                 PlayerPrefs.Save();
 
                 welcomeText.text = "你好, " + jsonResponse.username;
 
-                StartCoroutine(FetchUserData());
-                StartCoroutine(courseManager.LoadCourses()); // ✅ 登入時載入課程
+                // 刷新用戶資料、進度與課程列表
+                StartCoroutine(RefreshAllData());
+
                 LoginPanel.SetActive(false);
                 HomePagePanel.SetActive(true);
             }
@@ -193,7 +206,7 @@ public class APIManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                var jsonResponse = JsonUtility.FromJson<LoginResponse>(request.downloadHandler.text);
+                var jsonResponse = JsonUtility.FromJson<UserDataResponse>(request.downloadHandler.text);
 
                 coinsText.text = jsonResponse.coins.ToString();
                 diamondsText.text = jsonResponse.diamonds.ToString();
@@ -202,10 +215,12 @@ public class APIManager : MonoBehaviour
                 PlayerPrefs.SetString("UserEmail", jsonResponse.email);
                 PlayerPrefs.SetInt("Coins", jsonResponse.coins);
                 PlayerPrefs.SetInt("Diamonds", jsonResponse.diamonds);
+                PlayerPrefs.SetInt("AvatarID", jsonResponse.avatar_id);
                 PlayerPrefs.Save();
 
-                // **✅ 更新主頁暱稱**
                 welcomeText.text = "你好, " + jsonResponse.username;
+
+                avatarManager.UpdateHomePageAvatar(jsonResponse.avatar_id);
             }
             else
             {
@@ -214,39 +229,53 @@ public class APIManager : MonoBehaviour
         }
     }
 
+    // 登入後、或手動刷新時，呼叫此API取得最新current_stage和progress
+    IEnumerator FetchCurrentStage()
+    {
+        int userID = PlayerPrefs.GetInt("UserID");
+        string url = baseUrl + "/current_stage/" + userID;
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            request.SetRequestHeader("Content-Type", "application/json");
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                CurrentStageResponse response = JsonUtility.FromJson<CurrentStageResponse>(request.downloadHandler.text);
+                // 將取得的課程資訊存入PlayerPrefs
+                if (response.hasReadyCourse)
+                {
+                    PlayerPrefs.SetInt("current_course_id", response.course_id);
+                    PlayerPrefs.SetString("current_course_name", response.course_name);
+                    PlayerPrefs.SetString("current_stage", response.current_stage);
+                    PlayerPrefs.Save();
+                    Debug.Log($"取得current_stage成功：{response.current_stage}, 進度: {response.progress}%");
+                }
+                else
+                {
+                    Debug.LogWarning("目前沒有ready的課程");
+                }
+            }
+            else
+            {
+                Debug.LogError("❌ 取得current_stage失敗：" + request.downloadHandler.text);
+            }
+        }
+    }
+
     public void Logout()
     {
-        Debug.Log("🚀 執行登出，關閉所有頁面");
-
-        // **✅ 清除所有用戶資訊**
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
 
-        // **✅ 清除課程 UI**
-        if (courseManager != null)
-        {
-            courseManager.ClearCourses(); // **✅ 保留原本清除課程的功能**
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ courseManager 為 null，無法清除課程 UI！");
-        }
+        courseManager.ClearCourses();
 
-        // **✅ 確保 UI 狀態更新**
-        if (HomePagePanel != null) HomePagePanel.SetActive(false);
-        if (ProfilePanel != null) ProfilePanel.SetActive(false);
-        if (SettingsPanel != null) SettingsPanel.SetActive(false);
+        HomePagePanel.SetActive(false);
+        ProfilePanel.SetActive(false);
+        SettingsPanel.SetActive(false);
 
-        // **✅ 確保回到登入頁面**
-        if (SigninPanel != null) SigninPanel.SetActive(true);
-        if (LoginPanel != null)
-        {
-            LoginPanel.SetActive(true); // **✅ 讓登入頁顯示**
-        }
-        else
-        {
-            Debug.LogError("❌ LoginPanel 為 null，請確保已設置！");
-        }
+        SigninPanel.SetActive(true);
+        LoginPanel.SetActive(true);
     }
 
     [System.Serializable]
@@ -257,5 +286,30 @@ public class APIManager : MonoBehaviour
         public string email;
         public int coins;
         public int diamonds;
+        public int avatar_id;
+    }
+
+    [System.Serializable]
+    public class UserDataResponse
+    {
+        public int user_id;
+        public string username;
+        public string email;
+        public int coins;
+        public int diamonds;
+        public int avatar_id;
+    }
+
+    // CurrentStageResponse 結構，與最新的app.py接口對應
+    [System.Serializable]
+    public class CurrentStageResponse
+    {
+        public bool hasReadyCourse;
+        public int course_id;
+        public string course_name;
+        public string current_stage;
+        public float progress;
+        public float progress_one_to_one;
+        public float progress_classroom;
     }
 }

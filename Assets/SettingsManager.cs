@@ -6,6 +6,8 @@ using UnityEngine.Networking;
 
 public class SettingsManager : MonoBehaviour
 {
+    public AvatarManager avatarManager;
+
     [Header("UI 元件")]
     public TMP_Text usernameText;  // 顯示用戶名稱
     public TMP_Text emailText;     // 顯示用戶 Email
@@ -15,13 +17,23 @@ public class SettingsManager : MonoBehaviour
     public GameObject confirmationPanel; // 確認刪除視窗
     public Button confirmDeleteButton; // 確認刪除按鈕
     public Button cancelDeleteButton;  // 取消刪除按鈕
-    public GameObject loginPanel; // 登入畫面 Panel（用於刪除帳號後跳轉）
+    public GameObject loginPanel; // 登入畫面 Panel
 
-    private string baseUrl = "https://feyndora-api.onrender.com"; // Flask API 伺服器
+    [Header("頭像相關 UI 元件")]
+    public GameObject avatarSelectionPanel; // 頭像選擇的整個Panel
+    public Button openAvatarSelectionButton; // 點擊開啟頭像選擇視窗的按鈕
+    public Button confirmAvatarSelectionButton; // 頭像選擇裡面的確認按鈕
+
+    private string baseUrl = "https://feyndora-api.onrender.com";
 
     void OnEnable()
     {
-        LoadUserData(); // **✅ 當 Settings 頁面開啟時，自動載入用戶資料**
+        LoadUserData();
+
+        if (avatarManager != null)
+        {
+            avatarManager.LoadCurrentAvatar();  // ✅ 進入Settings時，同步當前頭像
+        }
     }
 
     void Start()
@@ -33,9 +45,18 @@ public class SettingsManager : MonoBehaviour
         deleteAccountButton.onClick.AddListener(ShowDeleteConfirmation);
         confirmDeleteButton.onClick.AddListener(() => StartCoroutine(DeleteAccount()));
         cancelDeleteButton.onClick.AddListener(HideDeleteConfirmation);
+
+        if (openAvatarSelectionButton != null)
+        {
+            openAvatarSelectionButton.onClick.AddListener(OpenAvatarSelection);
+        }
+
+        if (confirmAvatarSelectionButton != null)
+        {
+            confirmAvatarSelectionButton.onClick.AddListener(ConfirmAvatarSelection);
+        }
     }
 
-    // **📌 載入用戶資訊**
     void LoadUserData()
     {
         int userID = PlayerPrefs.GetInt("UserID", -1);
@@ -49,7 +70,7 @@ public class SettingsManager : MonoBehaviour
         string savedEmail = PlayerPrefs.GetString("UserEmail", "未綁定 Email");
 
         usernameText.text = savedUsername;
-        emailText.text = savedEmail; // ✅ 確保 Email 正確顯示
+        emailText.text = savedEmail;
 
         Debug.Log($"📢 載入用戶資料: 用戶名: {savedUsername}, Email: {savedEmail}");
     }
@@ -84,18 +105,13 @@ public class SettingsManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log("✅ 暱稱更新成功");
-                PlayerPrefs.SetString("Username", newNickname); // **✅ 更新本地暱稱**
-                usernameText.text = newNickname; // **✅ 立即更新 UI**
+                PlayerPrefs.SetString("Username", newNickname);
+                usernameText.text = newNickname;
 
                 // **✅ 讓 APIManager 重新獲取數據，確保 HomePagePanel 也更新**
                 if (APIManager.Instance != null)
                 {
                     APIManager.Instance.StartCoroutine(APIManager.Instance.FetchUserData());
-                }
-                else
-                {
-                    Debug.LogError("❌ APIManager.Instance 為 null，請確保 APIManager 存在於場景中！");
                 }
             }
             else
@@ -145,15 +161,34 @@ public class SettingsManager : MonoBehaviour
                 {
                     APIManager.Instance.Logout();
                 }
-                else
-                {
-                    Debug.LogError("❌ APIManager.Instance 為 null，請確保 APIManager 存在於場景中！");
-                }
             }
             else
             {
                 Debug.LogError("❌ 刪除帳號失敗：" + request.downloadHandler.text);
             }
+        }
+    }
+
+    // === 🟣 頭像選擇功能 ===
+    void OpenAvatarSelection()
+    {
+        if (avatarSelectionPanel != null)
+        {
+            avatarSelectionPanel.SetActive(true);
+            avatarManager.LoadCurrentAvatar(); // ✅ 打開時也確保同步選中
+        }
+    }
+
+    void ConfirmAvatarSelection()
+    {
+        if (avatarManager != null)
+        {
+            avatarManager.ConfirmSelection();  // ✅ 交給 AvatarManager 處理
+            avatarSelectionPanel.SetActive(false);  // ✅ 關閉選擇面板
+        }
+        else
+        {
+            Debug.LogError("❌ AvatarManager 未綁定");
         }
     }
 }
