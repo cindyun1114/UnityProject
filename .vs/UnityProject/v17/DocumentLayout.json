@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Library\\PackageCache\\com.nobi.roundedcorners\\UiRoundedCorners\\ImageWithIndependentRoundedCorners.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Library\\PackageCache\\com.nobi.roundedcorners\\UiRoundedCorners\\ImageWithIndependentRoundedCorners.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LayoutConponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\LayoutConponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\PreviewDiscussion\\Chat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\PreviewDiscussion\\Chat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -22,11 +30,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ImageWithIndependentRoundedCorners.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Library\\PackageCache\\com.nobi.roundedcorners\\UiRoundedCorners\\ImageWithIndependentRoundedCorners.cs",
+              "RelativeDocumentMoniker": "Library\\PackageCache\\com.nobi.roundedcorners\\UiRoundedCorners\\ImageWithIndependentRoundedCorners.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Library\\PackageCache\\com.nobi.roundedcorners\\UiRoundedCorners\\ImageWithIndependentRoundedCorners.cs",
+              "RelativeToolTip": "Library\\PackageCache\\com.nobi.roundedcorners\\UiRoundedCorners\\ImageWithIndependentRoundedCorners.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-03T10:43:04.868Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "LayoutConponent.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LayoutConponent.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\LayoutConponent.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LayoutConponent.cs",
+              "RelativeToolTip": "Assets\\Scripts\\LayoutConponent.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAswCEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-03T06:51:59.827Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Message.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\PreviewDiscussion\\Message.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\PreviewDiscussion\\Message.cs",
@@ -34,12 +68,11 @@
               "RelativeToolTip": "Assets\\Scripts\\PreviewDiscussion\\Message.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-02T15:17:25.933Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-02T15:17:25.933Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Chat.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\PreviewDiscussion\\Chat.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\PreviewDiscussion\\Chat.cs",
@@ -47,12 +80,11 @@
               "RelativeToolTip": "Assets\\Scripts\\PreviewDiscussion\\Chat.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAAAACsAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-02T15:04:03.76Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-02T15:04:03.76Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "uploadPDF.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\CreateNewClass\\uploadPDF.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\CreateNewClass\\uploadPDF.cs",
@@ -60,8 +92,7 @@
               "RelativeToolTip": "Assets\\Scripts\\CreateNewClass\\uploadPDF.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-02T14:04:44.458Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-02T14:04:44.458Z"
             }
           ]
         }
