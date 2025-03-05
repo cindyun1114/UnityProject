@@ -270,6 +270,16 @@ public class APIManager : MonoBehaviour
 
         courseManager.ClearCourses();
 
+        // 使用 Singleton 直接清除 Ranking UI
+        if (RankingManager.Instance != null)
+        {
+            RankingManager.Instance.ClearAllUI();
+        }
+        else
+        {
+            Debug.LogWarning("RankingManager.Instance 為 null");
+        }
+
         HomePagePanel.SetActive(false);
         ProfilePanel.SetActive(false);
         SettingsPanel.SetActive(false);

@@ -113,4 +113,18 @@ public class AvatarManager : MonoBehaviour
             homePageAvatar.sprite = avatarSprites[avatarId - 1];
         }
     }
+
+    // 🔥【新增】提供排行榜用的頭像查詢方法
+    public Sprite GetAvatarSprite(int avatarId)
+    {
+        if (avatarId >= 1 && avatarId <= avatarSprites.Length)
+        {
+            return avatarSprites[avatarId - 1];  // avatarId從1開始，array是0開始
+        }
+        else
+        {
+            Debug.LogWarning($"找不到對應的頭像ID: {avatarId}，顯示預設頭像");
+            return avatarSprites[0];  // 預設回傳第一張
+        }
+    }
 }
