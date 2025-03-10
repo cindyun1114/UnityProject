@@ -3,16 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\CircleProgress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\CircleProgress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\ToggleButtonColor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\ToggleButtonColor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\APIManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\APIManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\RankingManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\RankingManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\AvatarManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\AvatarManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\ToggleController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\ToggleController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Library\\PackageCache\\com.unity.visualscripting\\Editor\\VisualScripting.Core\\Reflection\\Codebase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Library\\PackageCache\\com.unity.visualscripting\\Editor\\VisualScripting.Core\\Reflection\\Codebase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\CircleProgress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\CircleProgress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\ToggleShifting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -25,16 +41,40 @@
   ],
   "DocumentGroupContainers": [
     {
-      "Orientation": 0,
+      "Orientation": 1,
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "DockedHeight": 336,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
+              "Title": "RankingManager.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\RankingManager.cs",
+              "RelativeDocumentMoniker": "Assets\\RankingManager.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\RankingManager.cs",
+              "RelativeToolTip": "Assets\\RankingManager.cs",
+              "ViewState": "AgIAAIMAAAAAAAAAAAAswO4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-05T13:48:05.924Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AvatarManager.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\AvatarManager.cs",
+              "RelativeDocumentMoniker": "Assets\\AvatarManager.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\AvatarManager.cs",
+              "RelativeToolTip": "Assets\\AvatarManager.cs",
+              "ViewState": "AgIAAG0AAAAAAAAAAAAswIEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-05T13:45:29.177Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "Codebase.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Library\\PackageCache\\com.unity.visualscripting\\Editor\\VisualScripting.Core\\Reflection\\Codebase.cs",
               "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.visualscripting\\Editor\\VisualScripting.Core\\Reflection\\Codebase.cs",
@@ -42,12 +82,11 @@
               "RelativeToolTip": "Library\\PackageCache\\com.unity.visualscripting\\Editor\\VisualScripting.Core\\Reflection\\Codebase.cs",
               "ViewState": "AgIAAG8BAAAAAAAAAAAvwH4BAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-05T12:37:51.135Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-05T12:37:51.135Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
               "Title": "ToggleController.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\ToggleController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\ToggleController.cs",
@@ -55,12 +94,11 @@
               "RelativeToolTip": "Assets\\Scripts\\ToggleController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-05T12:34:44.236Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-05T12:34:44.236Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "ToggleShifting.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\ToggleShifting.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\ToggleShifting.cs",
@@ -71,7 +109,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 8,
               "Title": "ToggleGroup.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Library\\PackageCache\\com.unity.ugui\\Runtime\\UGUI\\UI\\Core\\ToggleGroup.cs",
               "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.ugui\\Runtime\\UGUI\\UI\\Core\\ToggleGroup.cs",
@@ -83,15 +121,50 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "CircleProgress.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\CircleProgress.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\CircleProgress.cs",
               "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\CircleProgress.cs",
               "RelativeToolTip": "Assets\\Scripts\\CircleProgress.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-04T17:12:49.689Z"
+              "WhenOpened": "2025-03-04T17:12:49.689Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ToggleButtonColor.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\ToggleButtonColor.cs",
+              "RelativeDocumentMoniker": "Assets\\ToggleButtonColor.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\ToggleButtonColor.cs",
+              "RelativeToolTip": "Assets\\ToggleButtonColor.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAswDwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-05T13:51:31.19Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "APIManager.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\APIManager.cs",
+              "RelativeDocumentMoniker": "Assets\\APIManager.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\APIManager.cs",
+              "RelativeToolTip": "Assets\\APIManager.cs",
+              "ViewState": "AgIAAJoAAAAAAAAAAAAswEQBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-05T13:54:49.172Z"
+            }
+          ]
+        },
+        {
+          "DockedHeight": 64,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
             }
           ]
         }

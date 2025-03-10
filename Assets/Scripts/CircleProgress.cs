@@ -1,24 +1,44 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CircleProgress : MonoBehaviour
 {
-    public Image progressImage;  // «e´º¶i«×±ø
-    public Text percentageText;  // Åã¥Ü¼Æ­È
-    [Range(0, 1)] public float progress = 0f; // ¶i«×¡]0~1¡^
+    [SerializeField] private Image progressImage;
+    [SerializeField] private TextMeshProUGUI percentageText;
+    [Range(0, 1)] private float progress = 0f;  // è¨­ç‚º privateï¼Œç¢ºä¿åªèƒ½é€é SetProgress() è¨­å®š
+
+    void Start()
+    {
+        UpdateUI();
+    }
 
     void Update()
     {
-        // §ó·s¶ñ¥R¶i«×
-        progressImage.fillAmount = progress;
-
-        // §ó·sÅã¥Ü¼Æ¦r
-        percentageText.text = (progress * 100).ToString("0") + "%";
+        Debug.Log("Update åŸ·è¡Œä¸­, progress = " + progress); // ç¢ºä¿ Update åœ¨åŸ·è¡Œ
+        UpdateUI();
     }
 
-    // ³]©w¶i«×
+    // âœ… æä¾›å¤–éƒ¨è¨­å®š progress
     public void SetProgress(float value)
     {
-        progress = Mathf.Clamp01(value); // ­­¨î½d³ò 0~1
+        progress = Mathf.Clamp01(value);  // é™åˆ¶ç¯„åœ 0 ~ 1
+        UpdateUI();
+    }
+
+    // âœ… æ›´æ–° UI
+    private void UpdateUI()
+    {
+        if (progressImage != null)
+        {
+            progressImage.fillAmount = progress;
+        }
+
+        if (percentageText != null)
+        {
+            percentageText.text = Mathf.RoundToInt(progress * 100).ToString();
+            percentageText.ForceMeshUpdate();  // âœ… ç¢ºä¿æ–‡å­—å³æ™‚æ›´æ–°
+            Debug.Log("æ›´æ–° UIï¼šfillAmount = " + progressImage.fillAmount + ", æ–‡å­— = " + percentageText.text);
+        }
     }
 }
