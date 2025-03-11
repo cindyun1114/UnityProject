@@ -3,16 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\APIManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\APIManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\SettingsManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\SettingsManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\ProfileManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\ProfileManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Library\\PackageCache\\com.unity.ugui\\Runtime\\UGUI\\UI\\Core\\Button.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Library\\PackageCache\\com.unity.ugui\\Runtime\\UGUI\\UI\\Core\\Button.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\CircleProgress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\CircleProgress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\ToggleButtonColor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\ToggleButtonColor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\APIManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\APIManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\RankingManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -46,23 +58,41 @@
       "DocumentGroups": [
         {
           "DockedHeight": 336,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:1:0:{08a1bf1d-7967-4afc-8253-1790862ab8c9}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:1:0:{e8b06f52-6d01-11d2-aa7d-00c04f990343}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:2:0:{e8b06f52-6d01-11d2-aa7d-00c04f990343}"
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ProfileManager.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\ProfileManager.cs",
+              "RelativeDocumentMoniker": "Assets\\ProfileManager.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\ProfileManager.cs",
+              "RelativeToolTip": "Assets\\ProfileManager.cs",
+              "ViewState": "AgIAALsAAAAAAAAAAAAowOUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-11T13:49:57.368Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
+              "Title": "SettingsManager.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\SettingsManager.cs",
+              "RelativeDocumentMoniker": "Assets\\SettingsManager.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\SettingsManager.cs",
+              "RelativeToolTip": "Assets\\SettingsManager.cs",
+              "ViewState": "AgIAAJ8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-11T13:41:57.551Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "AvatarManager.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\AvatarManager.cs",
               "RelativeDocumentMoniker": "Assets\\AvatarManager.cs",
@@ -74,7 +104,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "Codebase.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Library\\PackageCache\\com.unity.visualscripting\\Editor\\VisualScripting.Core\\Reflection\\Codebase.cs",
               "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.visualscripting\\Editor\\VisualScripting.Core\\Reflection\\Codebase.cs",
@@ -86,7 +116,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "CircleProgress.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\CircleProgress.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\CircleProgress.cs",
@@ -94,12 +124,11 @@
               "RelativeToolTip": "Assets\\Scripts\\CircleProgress.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAACsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-04T17:12:49.689Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-04T17:12:49.689Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "RankingManager.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\RankingManager.cs",
               "RelativeDocumentMoniker": "Assets\\RankingManager.cs",
@@ -111,7 +140,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
+              "Title": "APIManager.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\APIManager.cs",
+              "RelativeDocumentMoniker": "Assets\\APIManager.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\APIManager.cs",
+              "RelativeToolTip": "Assets\\APIManager.cs",
+              "ViewState": "AgIAACYBAAAAAAAAAAAowFABAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-05T13:54:49.172Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "ToggleController.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\ToggleController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\ToggleController.cs",
@@ -123,7 +165,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 3,
+              "Title": "Button.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Library\\PackageCache\\com.unity.ugui\\Runtime\\UGUI\\UI\\Core\\Button.cs",
+              "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.ugui\\Runtime\\UGUI\\UI\\Core\\Button.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Library\\PackageCache\\com.unity.ugui\\Runtime\\UGUI\\UI\\Core\\Button.cs",
+              "RelativeToolTip": "Library\\PackageCache\\com.unity.ugui\\Runtime\\UGUI\\UI\\Core\\Button.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-11T06:53:25.464Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "ToggleShifting.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\ToggleShifting.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\ToggleShifting.cs",
@@ -134,7 +189,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 11,
               "Title": "ToggleGroup.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Library\\PackageCache\\com.unity.ugui\\Runtime\\UGUI\\UI\\Core\\ToggleGroup.cs",
               "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.ugui\\Runtime\\UGUI\\UI\\Core\\ToggleGroup.cs",
@@ -146,7 +201,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "ToggleButtonColor.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\ToggleButtonColor.cs",
               "RelativeDocumentMoniker": "Assets\\ToggleButtonColor.cs",
@@ -155,18 +210,6 @@
               "ViewState": "AgIAAB8AAAAAAAAAAAAswDwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-05T13:51:31.19Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "APIManager.cs",
-              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\APIManager.cs",
-              "RelativeDocumentMoniker": "Assets\\APIManager.cs",
-              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\APIManager.cs",
-              "RelativeToolTip": "Assets\\APIManager.cs",
-              "ViewState": "AgIAAJoAAAAAAAAAAAAswEQBAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-05T13:54:49.172Z"
             }
           ]
         },

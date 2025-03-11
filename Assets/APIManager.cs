@@ -102,11 +102,20 @@ public class APIManager : MonoBehaviour
     }
 
     // 新增：RefreshAllData，一次刷新用戶資料、進度與課程列表
-    IEnumerator RefreshAllData()
+    public IEnumerator RefreshAllData()
     {
         yield return StartCoroutine(FetchUserData());
         yield return StartCoroutine(FetchCurrentStage());
         yield return StartCoroutine(courseManager.LoadCourses());
+
+        // 🌟 確保 ProfileManager 已啟動
+        if (ProfileManager.Instance != null && !ProfileManager.Instance.gameObject.activeInHierarchy)
+        {
+            ProfileManager.Instance.gameObject.SetActive(true);  // 先啟用
+        }
+
+        // 🌟 呼叫 ProfileManager 更新數據
+        ProfileManager.Instance?.RefreshProfile();
     }
 
     IEnumerator RegisterUser()
@@ -216,6 +225,7 @@ public class APIManager : MonoBehaviour
                 PlayerPrefs.SetInt("Coins", jsonResponse.coins);
                 PlayerPrefs.SetInt("Diamonds", jsonResponse.diamonds);
                 PlayerPrefs.SetInt("AvatarID", jsonResponse.avatar_id);
+                PlayerPrefs.SetInt("TotalPoints", jsonResponse.total_learning_points);
                 PlayerPrefs.Save();
 
                 welcomeText.text = "你好, " + jsonResponse.username;
@@ -297,6 +307,7 @@ public class APIManager : MonoBehaviour
         public int coins;
         public int diamonds;
         public int avatar_id;
+        public int total_learning_points;
     }
 
     [System.Serializable]
@@ -308,6 +319,7 @@ public class APIManager : MonoBehaviour
         public int coins;
         public int diamonds;
         public int avatar_id;
+        public int total_learning_points;
     }
 
     // CurrentStageResponse 結構，與最新的app.py接口對應
