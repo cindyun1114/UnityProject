@@ -1,23 +1,23 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 
 public class ScrollIndicator : MonoBehaviour
 {
     public ScrollRect scrollRect; // Scroll View
-    public Image[] dots; // ½ü¼½«ü¥Ü¾¹ÂIÂI
-    public Color activeColor = Color.white; // ·í«e­¶­±ÂIÂIÃC¦â
-    public Color inactiveColor = Color.gray; // ¨ä¥LÂIÂIÃC¦â
-    public int totalPages = 4; // Á`­¶¼Æ
+    public Image[] dots; // è¼ªæ’­æŒ‡ç¤ºå™¨é»é»
+    public Color activeColor = Color.white; // ç•¶å‰é é¢é»é»é¡è‰²
+    public Color inactiveColor = Color.gray; // å…¶ä»–é»é»é¡è‰²
+    public int totalPages = 4; // ç¸½é æ•¸
 
     private void Update()
     {
-        float scrollPos = scrollRect.horizontalNormalizedPosition; // ¨ú±o·í«eºu°Ê¦ì¸m
-        int currentPage = Mathf.RoundToInt(scrollPos * (totalPages - 1)); // ­pºâ·í«e­¶­±¯Á¤Ş
+        float scrollPos = scrollRect.horizontalNormalizedPosition; // å–å¾—ç•¶å‰æ»¾å‹•ä½ç½®
+        int currentPage = Mathf.RoundToInt(scrollPos * (totalPages - 1)); // è¨ˆç®—ç•¶å‰é é¢ç´¢å¼•
 
-        // ½T«O­¶­±¯Á¤Ş¦b¦X²z½d³ò¤º
+        // ç¢ºä¿é é¢ç´¢å¼•åœ¨åˆç†ç¯„åœå…§
         currentPage = Mathf.Clamp(currentPage, 0, totalPages - 1);
 
-        // §ó·sÂIÂIÃC¦â
+        // æ›´æ–°é»é»é¡è‰²
         for (int i = 0; i < dots.Length; i++)
         {
             dots[i].color = (i == currentPage) ? activeColor : inactiveColor;
