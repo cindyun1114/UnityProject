@@ -27,6 +27,16 @@ public class CourseManager : MonoBehaviour
         searchButton.onClick.AddListener(() => StartCoroutine(SearchCourses()));
         refreshButton.onClick.AddListener(() => StartCoroutine(LoadCourses()));
 
+        if (searchInput != null)
+        {
+            searchInput.onValueChanged.AddListener((value) => {
+                if (string.IsNullOrEmpty(value.Trim()))
+                {
+                    StartCoroutine(LoadCourses());
+                }
+            });
+        }
+
         StartCoroutine(LoadCourses());
     }
 
@@ -56,12 +66,16 @@ public class CourseManager : MonoBehaviour
     IEnumerator SearchCourses()
     {
         string query = searchInput.text.Trim();
+
+        // 如果搜索框為空，直接載入所有課程
         if (string.IsNullOrEmpty(query))
         {
+            Debug.Log("🔍 搜索框為空，顯示所有課程");
             yield return StartCoroutine(LoadCourses());
             yield break;
         }
 
+        Debug.Log($"🔍 開始搜索課程：{query}");
         int userID = PlayerPrefs.GetInt("UserID");
         using (UnityWebRequest request = UnityWebRequest.Get(baseUrl + "/search_courses/" + userID + "?query=" + UnityWebRequest.EscapeURL(query)))
         {
@@ -72,6 +86,7 @@ public class CourseManager : MonoBehaviour
             {
                 CourseListResponse jsonResponse = JsonUtility.FromJson<CourseListResponse>("{\"courses\":" + request.downloadHandler.text + "}");
                 UpdateCourseUI(jsonResponse.courses);
+                Debug.Log($"✅ 搜索完成，找到 {jsonResponse.courses.Count} 個課程");
             }
             else
             {

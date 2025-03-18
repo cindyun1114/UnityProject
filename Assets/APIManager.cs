@@ -128,6 +128,12 @@ public class APIManager : MonoBehaviour
 
         // 檢查簽到狀態
         yield return StartCoroutine(CheckSigninStatus());
+
+        // **🔹 新增：刷新每週任務**
+        if (WeeklyTaskManager.Instance != null)
+        {
+            WeeklyTaskManager.Instance.RefreshTasks();
+        }
     }
 
     IEnumerator RegisterUser()
@@ -205,6 +211,21 @@ public class APIManager : MonoBehaviour
 
                 welcomeText.text = "你好, " + jsonResponse.username;
 
+                // 新增：重新初始化成就資料（確保 AchievementManager 重新載入）
+                if (AchievementManager.Instance != null)
+                {
+                    AchievementManager.Instance.ReinitializeAchievements();
+                }
+                // 新增：重新初始化成就資料（確保 PresetCoursesManager 重新載入）
+                if (PresetCoursesManager.Instance != null)
+                {
+                    PresetCoursesManager.Instance.ReinitializeCourses();
+                }
+                // **🔹 新增：刷新每週任務**
+                if (WeeklyTaskManager.Instance != null)
+                {
+                    WeeklyTaskManager.Instance.ReloadTasksOnLogin(jsonResponse.user_id);
+                }
                 // 初始化簽到紀錄（若尚未建立，後端會建立）
                 yield return StartCoroutine(InitializeSigninRecord());
                 // 刷新所有數據
@@ -308,6 +329,19 @@ public class APIManager : MonoBehaviour
         if (ProfileManager.Instance != null)
         {
             ProfileManager.Instance.ClearProfileUI();
+        }
+
+        if (AchievementManager.Instance != null)
+        {
+            AchievementManager.Instance.ClearUserAchievementData();
+        }
+        if (WeeklyTaskManager.Instance != null)
+        {
+            WeeklyTaskManager.Instance.ClearUIOnLogout();
+        }
+        if (PresetCoursesManager.Instance != null)
+        {
+            PresetCoursesManager.Instance.ClearUI();
         }
 
         HomePagePanel.SetActive(false);
@@ -494,6 +528,83 @@ public class APIManager : MonoBehaviour
     {
         if (SigninRewardPanel != null)
             SigninRewardPanel.SetActive(false);
+    }
+
+    // ✅ 1️⃣ 獲取收藏課程（回傳收藏的課程名稱）
+    public IEnumerator GetSavedCourses(int userId, System.Action<List<string>> callback)
+    {
+        string url = $"{baseUrl}/saved_courses/{userId}";
+
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                SavedCoursesResponse response = JsonUtility.FromJson<SavedCoursesResponse>(request.downloadHandler.text);
+                callback(response.saved_courses); // 回傳收藏課程列表
+            }
+            else
+            {
+                Debug.LogError("❌ 獲取收藏課程失敗：" + request.downloadHandler.text);
+            }
+        }
+    }
+
+    // ✅ 2️⃣ 收藏課程（傳遞課程名稱）
+    public IEnumerator SaveCourse(int userId, string courseName)
+    {
+        string jsonData = $"{{\"user_id\": {userId}, \"course_name\": \"{courseName}\"}}";
+
+        using (UnityWebRequest request = new UnityWebRequest($"{baseUrl}/save_course", "POST"))
+        {
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("❌ 收藏課程失敗：" + request.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log($"✅ 成功收藏課程: {courseName}");
+            }
+        }
+    }
+
+    // ✅ 3️⃣ 取消收藏課程（傳遞課程名稱）
+    public IEnumerator RemoveSavedCourse(int userId, string courseName)
+    {
+        string jsonData = $"{{\"user_id\": {userId}, \"course_name\": \"{courseName}\"}}";
+
+        using (UnityWebRequest request = new UnityWebRequest($"{baseUrl}/remove_course", "POST"))
+        {
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("❌ 取消收藏課程失敗：" + request.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log($"✅ 成功取消收藏課程: {courseName}");
+            }
+        }
+    }
+
+    [System.Serializable]
+    public class SavedCoursesResponse
+    {
+        public List<string> saved_courses; // 這裡的類型改成 string，因為後端存的是課程名稱
     }
 
     [System.Serializable]
