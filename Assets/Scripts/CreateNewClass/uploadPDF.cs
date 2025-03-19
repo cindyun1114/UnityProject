@@ -11,7 +11,11 @@ public class uploadPDF : MonoBehaviour
     private string apiUrl = "https://feynman-server.onrender.com";
 
     public TMP_InputField classNameInputField;
+    public TMP_Text classNameText;
+    public TMP_Text classDateText;
     public GameObject previewDiscussionPanel;
+    public GameObject updatePagePanel;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,7 +48,10 @@ public class uploadPDF : MonoBehaviour
     {
         string fileName = Uri.EscapeDataString(Path.GetFileName(filePath));
 
-        byte[] fileData = File.ReadAllBytes(filePath);
+        classNameText.text = classNameInputField.text;
+        classDateText.text = DateTime.Now.ToString("yyyy-MM-dd");
+
+        byte[] fileData = File.ReadAllBytes(filePath);  
         WWWForm form = new WWWForm();
         form.AddBinaryData("file", fileData, fileName, "application/pdf");
         form.AddField("class_name", classNameInputField.text);
@@ -59,6 +66,7 @@ public class uploadPDF : MonoBehaviour
             if (request.result == UnityWebRequest.Result.Success)
             {
                 var response = JsonUtility.FromJson<newAssistantCreateResponse>(request.downloadHandler.text);
+                PlayerPrefs.SetInt("Course_ID", response.course_id);
                 PlayerPrefs.SetString("Assistant1_ID", response.assistant_id_1);
                 PlayerPrefs.SetString("Assistant2_ID", response.assistant_id_2);
                 PlayerPrefs.SetString("Thread1_ID", response.thread_id_1);
@@ -72,7 +80,7 @@ public class uploadPDF : MonoBehaviour
                 if (previewDiscussionPanel != null)
                 {
                     previewDiscussionPanel.SetActive(true);
-                    gameObject.SetActive(false);
+                    updatePagePanel.SetActive(false);
                 }
             }
             else
@@ -84,10 +92,11 @@ public class uploadPDF : MonoBehaviour
    
 }
 
-[System.Serializable]//³o­ÓÃþ¬O ¥i§Ç¦C¤Æªº
+[System.Serializable]//ï¿½oï¿½ï¿½ï¿½ï¿½ï¿½O ï¿½iï¿½Ç¦Cï¿½Æªï¿½
 public class newAssistantCreateResponse
 {
     public string action;
+    public int course_id;
     public string assistant_id_1;
     public string thread_id_1;
     public string assistant_id_2;
