@@ -34,6 +34,7 @@ public class RankingManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);  // 讓 RankingManager 在場景切換時不被刪除
         }
         else if (Instance != this)
         {
@@ -76,7 +77,7 @@ public class RankingManager : MonoBehaviour
         FetchRanking();
     }
 
-    void FetchRanking()
+    public void FetchRanking()
     {
         StartCoroutine(isWeekly ? FetchWeeklyRanking() : FetchDailyRanking());
     }

@@ -231,6 +231,12 @@ public class APIManager : MonoBehaviour
                 // 刷新所有數據
                 yield return StartCoroutine(RefreshAllData());
 
+                // 新增：刷新排行榜
+                if (RankingManager.Instance != null)
+                {
+                    RankingManager.Instance.FetchRanking();
+                }
+
                 LoginPanel.SetActive(false);
                 HomePagePanel.SetActive(true);
             }
