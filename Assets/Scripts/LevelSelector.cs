@@ -11,9 +11,9 @@ public class LevelSelector : MonoBehaviour
 
     public Transform levelGroup;
     public int levelCount = 6; // 关卡数量
-    public float radius = 900f; // 半径
+    public float radius = 300f; // 半径
     public float moveDuration = 1f; // 移动持续时间
-    public float yOffsetStep = 50f; // Y轴偏移步长
+    public float yOffsetStep = 80f; // Y轴偏移步长
 
     public Button nextLevelButton;
     public Button previousLevelButton;
@@ -98,7 +98,7 @@ public class LevelSelector : MonoBehaviour
         int currentIndex = int.Parse(levelButtons[bottomIndex].name);
 
         bool isCounterclockwise = true;
-        Debug.Log("當前顯示 " + currentIndex);
+        Debug.Log("当前显示 " + currentIndex);
         int movesRequired = index - currentIndex;
         if (movesRequired < 0)
         {
@@ -119,7 +119,7 @@ public class LevelSelector : MonoBehaviour
         while (movesRequired > t)
         {
             RotateButtons(diction);
-            Debug.Log("移動一次");
+            Debug.Log("移动一次");
 
             yield return new WaitForSeconds(moveDuration);
             t++;
@@ -175,7 +175,7 @@ public class LevelSelector : MonoBehaviour
                 }
                 if (index == levelButtons.Count - 1)
                 {
-                    Debug.Log("完成移動");
+                    Debug.Log("完成移动");
                     // 重新启用按钮
                     nextLevelButton.interactable = true;
                     previousLevelButton.interactable = true;
@@ -196,14 +196,14 @@ public class LevelSelector : MonoBehaviour
         if (topIndex >= 0 && topIndex < levelButtons.Count)
         {
             string topButtonName = levelButtons[topIndex].name;
-            Debug.Log("最上層按鈕的名稱: " + topButtonName);
+            Debug.Log("最上层按钮的名称: " + topButtonName);
         }
     }
     void PrintBottomButtonName()
     {
         int bottomIndex = sortOrders.IndexOf(sortOrders.Count / 2);
         string bottomButtonName = levelButtons[bottomIndex].name;
-        Debug.Log("最下層按鈕的名稱: " + bottomButtonName);
+        Debug.Log("最下层按钮的名称: " + bottomButtonName);
     }
     List<float> CalculateSymmetricYOffsets(int count)
     {
@@ -249,14 +249,14 @@ public class LevelSelector : MonoBehaviour
         float alpha = Mathf.Lerp(0.3f, 1f, (float)sortOrder / (levelCount / 2));
         float scale = Mathf.Lerp(0.8f, 1f, (float)sortOrder / (levelCount / 2));
 
-        // 設置透明度
+        // 设置透明度
         CanvasGroup canvasGroup = button.GetComponent<CanvasGroup>();
         if (canvasGroup != null)
         {
             canvasGroup.alpha = alpha;
         }
 
-        // 設置縮放值
+        // 设置缩放值
         RectTransform rectTransform = button.GetComponent<RectTransform>();
         if (rectTransform != null)
         {
