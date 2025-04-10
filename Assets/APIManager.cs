@@ -207,6 +207,8 @@ public class APIManager : MonoBehaviour
                 PlayerPrefs.SetInt("Coins", jsonResponse.coins);
                 PlayerPrefs.SetInt("Diamonds", jsonResponse.diamonds);
                 PlayerPrefs.SetInt("AvatarID", jsonResponse.avatar_id);
+                PlayerPrefs.SetInt("TotalPoints", jsonResponse.total_learning_points);
+                PlayerPrefs.SetInt("TotalSigninDays", jsonResponse.total_signin_days);
                 PlayerPrefs.Save();
 
                 welcomeText.text = "你好, " + jsonResponse.username;
@@ -362,7 +364,7 @@ public class APIManager : MonoBehaviour
     public IEnumerator ClaimSigninReward()
     {
         int userID = PlayerPrefs.GetInt("UserID");
-        using (UnityWebRequest request = UnityWebRequest.Post($"{baseUrl}/signin/claim/{userID}", ""))
+        using (UnityWebRequest request = UnityWebRequest.PostWwwForm($"{baseUrl}/signin/claim/{userID}", ""))
         {
             yield return request.SendWebRequest();
 
@@ -399,7 +401,7 @@ public class APIManager : MonoBehaviour
     IEnumerator InitializeSigninRecord()
     {
         int userID = PlayerPrefs.GetInt("UserID");
-        using (UnityWebRequest request = UnityWebRequest.Post($"{baseUrl}/signin/init/{userID}", ""))
+        using (UnityWebRequest request = UnityWebRequest.PostWwwForm($"{baseUrl}/signin/init/{userID}", ""))
         {
             yield return request.SendWebRequest();
 
@@ -424,6 +426,13 @@ public class APIManager : MonoBehaviour
             if (request.result == UnityWebRequest.Result.Success)
             {
                 var jsonResponse = JsonUtility.FromJson<SigninStatusResponse>(request.downloadHandler.text);
+
+                // 如果是新的一週，重置 UI
+                if (jsonResponse.is_new_week)
+                {
+                    Debug.Log("🆕 檢測到新的一週開始，重置簽到 UI");
+                    ResetSigninUI();
+                }
 
                 // ✅ **從後端獲取台灣時間**
                 string serverToday = jsonResponse.server_today;
@@ -660,6 +669,8 @@ public class APIManager : MonoBehaviour
         public int reward_diamonds;
         public string last_signin_date;
         public string server_today;
+        public int weekly_streak;
+        public bool is_new_week;
     }
 
     [System.Serializable]
@@ -670,5 +681,78 @@ public class APIManager : MonoBehaviour
         public int coins_received;
         public int diamonds_received;
         public string last_signin_date;
+    }
+
+    // 新增：重置簽到 UI 的方法
+    private void ResetSigninUI()
+    {
+        // 重置所有簽到狀態
+        for (int i = 0; i < 7; i++)
+        {
+            if (lineImages != null && lineImages.Length > i && lineImages[i] != null)
+                lineImages[i].gameObject.SetActive(false); // 隱藏所有高亮邊框
+
+            if (gotImages != null && gotImages.Length > i && gotImages[i] != null)
+                gotImages[i].gameObject.SetActive(false); // 隱藏所有已領取標記
+
+            if (dayImages != null && dayImages.Length > i && dayImages[i] != null)
+            {
+                if (i == 6) // 第7天的特殊顏色
+                    dayImages[i].color = new Color(0.89f, 0.84f, 1f); // E2D7FF
+                else // 其他天的顏色
+                    dayImages[i].color = new Color(0.99f, 0.89f, 0.99f); // FEE9FF
+            }
+        }
+
+        // 重置按鈕狀態
+        if (claimRewardButton != null)
+            claimRewardButton.gameObject.SetActive(true);
+        if (comeBackTomorrowButton != null)
+            comeBackTomorrowButton.gameObject.SetActive(false);
+
+        Debug.Log("✅ 簽到 UI 已重置為新的一週");
+    }
+
+    [System.Serializable]
+    public class DrawCardResponse
+    {
+        public bool success;
+        public int card_id;
+        public string card_name;
+        public string rarity;
+        public int remaining_coins;
+        public int remaining_diamonds;
+    }
+
+    public IEnumerator DrawCard(bool isPremium)
+    {
+        int userID = PlayerPrefs.GetInt("UserID");
+        string url = $"{baseUrl}/draw_card/{userID}?type={(isPremium ? "premium" : "normal")}";
+
+        using (UnityWebRequest request = UnityWebRequest.PostWwwForm(url, ""))
+        {
+            request.SetRequestHeader("Content-Type", "application/json");
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var response = JsonUtility.FromJson<DrawCardResponse>(request.downloadHandler.text);
+
+                // 更新用戶資源
+                PlayerPrefs.SetInt("Coins", response.remaining_coins);
+                PlayerPrefs.SetInt("Diamonds", response.remaining_diamonds);
+
+                // 更新UI顯示
+                coinsText.text = response.remaining_coins.ToString();
+                diamondsText.text = response.remaining_diamonds.ToString();
+
+                // 顯示抽卡結果
+                LotteryManager.Instance.ShowDrawResult(response.card_name, response.rarity);
+            }
+            else
+            {
+                Debug.LogError("抽卡失敗：" + request.downloadHandler.text);
+            }
+        }
     }
 }

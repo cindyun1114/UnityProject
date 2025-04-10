@@ -263,4 +263,9 @@ public class LevelSelector : MonoBehaviour
             rectTransform.localScale = new Vector3(scale, scale, scale);
         }
     }
+    public int GetCurrentBottomIndex()
+    {
+        int bottomIndex = sortOrders.IndexOf(sortOrders.Count / 2);
+        return int.Parse(levelButtons[bottomIndex].name);
+    }
 }
