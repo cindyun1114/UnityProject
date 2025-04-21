@@ -21,7 +21,6 @@ public class SwipeableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private float targetPosX;
     private float velocityX;
     private bool isDragging;
-    private bool isOpen;
     private float contentWidth;
     private float buttonWidth;
     private Vector2 lastPointerPosition;
@@ -96,13 +95,11 @@ public class SwipeableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private void OpenLeftSide()
     {
         contentRect.DOAnchorPosX(-buttonWidth / 2, animationDuration);
-        isOpen = true;
     }
 
     private void Close()
     {
         contentRect.DOAnchorPosX(0, animationDuration);
-        isOpen = false;
     }
 
     // 刪除按鈕點擊事件

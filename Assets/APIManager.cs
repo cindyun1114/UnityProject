@@ -55,7 +55,14 @@ public class APIManager : MonoBehaviour
     public Image[] gotImages;      // 已領取標記（長度 7）
     public Image[] lineImages;     // 當天高亮邊框（長度 7）
 
+    [Header("老師頁面 Panel")]
+    public GameObject TeacherPagePanel;
+    public Image teacherRedDotImage;    // 第一個紅點
+    public Image teacherRedDotImage2;   // 第二個紅點
+
     private string baseUrl = "https://feyndora-api.onrender.com";
+
+    private const string RED_DOT_STATE_KEY = "TeacherRedDotState";
 
     private void Awake()
     {
@@ -66,6 +73,24 @@ public class APIManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        // 加載紅點狀態
+        LoadRedDotState();
+    }
+
+    private void LoadRedDotState()
+    {
+        bool redDotState = PlayerPrefs.GetInt(RED_DOT_STATE_KEY, 0) == 1;
+        if (teacherRedDotImage != null)
+            teacherRedDotImage.gameObject.SetActive(redDotState);
+        if (teacherRedDotImage2 != null)
+            teacherRedDotImage2.gameObject.SetActive(redDotState);
+    }
+
+    private void SaveRedDotState(bool state)
+    {
+        PlayerPrefs.SetInt(RED_DOT_STATE_KEY, state ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     [System.Obsolete]
@@ -120,7 +145,27 @@ public class APIManager : MonoBehaviour
     public IEnumerator RefreshAllData()
     {
         yield return StartCoroutine(FetchUserData());
-        yield return StartCoroutine(FetchCurrentStage());
+        yield return StartCoroutine(GetLatestCourseProgress((response) => {
+            if (response != null && response.hasCourse)
+            {
+                // 更新本地儲存的課程資訊
+                PlayerPrefs.SetInt("current_course_id", response.course_id);
+                PlayerPrefs.SetString("current_course_name", response.course_name);
+                PlayerPrefs.SetString("current_stage", response.current_stage);
+                PlayerPrefs.Save();
+
+                Debug.Log($"取得最新課程進度成功：{response.course_name}, 進度: {response.progress}%");
+            }
+            else
+            {
+                Debug.LogWarning("目前沒有課程記錄");
+                // 清空本地儲存的課程資訊
+                PlayerPrefs.DeleteKey("current_course_id");
+                PlayerPrefs.DeleteKey("current_course_name");
+                PlayerPrefs.DeleteKey("current_stage");
+                PlayerPrefs.Save();
+            }
+        }));
         yield return StartCoroutine(courseManager.LoadCourses());
 
         // 呼叫 ProfileManager 更新最新數據
@@ -129,7 +174,7 @@ public class APIManager : MonoBehaviour
         // 檢查簽到狀態
         yield return StartCoroutine(CheckSigninStatus());
 
-        // **🔹 新增：刷新每週任務**
+        // 刷新每週任務
         if (WeeklyTaskManager.Instance != null)
         {
             WeeklyTaskManager.Instance.RefreshTasks();
@@ -213,22 +258,48 @@ public class APIManager : MonoBehaviour
 
                 welcomeText.text = "你好, " + jsonResponse.username;
 
-                // 新增：重新初始化成就資料（確保 AchievementManager 重新載入）
+                // 先激活 TeacherPagePanel 但保持不可見
+                if (TeacherPagePanel != null)
+                {
+                    TeacherPagePanel.SetActive(true);
+                    CanvasGroup canvasGroup = TeacherPagePanel.GetComponent<CanvasGroup>();
+                    if (canvasGroup == null)
+                    {
+                        canvasGroup = TeacherPagePanel.AddComponent<CanvasGroup>();
+                    }
+                    canvasGroup.alpha = 0f;
+                    canvasGroup.blocksRaycasts = false;
+                    canvasGroup.interactable = false;
+
+                    // 確保 LevelSelector 被正確初始化
+                    var levelSelector = FindFirstObjectByType<LevelSelector>();
+                    if (levelSelector != null)
+                    {
+                        levelSelector.ClearCards();
+                        levelSelector.LoadUserCards();
+                        Debug.Log("✅ 登入時已初始化 TeacherPagePanel 的卡片");
+                    }
+                    else
+                    {
+                        Debug.LogError("❌ 找不到 LevelSelector 組件");
+                    }
+                }
+
+                // 新增：重新初始化成就資料
                 if (AchievementManager.Instance != null)
                 {
                     AchievementManager.Instance.ReinitializeAchievements();
                 }
-                // 新增：重新初始化成就資料（確保 PresetCoursesManager 重新載入）
                 if (PresetCoursesManager.Instance != null)
                 {
                     PresetCoursesManager.Instance.ReinitializeCourses();
                 }
-                // **🔹 新增：刷新每週任務**
                 if (WeeklyTaskManager.Instance != null)
                 {
                     WeeklyTaskManager.Instance.ReloadTasksOnLogin(jsonResponse.user_id);
                 }
-                // 初始化簽到紀錄（若尚未建立，後端會建立）
+
+                // 初始化簽到紀錄
                 yield return StartCoroutine(InitializeSigninRecord());
                 // 刷新所有數據
                 yield return StartCoroutine(RefreshAllData());
@@ -237,6 +308,13 @@ public class APIManager : MonoBehaviour
                 if (RankingManager.Instance != null)
                 {
                     RankingManager.Instance.FetchRanking();
+                }
+
+                // 新增：更新 ProfileManager 中的老師卡片
+                if (ProfileManager.Instance != null)
+                {
+                    ProfileManager.Instance.UpdateTeacherCard();
+                    Debug.Log("已更新 ProfileManager 中的老師卡片");
                 }
 
                 LoginPanel.SetActive(false);
@@ -285,10 +363,10 @@ public class APIManager : MonoBehaviour
         }
     }
 
-    IEnumerator FetchCurrentStage()
+    IEnumerator GetLatestCourseProgress(System.Action<LatestCourseResponse> callback)
     {
         int userID = PlayerPrefs.GetInt("UserID");
-        string url = baseUrl + "/current_stage/" + userID;
+        string url = $"{baseUrl}/latest_course/{userID}";
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
             request.SetRequestHeader("Content-Type", "application/json");
@@ -296,68 +374,78 @@ public class APIManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                CurrentStageResponse response = JsonUtility.FromJson<CurrentStageResponse>(request.downloadHandler.text);
-                if (response.hasReadyCourse)
+                LatestCourseResponse response = JsonUtility.FromJson<LatestCourseResponse>(request.downloadHandler.text);
+                if (response != null)
                 {
-                    PlayerPrefs.SetInt("current_course_id", response.course_id);
-                    PlayerPrefs.SetString("current_course_name", response.course_name);
-                    PlayerPrefs.SetString("current_stage", response.current_stage);
-                    PlayerPrefs.Save();
-                    Debug.Log($"取得current_stage成功：{response.current_stage}, 進度: {response.progress}%");
+                    Debug.Log($"成功獲取最新課程：{response.course_name}, 進度: {response.progress}%");
+                    callback?.Invoke(response);
                 }
                 else
                 {
-                    Debug.LogWarning("目前沒有ready的課程");
+                    Debug.LogWarning("未找到課程記錄");
+                    callback?.Invoke(null);
                 }
             }
             else
             {
-                Debug.LogError("❌ 取得current_stage失敗：" + request.downloadHandler.text);
+                Debug.LogError($"❌ 取得最新課程進度失敗：{request.downloadHandler.text}");
+                callback?.Invoke(null);
             }
         }
     }
 
     public void Logout()
     {
-        // 清除所有本地儲存
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.Save();
+        Debug.Log("開始登出流程...");
 
-        courseManager.ClearCourses();
+        // 先清理卡片選擇器
+        var levelSelector = FindFirstObjectByType<LevelSelector>();
+        if (levelSelector != null)
+        {
+            levelSelector.ClearCards();
+            Debug.Log("已清理卡片選擇器");
+        }
+
+        // 清理其他 UI 和數據
+        if (ProfileManager.Instance != null)
+        {
+            ProfileManager.Instance.ClearProfileUI();
+        }
 
         if (RankingManager.Instance != null)
         {
             RankingManager.Instance.ClearAllUI();
-        }
-        else
-        {
-            Debug.LogWarning("RankingManager.Instance 為 null");
-        }
-
-        if (ProfileManager.Instance != null)
-        {
-            ProfileManager.Instance.ClearProfileUI();
         }
 
         if (AchievementManager.Instance != null)
         {
             AchievementManager.Instance.ClearUserAchievementData();
         }
+
         if (WeeklyTaskManager.Instance != null)
         {
             WeeklyTaskManager.Instance.ClearUIOnLogout();
         }
+
         if (PresetCoursesManager.Instance != null)
         {
             PresetCoursesManager.Instance.ClearUI();
         }
 
+        courseManager.ClearCourses();
+
+        // 最後才清除 PlayerPrefs
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+
+        // 切換面板
         HomePagePanel.SetActive(false);
         ProfilePanel.SetActive(false);
         SettingsPanel.SetActive(false);
-
         SigninPanel.SetActive(true);
         LoginPanel.SetActive(true);
+
+        Debug.Log("登出流程完成");
     }
 
     [System.Obsolete]
@@ -649,9 +737,9 @@ public class APIManager : MonoBehaviour
     }
 
     [System.Serializable]
-    public class CurrentStageResponse
+    public class LatestCourseResponse
     {
-        public bool hasReadyCourse;
+        public bool hasCourse;
         public int course_id;
         public string course_name;
         public string current_stage;
@@ -722,6 +810,7 @@ public class APIManager : MonoBehaviour
         public string rarity;
         public int remaining_coins;
         public int remaining_diamonds;
+        public bool is_new_teacher_card;
     }
 
     public IEnumerator DrawCard(bool isPremium)
@@ -746,6 +835,47 @@ public class APIManager : MonoBehaviour
                 coinsText.text = response.remaining_coins.ToString();
                 diamondsText.text = response.remaining_diamonds.ToString();
 
+                // 如果是新獲得的老師卡片
+                if (response.is_new_teacher_card)
+                {
+                    // 顯示紅點並保存狀態
+                    if (teacherRedDotImage != null)
+                        teacherRedDotImage.gameObject.SetActive(true);
+                    if (teacherRedDotImage2 != null)
+                        teacherRedDotImage2.gameObject.SetActive(true);
+
+                    SaveRedDotState(true);
+
+                    // 確保 TeacherPagePanel 是激活的
+                    if (TeacherPagePanel != null)
+                    {
+                        TeacherPagePanel.SetActive(true);
+                        CanvasGroup canvasGroup = TeacherPagePanel.GetComponent<CanvasGroup>();
+                        if (canvasGroup == null)
+                        {
+                            canvasGroup = TeacherPagePanel.AddComponent<CanvasGroup>();
+                        }
+                        canvasGroup.alpha = 0f;
+                        canvasGroup.blocksRaycasts = false;
+                        canvasGroup.interactable = false;
+                    }
+
+                    // 在背景更新 TeacherPagePanel 的資料
+                    var levelSelector = FindFirstObjectByType<LevelSelector>();
+                    if (levelSelector != null)
+                    {
+                        // 先清理現有卡片
+                        levelSelector.ClearCards();
+                        // 重新加載卡片
+                        levelSelector.LoadUserCards();
+                        Debug.Log("✅ 獲得新卡片，已在背景更新老師頁面");
+                    }
+                    else
+                    {
+                        Debug.LogError("❌ 更新卡片時找不到 LevelSelector 組件");
+                    }
+                }
+
                 // 顯示抽卡結果
                 LotteryManager.Instance.ShowDrawResult(response.card_name, response.rarity);
             }
@@ -753,6 +883,147 @@ public class APIManager : MonoBehaviour
             {
                 Debug.LogError("抽卡失敗：" + request.downloadHandler.text);
             }
+        }
+    }
+
+    [System.Serializable]
+    public class UserCardData
+    {
+        public int card_id;
+        public string name;
+        public string rarity;
+        public bool is_selected;
+    }
+
+    [System.Serializable]
+    private class UserCardsResponse
+    {
+        public List<UserCardData> cards;
+    }
+
+    [System.Serializable]
+    private class SelectCardRequest
+    {
+        public int user_id;
+        public int card_id;
+    }
+
+    [System.Serializable]
+    public class SelectCardResponse
+    {
+        public string message;
+        public int selected_card_id;
+        public bool success;
+    }
+
+    public void GetUserCards(int userId, System.Action<List<UserCardData>> callback)
+    {
+        StartCoroutine(GetUserCardsCoroutine(userId, callback));
+    }
+
+    private IEnumerator GetUserCardsCoroutine(int userId, System.Action<List<UserCardData>> callback)
+    {
+        string url = $"{baseUrl}/user_cards/{userId}";
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                string json = request.downloadHandler.text;
+                UserCardsResponse response = JsonUtility.FromJson<UserCardsResponse>(json);
+                callback?.Invoke(response.cards);
+            }
+            else
+            {
+                Debug.LogError($"獲取用戶卡片失敗：{request.error}");
+                callback?.Invoke(null);
+            }
+        }
+    }
+
+    public IEnumerator SelectTeacherCard(int cardId, System.Action<SelectCardResponse> callback)
+    {
+        int userId = PlayerPrefs.GetInt("UserID");
+        string jsonData = JsonUtility.ToJson(new SelectCardRequest { user_id = userId, card_id = cardId });
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+
+        using (UnityWebRequest request = new UnityWebRequest($"{baseUrl}/select_teacher_card", "POST"))
+        {
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var response = JsonUtility.FromJson<SelectCardResponse>(request.downloadHandler.text);
+                response.success = true;
+                Debug.Log($"✅ 成功選擇卡片 {response.selected_card_id}：{response.message}");
+                callback?.Invoke(response);
+            }
+            else
+            {
+                Debug.LogError($"❌ 選擇卡片失敗：{request.downloadHandler.text}");
+                callback?.Invoke(new SelectCardResponse { success = false });
+            }
+        }
+    }
+
+    public void ShowTeacherPage()
+    {
+        if (TeacherPagePanel != null)
+        {
+            // 確保 TeacherPagePanel 是激活的
+            TeacherPagePanel.SetActive(true);
+
+            CanvasGroup canvasGroup = TeacherPagePanel.GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+            {
+                canvasGroup = TeacherPagePanel.AddComponent<CanvasGroup>();
+            }
+            canvasGroup.alpha = 1f;
+            canvasGroup.blocksRaycasts = true;
+            canvasGroup.interactable = true;
+
+            // 隱藏兩個紅點並保存狀態
+            if (teacherRedDotImage != null)
+                teacherRedDotImage.gameObject.SetActive(false);
+            if (teacherRedDotImage2 != null)
+                teacherRedDotImage2.gameObject.SetActive(false);
+
+            SaveRedDotState(false);
+
+            // 確保卡片是最新的
+            var levelSelector = FindFirstObjectByType<LevelSelector>();
+            if (levelSelector != null)
+            {
+                levelSelector.ClearCards();
+                levelSelector.LoadUserCards();
+                Debug.Log("✅ 顯示老師頁面時已更新卡片");
+            }
+            else
+            {
+                Debug.LogError("❌ 顯示老師頁面時找不到 LevelSelector 組件");
+            }
+        }
+    }
+
+    public void HideTeacherPage()
+    {
+        if (TeacherPagePanel != null)
+        {
+            CanvasGroup canvasGroup = TeacherPagePanel.GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+            {
+                canvasGroup = TeacherPagePanel.AddComponent<CanvasGroup>();
+            }
+            canvasGroup.alpha = 0f;
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.interactable = false;
+            TeacherPagePanel.SetActive(false);
+            Debug.Log("隱藏老師頁面面板");
         }
     }
 }

@@ -21,6 +21,12 @@ public class AchievementManager : MonoBehaviour
     public GameObject courseCompletedPanel;
     public GameObject pointsPanel;
 
+    [Header("成就紅點")]
+    public Image achievementRedDotImage;    // 第一個紅點
+    public Image achievementRedDotImage2;   // 第二個紅點
+
+    private const string ACHIEVEMENT_RED_DOT_STATE_KEY = "AchievementRedDotState";
+
     private void Awake()
     {
         if (Instance == null)
@@ -33,6 +39,24 @@ public class AchievementManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        // 加載紅點狀態
+        LoadRedDotState();
+    }
+
+    private void LoadRedDotState()
+    {
+        bool redDotState = PlayerPrefs.GetInt(ACHIEVEMENT_RED_DOT_STATE_KEY, 0) == 1;
+        if (achievementRedDotImage != null)
+            achievementRedDotImage.gameObject.SetActive(redDotState);
+        if (achievementRedDotImage2 != null)
+            achievementRedDotImage2.gameObject.SetActive(redDotState);
+    }
+
+    private void SaveRedDotState(bool state)
+    {
+        PlayerPrefs.SetInt(ACHIEVEMENT_RED_DOT_STATE_KEY, state ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     // 登入後等待 APIManager 設定 UserID，再初始化成就資料
@@ -100,6 +124,13 @@ public class AchievementManager : MonoBehaviour
                         // 更新該成就的 UI：隱藏遮罩，顯示 Claim 按鈕
                         UnlockAchievementUI(achievement);
                     }
+
+                    // 顯示紅點並保存狀態
+                    if (achievementRedDotImage != null)
+                        achievementRedDotImage.gameObject.SetActive(true);
+                    if (achievementRedDotImage2 != null)
+                        achievementRedDotImage2.gameObject.SetActive(true);
+                    SaveRedDotState(true);
                 }
                 else
                 {
@@ -249,6 +280,28 @@ public class AchievementManager : MonoBehaviour
                 PlayerPrefs.DeleteKey($"AchievementUnlocked_{badgeName}");
                 PlayerPrefs.Save();
                 SetPanelButtons(panel, false, false, true);
+
+                // 檢查是否還有未領取的成就
+                bool hasUnclaimedAchievements = false;
+                string[] achievements = new string[] { "新增一門課程", "完整上完一門課", "學習積分達到 500 分" };
+                foreach (string achievement in achievements)
+                {
+                    if (PlayerPrefs.GetInt($"AchievementUnlocked_{achievement}", 0) == 1)
+                    {
+                        hasUnclaimedAchievements = true;
+                        break;
+                    }
+                }
+
+                // 如果沒有未領取的成就，隱藏紅點
+                if (!hasUnclaimedAchievements)
+                {
+                    if (achievementRedDotImage != null)
+                        achievementRedDotImage.gameObject.SetActive(false);
+                    if (achievementRedDotImage2 != null)
+                        achievementRedDotImage2.gameObject.SetActive(false);
+                    SaveRedDotState(false);
+                }
             }
             else
             {
@@ -320,7 +373,15 @@ public class AchievementManager : MonoBehaviour
             PlayerPrefs.DeleteKey($"AchievementUnlocked_{achievement}");
             PlayerPrefs.DeleteKey($"AchievementClaimed_{achievement}");
         }
+        PlayerPrefs.DeleteKey(ACHIEVEMENT_RED_DOT_STATE_KEY);
         PlayerPrefs.Save();
+
+        // 隱藏紅點
+        if (achievementRedDotImage != null)
+            achievementRedDotImage.gameObject.SetActive(false);
+        if (achievementRedDotImage2 != null)
+            achievementRedDotImage2.gameObject.SetActive(false);
+
         UpdateAllAchievementsUI();
     }
 
@@ -356,6 +417,18 @@ public class AchievementManager : MonoBehaviour
                 Debug.LogError($"❌ 找不到對應的 Panel: {badgeName}");
                 return null;
         }
+    }
+
+    // 新增：顯示成就頁面時隱藏紅點
+    public void ShowAchievementPage()
+    {
+        // 隱藏兩個紅點並保存狀態
+        if (achievementRedDotImage != null)
+            achievementRedDotImage.gameObject.SetActive(false);
+        if (achievementRedDotImage2 != null)
+            achievementRedDotImage2.gameObject.SetActive(false);
+
+        SaveRedDotState(false);
     }
 }
 

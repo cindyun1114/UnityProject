@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using UnityEngine.Networking;
+using System.Text;
 
 public class VRLessonManager : MonoBehaviour
 {
@@ -22,6 +23,9 @@ public class VRLessonManager : MonoBehaviour
     public TMP_Text teacherCommentText;
     public TMP_Text[] studentFeedbackTexts;
     public TMP_Text pointsText;
+
+    [Header("重點回顧")]
+    public TMP_Text reviewText;    // PartTwo 下的 reviewText
 
     [Header("額外 UI 元件")]
     public GameObject continuePanel;  // **繼續上課確認視窗**
@@ -169,45 +173,82 @@ public class VRLessonManager : MonoBehaviour
         public string student2_feedback;
         public string student3_feedback;
         public int earned_points;
+        public string[] good_points;      // 做得好的點
+        public string[] improvement_points; // 需要加強的點
     }
 
     private void UpdateReviewUI(CourseReviewData data)
     {
-        // 更新评分滑块和对应的文字（只显示数字）
+        // 更新評分
         accuracySlider.value = data.accuracy_score;
-        accuracyText.text = data.accuracy_score.ToString();
-
         understandingSlider.value = data.understanding_score;
-        understandingText.text = data.understanding_score.ToString();
-
         expressionSlider.value = data.expression_score;
-        expressionText.text = data.expression_score.ToString();
-
         interactionSlider.value = data.interaction_score;
-        interactionText.text = data.interaction_score.ToString();
 
-        // 更新導師評語
-        if (teacherCommentText != null && !string.IsNullOrEmpty(data.teacher_comment))
+        // 更新評分文字
+        accuracyText.text = $"{data.accuracy_score}%";
+        understandingText.text = $"{data.understanding_score}%";
+        expressionText.text = $"{data.expression_score}%";
+        interactionText.text = $"{data.interaction_score}%";
+
+        // 更新評語
+        studentFeedbackTexts[0].text = data.student1_feedback;
+        studentFeedbackTexts[1].text = data.student2_feedback;
+        studentFeedbackTexts[2].text = data.student3_feedback;
+
+        // 更新積分
+        pointsText.text = $"+{data.earned_points}";
+
+        // 更新重點回顧
+        StringBuilder reviewContent = new StringBuilder();
+
+        // 添加做得好的點
+        if (data.good_points != null && data.good_points.Length > 0)
         {
-            teacherCommentText.text = data.teacher_comment;
+            reviewContent.AppendLine("<color=#4CAF50>✓ 做得好的點：</color>");
+            foreach (var point in data.good_points)
+            {
+                reviewContent.AppendLine($"<color=#4CAF50>✓ {point}</color>");
+            }
+            reviewContent.AppendLine();
         }
 
-        // 更新AI同學回饋
-        if (studentFeedbackTexts != null && studentFeedbackTexts.Length >= 3)
+        // 添加需要加強的點
+        if (data.improvement_points != null && data.improvement_points.Length > 0)
         {
-            if (!string.IsNullOrEmpty(data.student1_feedback))
-                studentFeedbackTexts[0].text = data.student1_feedback;
-            if (!string.IsNullOrEmpty(data.student2_feedback))
-                studentFeedbackTexts[1].text = data.student2_feedback;
-            if (!string.IsNullOrEmpty(data.student3_feedback))
-                studentFeedbackTexts[2].text = data.student3_feedback;
-        }
-        else
-        {
-            Debug.LogError("studentFeedbackTexts not properly set up");
+            reviewContent.AppendLine("<color=#FF9800>! 需要加強的點：</color>");
+            foreach (var point in data.improvement_points)
+            {
+                reviewContent.AppendLine($"<color=#FF9800>! {point}</color>");
+            }
         }
 
-        // 更新学习积分
-        pointsText.text = $"{data.earned_points}";
+        // 更新文字內容
+        reviewText.text = reviewContent.ToString();
+
+        // 計算文字所需的高度
+        float textHeight = reviewText.preferredHeight;
+
+        // 獲取 Image 和 PartTwo 的 RectTransform
+        RectTransform imageRect = reviewText.transform.parent.GetComponent<RectTransform>();
+        RectTransform partTwoRect = imageRect.transform.parent.GetComponent<RectTransform>();
+
+        if (imageRect != null && partTwoRect != null)
+        {
+            // 保存原始的水平位置和大小
+            float originalImageX = imageRect.anchoredPosition.x;
+            float originalPartTwoX = partTwoRect.anchoredPosition.x;
+            float originalImageWidth = imageRect.sizeDelta.x;
+            float originalPartTwoWidth = partTwoRect.sizeDelta.x;
+
+            // 設置高度
+            float newHeight = textHeight + 40f;
+            imageRect.sizeDelta = new Vector2(originalImageWidth, newHeight);
+            partTwoRect.sizeDelta = new Vector2(originalPartTwoWidth, newHeight);
+
+            // 保持原始的水平位置
+            imageRect.anchoredPosition = new Vector2(originalImageX, imageRect.anchoredPosition.y);
+            partTwoRect.anchoredPosition = new Vector2(originalPartTwoX, partTwoRect.anchoredPosition.y);
+        }
     }
 }

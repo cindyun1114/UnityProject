@@ -36,7 +36,7 @@ public class Chat : MonoBehaviour
         Debug.Log("StartMakingToC");
         //StartCoroutine(GenerateContent("根據我上傳的檔案把它做解析，生成目錄並生成給我時請用的JSON的格式。。"));
 
-        StartCoroutine(GenerateContent(@"根據我上傳檔案的內容把自行把它做解析，自行理解內容然後生成目錄，生成給我時請用的JSON的格式。 模板為:
+        StartCoroutine(GenerateContent(@"根據我上傳檔案的內容把自行把它做解析，自行理解內容然後生成目錄，生成給我時請用的JSON的格式不然揍你。 模板為:
                     {
                         ""action"": ""get_chapters"",
                         ""chapters"": [
@@ -46,8 +46,8 @@ public class Chat : MonoBehaviour
                             {""title"": ""AI 未來展望""}...
                         ]
                     }
-
-                    不要生成其他文字，生成目錄Json給我就好，每個title內容的字不要超過60字。 我只要Json目錄，只有一這次要請你生目錄，後面就請依據instruction進行"));
+                    每個title的文字不要超過16個，不然拔你電源
+                    不要生成其他文字，生成目錄JSON給我就好，每個title內容的字不要超過60字。 我只要Json目錄，只有一這次要請你生目錄，後面就請依據instruction進行，請用JSON!!"));
 
     }
 
@@ -60,16 +60,17 @@ public class Chat : MonoBehaviour
 
     public void playerSendMessage()
     {
+        Debug.Log("Sending a message......");
         string message = inputField.text;
         GameObject newMessage = Instantiate(playerMessagePrefab, Content.transform);
         newMessage.GetComponent<Message>().MessageText.text = message;
-        StartCoroutine(SendMessageToChatGPT(message));
-
+        StartCoroutine(SendMessageToChatGPT($@"現在請完全遵守Instruction進行 Phrase1
+        這是使用者的回答{message}"));
     }
 
     public IEnumerator SendMessageToChatGPT(string message)
     {
-        
+
         string jsonData = JsonUtility.ToJson(new messageRequest
         {
             action = "message",
@@ -78,27 +79,27 @@ public class Chat : MonoBehaviour
             thread_id = threadID
         });
 
-        
+
         using (UnityWebRequest request = new UnityWebRequest(apiUrl, "POST"))
         {
-            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData); 
-            request.uploadHandler = new UploadHandlerRaw(bodyRaw); 
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
 
-           
+
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                
+
                 var response = JsonUtility.FromJson<messageResponse>(request.downloadHandler.text);
                 GameObject newMessage = Instantiate(feyndoraMessagePrefab, Content.transform);// ��ܦ^��
                 newMessage.GetComponent<Message>().MessageText.text = response.message;
             }
             else
             {
-               
+
                 GameObject newMessage = Instantiate(feyndoraMessagePrefab, Content.transform);// ��ܦ^��
                 newMessage.GetComponent<Message>().MessageText.text = "Error: " + request.error;
             }
@@ -107,7 +108,7 @@ public class Chat : MonoBehaviour
 
     public IEnumerator GenerateContent(string message)
     {
-        
+
         string jsonData = JsonUtility.ToJson(new messageRequest
         {
             action = "message",
@@ -116,17 +117,17 @@ public class Chat : MonoBehaviour
             thread_id = threadID
         });
 
-    
+
         using (UnityWebRequest request = new UnityWebRequest(apiUrl, "POST"))
         {
-            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData); 
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
 
             yield return request.SendWebRequest();
 
-            
+
 
             if (request.result == UnityWebRequest.Result.Success)
             {
@@ -136,7 +137,7 @@ public class Chat : MonoBehaviour
                 Debug.Log(jsonString);
                 TableOfContents ToC = JsonUtility.FromJson<TableOfContents>(jsonString);
 
-                
+
 
                 foreach (Chapter chapter in ToC.chapters)
                 {
@@ -145,7 +146,7 @@ public class Chat : MonoBehaviour
                     newTab1.GetComponent<NewTap>().TabText.text = chapter.title;
                 }
 
-                
+
                 StartCoroutine(ToCToDB(ToC));
             }
             else
@@ -159,7 +160,7 @@ public class Chat : MonoBehaviour
     {
         ToC.action = "upload_ToC";
 
-        
+
         string jsonData = JsonUtility.ToJson(ToC);
         string modifiedJson = "{\"course_id\":" + course_id + "," + jsonData.Substring(1);
 
@@ -184,7 +185,7 @@ public class Chat : MonoBehaviour
                 Debug.LogError("目錄上傳失敗: " + request.error);
             }
         }
-        
+
     }
 
     string CleanJsonString(string jsonString)

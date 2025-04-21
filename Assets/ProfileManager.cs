@@ -14,6 +14,16 @@ public class ProfileManager : MonoBehaviour
 
     [Header("用戶資料 UI")]
     public Image avatarImage;
+    public Image teacherCardImage;  // 添加老師卡片圖片引用
+
+    [Header("卡片圖片資源")]
+    public Sprite goblinSprite;      // 哥布林
+    public Sprite athenaSprite;      // 雅典娜
+    public Sprite pirateSprite;      // 海盜
+    public Sprite teacherSprite;     // 盛惟老師
+    public Sprite santaSprite;       // 聖誕老公公
+    public Sprite popeSprite;        // 教宗
+
     public TMP_Text usernameText;
     public TMP_Text emailText;
     public TMP_Text totalPointsText;
@@ -50,6 +60,7 @@ public class ProfileManager : MonoBehaviour
     {
         if (!gameObject.activeInHierarchy) return; // 避免 Coroutine 啟動失敗
         StartCoroutine(RefreshAll());
+        UpdateTeacherCard();  // 更新老師卡片
     }
 
     /// <summary>
@@ -75,11 +86,96 @@ public class ProfileManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 更新老師卡片圖片
+    /// </summary>
+    public void UpdateTeacherCard()
+    {
+        if (teacherCardImage == null)
+        {
+            Debug.LogError("Teacher Card Image component not assigned!");
+            return;
+        }
+
+        int userId = PlayerPrefs.GetInt("UserID");
+        APIManager.Instance.GetUserCards(userId, (cards) =>
+        {
+            if (cards != null && cards.Count > 0)
+            {
+                // 尋找被選中的卡片
+                var selectedCard = cards.Find(card => card.is_selected);
+                if (selectedCard != null)
+                {
+                    // 根據卡片名稱設置對應的圖片
+                    Sprite cardSprite = GetTeacherCardSprite(selectedCard.name);
+                    if (cardSprite != null)
+                    {
+                        teacherCardImage.sprite = cardSprite;
+                        Debug.Log($"更新Profile頁面老師卡片為：{selectedCard.name}");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("用戶沒有選中的卡片");
+                    teacherCardImage.sprite = null;
+                }
+            }
+            else
+            {
+                Debug.LogWarning("用戶沒有卡片");
+                teacherCardImage.sprite = null;
+            }
+        });
+    }
+
+    /// <summary>
+    /// 根據卡片名稱獲取對應的Sprite
+    /// </summary>
+    private Sprite GetTeacherCardSprite(string cardName)
+    {
+        Sprite cardSprite = null;
+        switch (cardName)
+        {
+            case "哥布林":
+                cardSprite = goblinSprite;
+                break;
+            case "雅典娜":
+                cardSprite = athenaSprite;
+                break;
+            case "海盜":
+                cardSprite = pirateSprite;
+                break;
+            case "盛惟老師":
+                cardSprite = teacherSprite;
+                break;
+            case "聖誕老公公":
+                cardSprite = santaSprite;
+                break;
+            case "教宗":
+                cardSprite = popeSprite;
+                break;
+            default:
+                Debug.LogError($"未知的卡片名稱：{cardName}");
+                break;
+        }
+
+        if (cardSprite == null)
+        {
+            Debug.LogError($"卡片 {cardName} 的圖片資源未設置");
+        }
+
+        return cardSprite;
+    }
+
+    /// <summary>
     /// 清空 Profile 頁面所有 UI 資料（用於登出時）
     /// </summary>
     public void ClearProfileUI()
     {
         avatarImage.sprite = avatarManager.GetAvatarSprite(1); // 預設頭像
+        if (teacherCardImage != null)
+        {
+            teacherCardImage.sprite = null;  // 清空老師卡片
+        }
         usernameText.text = "";
         emailText.text = "";
         totalPointsText.text = "0";
