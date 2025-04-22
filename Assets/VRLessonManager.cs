@@ -229,26 +229,42 @@ public class VRLessonManager : MonoBehaviour
         // 計算文字所需的高度
         float textHeight = reviewText.preferredHeight;
 
-        // 獲取 Image 和 PartTwo 的 RectTransform
+        // 獲取所有需要的組件
         RectTransform imageRect = reviewText.transform.parent.GetComponent<RectTransform>();
         RectTransform partTwoRect = imageRect.transform.parent.GetComponent<RectTransform>();
+        LayoutElement partTwoLayout = partTwoRect.GetComponent<LayoutElement>();
+
+        if (partTwoLayout == null)
+        {
+            partTwoLayout = partTwoRect.gameObject.AddComponent<LayoutElement>();
+        }
 
         if (imageRect != null && partTwoRect != null)
         {
-            // 保存原始的水平位置和大小
-            float originalImageX = imageRect.anchoredPosition.x;
-            float originalPartTwoX = partTwoRect.anchoredPosition.x;
-            float originalImageWidth = imageRect.sizeDelta.x;
-            float originalPartTwoWidth = partTwoRect.sizeDelta.x;
+            // 設置固定的間距值
+            float topPadding = 40f;      // Image 與 PartTwo 頂部的間距
+            float bottomPadding = 40f;    // Image 與 PartTwo 底部的間距
+            float textPadding = 60f;      // 文字與 Image 邊緣的間距
+            float titleHeight = 60f;      // 標題預留的高度
 
-            // 設置高度
-            float newHeight = textHeight + 40f;
-            imageRect.sizeDelta = new Vector2(originalImageWidth, newHeight);
-            partTwoRect.sizeDelta = new Vector2(originalPartTwoWidth, newHeight);
+            // 1. 計算 Image 需要的高度（加上標題空間）
+            float imageHeight = titleHeight + textHeight + (textPadding * 2);
 
-            // 保持原始的水平位置
-            imageRect.anchoredPosition = new Vector2(originalImageX, imageRect.anchoredPosition.y);
-            partTwoRect.anchoredPosition = new Vector2(originalPartTwoX, partTwoRect.anchoredPosition.y);
+            // 2. 計算 PartTwo 需要的總高度
+            float partTwoHeight = imageHeight + topPadding + bottomPadding;
+
+            // 3. 設置 Image 的大小
+            imageRect.sizeDelta = new Vector2(imageRect.sizeDelta.x, imageHeight);
+
+            // 4. 使用 Layout Element 來控制 PartTwo 的高度
+            partTwoLayout.preferredWidth = partTwoRect.sizeDelta.x;  // 保持原有寬度
+            partTwoLayout.preferredHeight = partTwoHeight;
+
+            // 5. 確保 Text 在 Image 內部正確位置（從標題下方開始）
+            reviewText.rectTransform.anchoredPosition = new Vector2(
+                reviewText.rectTransform.anchoredPosition.x,
+                -(titleHeight + textPadding)  // 從標題下方開始
+            );
         }
     }
 }

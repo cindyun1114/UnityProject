@@ -70,7 +70,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c8d26609751a2c342a058583e2135c61, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -253,7 +253,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 634.1938, y: 916.5557}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4958980894581595056
 CanvasRenderer:
@@ -346,7 +346,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -145.11523}
+  m_AnchoredPosition: {x: 0, y: -258}
   m_SizeDelta: {x: 0, y: -290.2305}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5917130709308020587
@@ -453,13 +453,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardImage: {fileID: 7619478777860997443}
   cardBackImage: {fileID: 6898265910168325246}
-  goblinSprite: {fileID: 21300000, guid: c8d26609751a2c342a058583e2135c61, type: 3}
-  athenaSprite: {fileID: 21300000, guid: 33b399e1d6000b64eb6184025e9213d9, type: 3}
-  pirateSprite: {fileID: 21300000, guid: 66fc8d0d01ad81f46b4cc057ce67446e, type: 3}
-  teacherSprite: {fileID: 21300000, guid: 9ddfdb333e822494e8ba7aa18c33014f, type: 3}
-  santaSprite: {fileID: 21300000, guid: 785857f1434a49446bc52bcdb1f88fe9, type: 3}
-  popeSprite: {fileID: 21300000, guid: 8133eeff3e5ce9f4783059d70b5a45ef, type: 3}
-  cardBackSprite: {fileID: 21300000, guid: 005bfef6443467941a442c9acae9a2f8, type: 3}
+  goblinSprite: {fileID: 21300000, guid: 324fc43feea6c704a97192cbb2d947b4, type: 3}
+  athenaSprite: {fileID: 21300000, guid: d6b5095137802f848ad68a3e773d16ef, type: 3}
+  pirateSprite: {fileID: 21300000, guid: 70b99fed21c16fb4c9be3ce283df5fa7, type: 3}
+  teacherSprite: {fileID: 21300000, guid: 9148cee3400fabd42ba02c7ad843c2a5, type: 3}
+  santaSprite: {fileID: 21300000, guid: a8e15bb294eaf3644aa0a3ddc0558346, type: 3}
+  popeSprite: {fileID: 21300000, guid: 314c6ed84df082942b594898b16faaea, type: 3}
+  cardBackSprite: {fileID: 21300000, guid: be33439c6a65b3a46a39ba88a86abd58, type: 3}
 --- !u!1 &8316019159181233589
 GameObject:
   m_ObjectHideFlags: 0
