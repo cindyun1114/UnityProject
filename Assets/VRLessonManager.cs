@@ -316,7 +316,7 @@ public class VRLessonManager : MonoBehaviour
         studentFeedbackTexts[2].text = data.student3_feedback;
 
         // 更新積分
-        pointsText.text = $"+{data.earned_points}";
+        pointsText.text = $"{data.earned_points}";
 
         // 更新重點回顧
         StringBuilder reviewContent = new StringBuilder();
