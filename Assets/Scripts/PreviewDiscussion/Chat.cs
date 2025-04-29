@@ -36,7 +36,7 @@ public class Chat : MonoBehaviour
         Debug.Log("StartMakingToC");
         //StartCoroutine(GenerateContent("根據我上傳的檔案把它做解析，生成目錄並生成給我時請用的JSON的格式。。"));
 
-        StartCoroutine(GenerateContent(@"根據我上傳檔案的內容把自行把它做解析，自行理解內容然後生成目錄，生成給我時請用的JSON的格式不然揍你。 模板為:
+        StartCoroutine(GenerateContent(@"根據我上傳檔案的內容把自行把它做解析，自行理解內容然後生成目錄，生成給我時請用的JSON的格式不然揍你。 範例模板為:
                     {
                         ""action"": ""get_chapters"",
                         ""chapters"": [

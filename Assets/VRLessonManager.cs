@@ -34,7 +34,13 @@ public class VRLessonManager : MonoBehaviour
     public TMP_Text reviewCreatedAt;  // **複習頁面 - 課程創建時間**
     public Button confirmContinueButton; // **確認繼續按鈕**
 
+    [Header("目錄 UI 元件")]
+    public Transform chapterListContainer; //放章節的List
+    public GameObject chapterPrefab; //章節Prefab
+
     private string baseUrl = "https://feyndora-api.onrender.com"; // Flask API 伺服器
+    private string apiFetchUrl = "https://feynman-server.onrender.com/fetch";
+    public string apiUrl = "https://feynman-server.onrender.com/get_chapters";
     private int selectedCourseId;  // **目前選中的課程 ID**
     private string selectedCourseName; // **目前選中的課程名稱**
     private string selectedCourseCreatedAt; // **目前選中的課程建立時間**
@@ -98,6 +104,8 @@ public class VRLessonManager : MonoBehaviour
 
             reviewPage.SetActive(true);
             StartCoroutine(LoadCourseReview(courseId));  // 加载课程评价数据
+            StartCoroutine(LoadToC(courseId));
+            StartCoroutine(LoadAssistant(courseId));
         }
         else
         {
@@ -161,6 +169,104 @@ public class VRLessonManager : MonoBehaviour
         }
     }
 
+    IEnumerator LoadToC(int courseId)
+    {
+        Debug.Log("抓取目錄中......");
+        string apiUrl = $"{this.apiUrl}?course_id={courseId}&chapter_type={"one_to_one"}";
+
+        using (UnityWebRequest request = UnityWebRequest.Get(apiUrl))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("API Response: " + request.downloadHandler.text);
+                string jsonResponse = "{\"chapters\":" + request.downloadHandler.text + "}";
+                ChapterList chapterList = JsonUtility.FromJson<ChapterList>(jsonResponse);
+
+                if (chapterList == null || chapterList.chapters == null)
+                {
+                    Debug.LogError("Error: Parsed JSON is null. Check API response format.");
+                }
+                
+                DisplayChapters(chapterList.chapters);
+                
+            }
+            else
+            {
+                Debug.LogError("Error fetching chapters: " + request.error);
+            }
+        }
+         Debug.Log("抓取目錄完成");
+    }
+
+    void DisplayChapters(Chapter[] chapters)
+    {
+        if (chapterPrefab == null)
+        {
+            Debug.LogError("Error: chapterPrefab is null!");
+            return;
+        }
+
+        if (chapterListContainer == null)
+        {
+            Debug.LogError("Error: chapterListContainer is null!");
+            return;
+        }
+
+        foreach (Chapter chapter in chapters)
+        {
+            GameObject newChapter = Instantiate(chapterPrefab, chapterListContainer);
+            
+            TMP_Text textComponent = newChapter.GetComponentInChildren<TMP_Text>();
+            if (textComponent == null)
+            {
+                Debug.LogError("Error: TMP_Text component is missing on prefab!");
+                return;
+            }
+
+            textComponent.text = chapter.chapter_name;
+        }
+    }
+
+    public IEnumerator LoadAssistant(int courseId)
+    {
+        Debug.Log("找Assistant和thread...");
+        Debug.Log($"CourseId: {courseId}");
+        PlayerPrefs.SetInt("Course_ID", courseId);
+
+        string jsonData = JsonUtility.ToJson(new fetchRequest
+        {
+            action = "fetch_assistant_and_thread",
+            course_id = courseId,
+            role = "teacher"
+        });
+
+        using (UnityWebRequest request = new UnityWebRequest(apiFetchUrl, "POST"))
+        {
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData); 
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw); 
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var response = JsonUtility.FromJson<fetchResponse>(request.downloadHandler.text);
+                PlayerPrefs.SetString("Assistant1_ID", response.assistant_id);
+                PlayerPrefs.SetString("Thread1_ID", response.thread_id);
+                Debug.Log("assistant_Id and thread_id fetched successfully");
+                Debug.Log("assistant_Id: " + response.assistant_id);
+                Debug.Log("thread_id: " + response.thread_id);
+            }
+            else
+            {
+                Debug.Log("Error: " + request.error);
+            }
+        }
+    }
+
     [System.Serializable]
     private class CourseReviewData
     {
@@ -175,6 +281,19 @@ public class VRLessonManager : MonoBehaviour
         public int earned_points;
         public string[] good_points;      // 做得好的點
         public string[] improvement_points; // 需要加強的點
+    }
+    [System.Serializable]
+    public class Chapter
+    {
+        public int chapter_id;
+        public string chapter_name;
+        public int order_index;
+    }
+
+    [System.Serializable]
+    public class ChapterList
+    {
+        public Chapter[] chapters;
     }
 
     private void UpdateReviewUI(CourseReviewData data)
@@ -267,4 +386,19 @@ public class VRLessonManager : MonoBehaviour
             );
         }
     }
+}
+
+[System.Serializable]
+public class fetchRequest
+{
+    public string action;
+    public int course_id;
+    public string role;
+}
+[System.Serializable]
+public class fetchResponse
+{
+    public string action;
+    public string assistant_id;
+    public string thread_id;
 }
