@@ -3,6 +3,21 @@
   "WorkspaceRootPath": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Desktop\\CindyTEXT.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LevelSelector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\LevelSelector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\PresetCoursesManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\PresetCoursesManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\CourseData.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\CourseData.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\VRLessonManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\VRLessonManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -25,10 +40,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LevelButton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\LevelButton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LevelSelector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\LevelSelector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\SwipeButton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -64,31 +75,28 @@
         },
         {
           "DockedWidth": 1074,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CindyTEXT.txt",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Desktop\\CindyTEXT.txt",
+              "RelativeDocumentMoniker": "..\\..\\..\\Desktop\\CindyTEXT.txt",
+              "ToolTip": "C:\\Users\\Sandy\\Desktop\\CindyTEXT.txt",
+              "RelativeToolTip": "..\\..\\..\\Desktop\\CindyTEXT.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAADIJQAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-04-28T15:59:27.086Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AchievementManager.cs",
-              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\AchievementManager.cs",
-              "RelativeDocumentMoniker": "Assets\\AchievementManager.cs",
-              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\AchievementManager.cs",
-              "RelativeToolTip": "Assets\\AchievementManager.cs",
-              "ViewState": "AgIAAKEBAAAAAAAAAAAgwMkBAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-21T13:43:58.996Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "ProfileManager.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\ProfileManager.cs",
               "RelativeDocumentMoniker": "Assets\\ProfileManager.cs",
@@ -100,7 +108,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 10,
               "Title": "SwipeButton.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\SwipeButton.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\SwipeButton.cs",
@@ -112,7 +120,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 13,
               "Title": "FinishPreview.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\PreviewDiscussion\\FinishPreview.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\PreviewDiscussion\\FinishPreview.cs",
@@ -124,7 +132,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 11,
               "Title": "Chat.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\PreviewDiscussion\\Chat.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\PreviewDiscussion\\Chat.cs",
@@ -136,7 +144,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "LotteryManager.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\LotteryManager.cs",
               "RelativeDocumentMoniker": "Assets\\LotteryManager.cs",
@@ -148,7 +156,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
+              "Title": "LevelSelector.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LevelSelector.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\LevelSelector.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LevelSelector.cs",
+              "RelativeToolTip": "Assets\\Scripts\\LevelSelector.cs",
+              "ViewState": "AgIAABcCAAAAAAAAAAAcwDkCAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-23T13:55:22.108Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "VRLessonManager.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\VRLessonManager.cs",
               "RelativeDocumentMoniker": "Assets\\VRLessonManager.cs",
@@ -156,12 +177,11 @@
               "RelativeToolTip": "Assets\\VRLessonManager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0BAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-26T13:30:41.038Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-26T13:30:41.038Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 8,
               "Title": "APIManager.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\APIManager.cs",
               "RelativeDocumentMoniker": "Assets\\APIManager.cs",
@@ -173,7 +193,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "LevelButton.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LevelButton.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\LevelButton.cs",
@@ -186,18 +206,47 @@
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "LevelSelector.cs",
-              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LevelSelector.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\LevelSelector.cs",
-              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\LevelSelector.cs",
-              "RelativeToolTip": "Assets\\Scripts\\LevelSelector.cs",
-              "ViewState": "AgIAABECAAAAAAAAAAAgwDkCAAABAAAAAAAAAA==",
+              "Title": "AchievementManager.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\AchievementManager.cs",
+              "RelativeDocumentMoniker": "Assets\\AchievementManager.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\AchievementManager.cs",
+              "RelativeToolTip": "Assets\\AchievementManager.cs",
+              "ViewState": "AgIAAKEBAAAAAAAAAAAgwMkBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T13:55:22.108Z"
+              "WhenOpened": "2025-04-21T13:43:58.996Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 2,
+              "Title": "PresetCoursesManager.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\PresetCoursesManager.cs",
+              "RelativeDocumentMoniker": "Assets\\PresetCoursesManager.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\PresetCoursesManager.cs",
+              "RelativeToolTip": "Assets\\PresetCoursesManager.cs",
+              "ViewState": "AgIAABEBAAAAAAAAAIBJwB8BAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-24T16:14:15.939Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CourseData.cs",
+              "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\CourseData.cs",
+              "RelativeDocumentMoniker": "Assets\\CourseData.cs",
+              "ToolTip": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\CourseData.cs",
+              "RelativeToolTip": "Assets\\CourseData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-24T16:15:08.951Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
               "Title": "uploadPDF.cs",
               "DocumentMoniker": "C:\\Users\\Sandy\\Documents\\GitHub\\UnityProject\\Assets\\Scripts\\CreateNewClass\\uploadPDF.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\CreateNewClass\\uploadPDF.cs",
