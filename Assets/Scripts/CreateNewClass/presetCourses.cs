@@ -12,7 +12,7 @@ public class presetCourses : MonoBehaviour
     
     public TMP_Text classNameText;
     public TMP_Text classDateText;
-    public GameObject previewDiscussionPanel;
+    public GameObject previewPagePanel;
     public GameObject coursePagePanel;
 
     [Header("課程參數")]
@@ -67,9 +67,9 @@ public class presetCourses : MonoBehaviour
                 Debug.Log("Assistant ID: " + response.assistant_id_2);
                 Debug.Log("Thread ID: " + response.thread_id_2);
 
-                if (previewDiscussionPanel != null)
+                if (previewPagePanel != null)
                 {
-                    previewDiscussionPanel.SetActive(true);
+                    previewPagePanel.SetActive(true);
                     coursePagePanel.SetActive(false);
                 }
             }
