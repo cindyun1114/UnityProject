@@ -56,6 +56,7 @@ public class uploadPDF : MonoBehaviour
         form.AddBinaryData("file", fileData, fileName, "application/pdf");
         form.AddField("class_name", classNameInputField.text);
         form.AddField("user_id", PlayerPrefs.GetInt("UserID"));
+        form.AddField("course_type", 0);
         Debug.Log("User ID: " + PlayerPrefs.GetInt("UserID"));
         Debug.Log("Class Name: " + classNameInputField.text);
 
