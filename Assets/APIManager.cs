@@ -975,7 +975,7 @@ public class APIManager : MonoBehaviour
     {
         if (TeacherPagePanel != null)
         {
-            // 確保 TeacherPagePanel 是激活的
+            // 先设置面板为激活状态，但暂时保持不可见
             TeacherPagePanel.SetActive(true);
 
             CanvasGroup canvasGroup = TeacherPagePanel.GetComponent<CanvasGroup>();
@@ -983,31 +983,54 @@ public class APIManager : MonoBehaviour
             {
                 canvasGroup = TeacherPagePanel.AddComponent<CanvasGroup>();
             }
-            canvasGroup.alpha = 1f;
-            canvasGroup.blocksRaycasts = true;
-            canvasGroup.interactable = true;
+            canvasGroup.alpha = 0f;
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.interactable = false;
 
-            // 隱藏兩個紅點並保存狀態
+            // 获取 LevelSelector 组件
+            var levelSelector = TeacherPagePanel.GetComponentInChildren<LevelSelector>();
+            if (levelSelector == null)
+            {
+                Debug.LogError("❌ TeacherPagePanel 中找不到 LevelSelector 组件，请检查预制体设置");
+                return;
+            }
+
+            // 开启协程来处理卡片初始化和显示
+            StartCoroutine(InitializeAndShowCards(levelSelector, canvasGroup));
+
+            // 隐藏红点并保存状态
             if (teacherRedDotImage != null)
                 teacherRedDotImage.gameObject.SetActive(false);
             if (teacherRedDotImage2 != null)
                 teacherRedDotImage2.gameObject.SetActive(false);
 
             SaveRedDotState(false);
-
-            // 確保卡片是最新的
-            var levelSelector = FindFirstObjectByType<LevelSelector>();
-            if (levelSelector != null)
-            {
-                levelSelector.ClearCards();
-                levelSelector.LoadUserCards();
-                Debug.Log("✅ 顯示老師頁面時已更新卡片");
-            }
-            else
-            {
-                Debug.LogError("❌ 顯示老師頁面時找不到 LevelSelector 組件");
-            }
         }
+    }
+
+    private IEnumerator InitializeAndShowCards(LevelSelector levelSelector, CanvasGroup canvasGroup)
+    {
+        // 清理现有卡片
+        levelSelector.ClearCards();
+
+        // 等待一帧，确保清理完成
+        yield return null;
+
+        // 加载卡片数据
+        levelSelector.LoadUserCards();
+
+        // 等待一帧，确保卡片加载完成
+        yield return null;
+
+        // 等待额外的一帧，确保所有卡片位置都已经正确计算
+        yield return null;
+
+        // 显示面板
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
+        canvasGroup.interactable = true;
+
+        Debug.Log("✅ 显示老师页面，已完成卡片初始化和显示");
     }
 
     public void HideTeacherPage()

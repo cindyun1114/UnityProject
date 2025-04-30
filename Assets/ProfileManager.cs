@@ -51,6 +51,8 @@ public class ProfileManager : MonoBehaviour
         LoadUserDataFromPrefs();
         // 確保即時刷新數據
         StartCoroutine(RefreshAll());
+        // 確保更新教師卡片
+        UpdateTeacherCard();
     }
 
     /// <summary>

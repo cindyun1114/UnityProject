@@ -90,11 +90,29 @@ public class LevelSelector : MonoBehaviour
                     Debug.Log("用戶目前沒有任何卡片，將顯示所有卡片的背面");
                 }
 
+                // 先確保所有按鈕都被銷毀
+                foreach (var button in levelButtons)
+                {
+                    if (button != null)
+                    {
+                        Destroy(button);
+                    }
+                }
+                levelButtons.Clear();
+
                 // 創建並設置卡片按鈕
                 for (int i = 0; i < levelCount; i++)
                 {
                     GameObject levelButton = Instantiate(levelButtonPrefab, levelGroup);
                     levelButton.name = $"Level_{i}";
+
+                    // 先將按鈕設為不可見
+                    CanvasGroup buttonCanvasGroup = levelButton.GetComponent<CanvasGroup>();
+                    if (buttonCanvasGroup == null)
+                    {
+                        buttonCanvasGroup = levelButton.AddComponent<CanvasGroup>();
+                    }
+                    buttonCanvasGroup.alpha = 0f;
 
                     LevelButton cardButton = levelButton.GetComponent<LevelButton>();
                     if (cardButton == null)
@@ -105,7 +123,7 @@ public class LevelSelector : MonoBehaviour
 
                     cardButton.RegisterLevelSelector(this);
 
-                    // 設置卡片數據（如果該位置有數據則使用數據，否則傳 null）
+                    // 設置卡片數據
                     var cardData = cardDataArray[i];
                     Debug.Log($"位置 {i} 的卡片數據：{(cardData != null ? cardData.name : "未擁有")}");
                     cardButton.SetupCard(cardData);
@@ -116,6 +134,9 @@ public class LevelSelector : MonoBehaviour
                 // 更新按鈕位置
                 UpdateButtonPositions();
 
+                // 等待一幀後再顯示卡片
+                StartCoroutine(ShowCardsWithDelay());
+
                 // 更新 Toggle 按鈕狀態
                 UpdateToggleButtonState();
             });
@@ -123,6 +144,25 @@ public class LevelSelector : MonoBehaviour
         catch (System.Exception e)
         {
             Debug.LogError($"Failed to load user cards: {e.Message}");
+        }
+    }
+
+    private IEnumerator ShowCardsWithDelay()
+    {
+        // 等待一幀確保位置已更新
+        yield return null;
+
+        // 逐個顯示卡片
+        foreach (var button in levelButtons)
+        {
+            if (button != null)
+            {
+                CanvasGroup buttonCanvasGroup = button.GetComponent<CanvasGroup>();
+                if (buttonCanvasGroup != null)
+                {
+                    buttonCanvasGroup.alpha = 1f;
+                }
+            }
         }
     }
 
@@ -218,20 +258,23 @@ public class LevelSelector : MonoBehaviour
     {
         Debug.Log("開始清理卡片數據...");
 
-        // 停止所有動畫
-        DOTween.Kill(levelGroup);
-
-        // 銷毀所有卡片按鈕
+        // 停止所有相关的 DOTween 动画
         foreach (var button in levelButtons)
         {
             if (button != null)
             {
-                Destroy(button);
+                // 停止这个按钮上的所有 DOTween 动画
+                button.transform.DOKill(true);
+                var rectTransform = button.GetComponent<RectTransform>();
+                if (rectTransform != null)
+                {
+                    rectTransform.DOKill(true);
+                }
             }
         }
 
-        // 清空列表
-        levelButtons.Clear();
+        // 等待一帧确保所有动画都已停止
+        StartCoroutine(DestroyButtonsNextFrame());
 
         // 重置角度和排序順序
         currentAngle = 0f;
@@ -268,6 +311,23 @@ public class LevelSelector : MonoBehaviour
         }
 
         Debug.Log("卡片數據清理完成");
+    }
+
+    private IEnumerator DestroyButtonsNextFrame()
+    {
+        yield return null;
+
+        // 现在安全地销毁按钮
+        foreach (var button in levelButtons)
+        {
+            if (button != null)
+            {
+                Destroy(button);
+            }
+        }
+
+        // 清空列表
+        levelButtons.Clear();
     }
 
     public void ReloadCards()
@@ -351,65 +411,59 @@ public class LevelSelector : MonoBehaviour
             float x = Mathf.Sin(angle * Mathf.Deg2Rad) * radius;
             float z = Mathf.Cos(angle * Mathf.Deg2Rad) * radius;
 
-            // 確保 yOffsets 有足夠的元素
             float yOffset = targetIndex < yOffsets.Count ? yOffsets[targetIndex] : 0;
             targetPositions.Add(new Vector3(x, yOffset, z));
             targetYOffsets.Add(yOffset);
 
-            // 確保 sortOrders 有足夠的元素
             int sortOrder = targetIndex < sortOrders.Count ? sortOrders[targetIndex] : 0;
             newSortOrders.Add(sortOrder);
         }
 
         // 更新排序順序
         sortOrders = newSortOrders;
-        for (int i = 0; i < levelButtons.Count; i++)
-        {
-            if (i >= levelButtons.Count || i >= sortOrders.Count) continue;
-
-            Canvas canvas = levelButtons[i].GetComponent<Canvas>();
-            if (canvas != null)
-            {
-                canvas.sortingOrder = sortOrders[i];
-                // 更新透明度和縮放值
-                SetButtonAppearance(levelButtons[i], sortOrders[i]);
-            }
-        }
 
         // 平滑移動並更新Y軸偏移和排序順序
         for (int i = 0; i < levelButtons.Count; i++)
         {
             if (i >= levelButtons.Count || i >= targetPositions.Count) continue;
 
-            RectTransform rectTransform = levelButtons[i].GetComponent<RectTransform>();
+            GameObject button = levelButtons[i];
+            if (button == null) continue;
+
+            RectTransform rectTransform = button.GetComponent<RectTransform>();
             if (rectTransform == null) continue;
 
-            int index = i;
-            // 平滑移動位置
-            rectTransform.DOAnchorPos3D(targetPositions[i], moveDuration).OnComplete(() =>
+            Canvas canvas = button.GetComponent<Canvas>();
+            if (canvas != null)
             {
-                // 更新Y軸偏移
-                if (index < yOffsets.Count)
-                {
-                    yOffsets[index] = targetYOffsets[index];
-                }
-                if (index == levelButtons.Count - 1)
-                {
-                    Debug.Log("完成移動");
-                    // 只重新啟用之前被禁用的按鈕
-                    if (direction > 0)
-                    {
-                        nextLevelButton.interactable = true;
-                    }
-                    else
-                    {
-                        previousLevelButton.interactable = true;
-                    }
+                canvas.sortingOrder = sortOrders[i];
+                SetButtonAppearance(button, sortOrders[i]);
+            }
 
-                    // 更新 Toggle 按鈕狀態
-                    UpdateToggleButtonState();
-                }
-            });
+            int index = i;
+            // 使用 SetEase 来使动画更流畅
+            rectTransform.DOAnchorPos3D(targetPositions[i], moveDuration)
+                .SetEase(DG.Tweening.Ease.OutQuad)
+                .OnComplete(() =>
+                {
+                    if (index < yOffsets.Count && button != null)
+                    {
+                        yOffsets[index] = targetYOffsets[index];
+                    }
+                    if (index == levelButtons.Count - 1)
+                    {
+                        Debug.Log("完成移動");
+                        if (direction > 0 && nextLevelButton != null)
+                        {
+                            nextLevelButton.interactable = true;
+                        }
+                        else if (previousLevelButton != null)
+                        {
+                            previousLevelButton.interactable = true;
+                        }
+                        UpdateToggleButtonState();
+                    }
+                });
         }
 
         // 更新角度
