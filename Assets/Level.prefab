@@ -459,7 +459,7 @@ MonoBehaviour:
   teacherSprite: {fileID: 21300000, guid: 9148cee3400fabd42ba02c7ad843c2a5, type: 3}
   santaSprite: {fileID: 21300000, guid: a8e15bb294eaf3644aa0a3ddc0558346, type: 3}
   popeSprite: {fileID: 21300000, guid: 314c6ed84df082942b594898b16faaea, type: 3}
-  cardBackSprite: {fileID: 21300000, guid: be33439c6a65b3a46a39ba88a86abd58, type: 3}
+  cardBackSprite: {fileID: 21300000, guid: b88bb1745a4e33d43aaf7aad5ca881b6, type: 3}
 --- !u!1 &8316019159181233589
 GameObject:
   m_ObjectHideFlags: 0
