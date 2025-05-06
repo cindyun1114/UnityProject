@@ -60,6 +60,11 @@ public class APIManager : MonoBehaviour
     public Image teacherRedDotImage;    // 第一個紅點
     public Image teacherRedDotImage2;   // 第二個紅點
 
+    [Header("開場動畫/引導 UI")]
+    public GameObject openingPanel;
+    public GameObject openingIntroPanel;
+    public GameObject introPagePanel;
+
     private string baseUrl = "https://feyndora-api.onrender.com";
 
     private const string RED_DOT_STATE_KEY = "TeacherRedDotState";
@@ -118,7 +123,41 @@ public class APIManager : MonoBehaviour
         if (closeSigninPanelButton != null)
             closeSigninPanelButton.onClick.AddListener(CloseSigninPanel);
 
-        ShowCorrectPanel();
+        // 啟動流程
+        if (PlayerPrefs.HasKey("UserID"))
+        {
+            StartCoroutine(ShowOpeningThenHomePage());
+        }
+        else
+        {
+            // 如果沒有用戶登入，播放完整動畫序列
+            StartCoroutine(ShowOpeningIntroSequence());
+        }
+    }
+
+    private IEnumerator ShowOpeningThenHomePage()
+    {
+        // 隱藏其他面板
+        if (SigninPanel != null) SigninPanel.SetActive(false);
+        if (LoginPanel != null) LoginPanel.SetActive(false);
+        if (HomePagePanel != null) HomePagePanel.SetActive(false);
+        if (openingIntroPanel != null) openingIntroPanel.SetActive(false);
+        if (introPagePanel != null) introPagePanel.SetActive(false);
+
+        // 預加載 ProfilePagePanel
+        if (ProfilePanel != null) ProfilePanel.SetActive(true);
+        yield return null; // 等一幀，確保 ProfileManager.OnEnable 執行
+        if (ProfilePanel != null) ProfilePanel.SetActive(false);
+
+        // 顯示 OpeningPanel
+        if (openingPanel != null) openingPanel.SetActive(true);
+
+        // 等待資料加載完成
+        yield return StartCoroutine(RefreshAllData());
+
+        // 資料加載完畢後直接切換到主頁
+        if (openingPanel != null) openingPanel.SetActive(false);
+        if (HomePagePanel != null) HomePagePanel.SetActive(true);
     }
 
     void ShowCorrectPanel()
@@ -135,9 +174,8 @@ public class APIManager : MonoBehaviour
         }
         else
         {
-            SigninPanel.SetActive(true);
-            LoginPanel.SetActive(false);
-            HomePagePanel.SetActive(false);
+            // 如果沒有用戶登入，播放完整動畫序列
+            StartCoroutine(ShowOpeningIntroSequence());
         }
     }
 
@@ -178,6 +216,13 @@ public class APIManager : MonoBehaviour
         if (WeeklyTaskManager.Instance != null)
         {
             WeeklyTaskManager.Instance.RefreshTasks();
+        }
+
+        // 刷新排行榜
+        if (RankingManager.Instance != null)
+        {
+            RankingManager.Instance.ResetLogoutState();  // 重置登出狀態
+            RankingManager.Instance.FetchRanking();
         }
     }
 
@@ -397,55 +442,56 @@ public class APIManager : MonoBehaviour
     public void Logout()
     {
         Debug.Log("開始登出流程...");
-
-        // 先清理卡片選擇器
-        var levelSelector = FindFirstObjectByType<LevelSelector>();
-        if (levelSelector != null)
-        {
-            levelSelector.ClearCards();
-            Debug.Log("已清理卡片選擇器");
-        }
-
-        // 清理其他 UI 和數據
-        if (ProfileManager.Instance != null)
-        {
-            ProfileManager.Instance.ClearProfileUI();
-        }
-
-        if (RankingManager.Instance != null)
-        {
-            RankingManager.Instance.ClearAllUI();
-        }
-
-        if (AchievementManager.Instance != null)
-        {
-            AchievementManager.Instance.ClearUserAchievementData();
-        }
-
-        if (WeeklyTaskManager.Instance != null)
-        {
-            WeeklyTaskManager.Instance.ClearUIOnLogout();
-        }
-
-        if (PresetCoursesManager.Instance != null)
-        {
-            PresetCoursesManager.Instance.ClearUI();
-        }
-
+        // 隱藏所有主頁面
+        if (HomePagePanel != null) HomePagePanel.SetActive(false);
+        if (ProfilePanel != null) ProfilePanel.SetActive(false);
+        if (SettingsPanel != null) SettingsPanel.SetActive(false);
+        if (SigninPanel != null) SigninPanel.SetActive(false);
+        if (LoginPanel != null) LoginPanel.SetActive(false);
+        if (openingPanel != null) openingPanel.SetActive(false);
+        if (openingIntroPanel != null) openingIntroPanel.SetActive(false);
+        if (introPagePanel != null) introPagePanel.SetActive(false);
+        // 通知所有 Manager 清理
+        if (ProfileManager.Instance != null) ProfileManager.Instance.ClearProfileUI();
+        if (RankingManager.Instance != null) RankingManager.Instance.ClearAllUI();
+        if (AchievementManager.Instance != null) AchievementManager.Instance.ClearUserAchievementData();
+        if (WeeklyTaskManager.Instance != null) WeeklyTaskManager.Instance.ClearUIOnLogout();
+        if (PresetCoursesManager.Instance != null) PresetCoursesManager.Instance.ClearUI();
         courseManager.ClearCourses();
+        // 開始顯示登出動畫流程
+        StartCoroutine(LogoutShowPanels());
+        Debug.Log("登出流程完成");
+    }
 
-        // 最後才清除 PlayerPrefs
+    private IEnumerator LogoutShowPanels()
+    {
+        // 初始化狀態：確保其他面板都是隱藏的
+        if (SigninPanel != null) SigninPanel.SetActive(false);
+        if (LoginPanel != null) LoginPanel.SetActive(false);
+
+        // 開始動畫序列
+        if (openingPanel != null)
+        {
+            openingPanel.SetActive(true);
+            yield return new WaitForSeconds(1.0f);  // 從 0.5f 改為 1.0f
+            openingPanel.SetActive(false);
+        }
+
+        if (openingIntroPanel != null)
+        {
+            openingIntroPanel.SetActive(true);
+            yield return new WaitForSeconds(1.5f);  // 從 1.0f 改為 1.5f
+            openingIntroPanel.SetActive(false);
+        }
+
+        if (introPagePanel != null)
+        {
+            introPagePanel.SetActive(true);
+        }
+
+        // 清空 PlayerPrefs
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
-
-        // 切換面板
-        HomePagePanel.SetActive(false);
-        ProfilePanel.SetActive(false);
-        SettingsPanel.SetActive(false);
-        SigninPanel.SetActive(true);
-        LoginPanel.SetActive(true);
-
-        Debug.Log("登出流程完成");
     }
 
     [System.Obsolete]
@@ -1047,6 +1093,34 @@ public class APIManager : MonoBehaviour
             canvasGroup.interactable = false;
             TeacherPagePanel.SetActive(false);
             Debug.Log("隱藏老師頁面面板");
+        }
+    }
+
+    private IEnumerator ShowOpeningIntroSequence()
+    {
+        // 初始化狀態：確保其他面板都是隱藏的
+        if (SigninPanel != null) SigninPanel.SetActive(false);
+        if (LoginPanel != null) LoginPanel.SetActive(false);
+        if (HomePagePanel != null) HomePagePanel.SetActive(false);
+
+        // 開始動畫序列
+        if (openingPanel != null)
+        {
+            openingPanel.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            openingPanel.SetActive(false);
+        }
+
+        if (openingIntroPanel != null)
+        {
+            openingIntroPanel.SetActive(true);
+            yield return new WaitForSeconds(1.0f);
+            openingIntroPanel.SetActive(false);
+        }
+
+        if (introPagePanel != null)
+        {
+            introPagePanel.SetActive(true);
         }
     }
 }

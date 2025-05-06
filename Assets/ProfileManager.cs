@@ -47,6 +47,8 @@ public class ProfileManager : MonoBehaviour
 
     private void OnEnable()
     {
+        if (!PlayerPrefs.HasKey("UserID")) return; // 未登入不執行
+        Debug.Log("ProfileManager OnEnable called!");
         // 頁面啟動時從本地資料更新 UI（避免不必要的 API 呼叫）
         LoadUserDataFromPrefs();
         // 確保即時刷新數據

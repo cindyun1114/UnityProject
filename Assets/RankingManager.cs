@@ -28,6 +28,7 @@ public class RankingManager : MonoBehaviour
     private string baseUrl = "https://feyndora-api.onrender.com";  // Flask API
     private bool isWeekly = false;  // 預設是日排名
     private int currentUserId;
+    private bool isLoggedOut = false;  // 新增：登出狀態標記
 
     private void Awake()
     {
@@ -45,8 +46,8 @@ public class RankingManager : MonoBehaviour
     // 每次RankingManager啟動時刷新資料
     private void OnEnable()
     {
-        // 確保已經有登入用戶
-        if (PlayerPrefs.HasKey("UserID"))
+        // 確保已經有登入用戶且不是登出狀態
+        if (PlayerPrefs.HasKey("UserID") && !isLoggedOut)
         {
             currentUserId = PlayerPrefs.GetInt("UserID");
             // 呼叫一次FetchRanking()刷新資料
@@ -59,7 +60,7 @@ public class RankingManager : MonoBehaviour
         currentUserId = PlayerPrefs.GetInt("UserID", 0);
         if (currentUserId == 0)
         {
-            Debug.LogError("❌ UserID未設定");
+            // 未登入時不顯示錯誤，直接 return
             return;
         }
 
@@ -79,6 +80,11 @@ public class RankingManager : MonoBehaviour
 
     public void FetchRanking()
     {
+        if (isLoggedOut || currentUserId <= 0)
+        {
+            Debug.Log("🔹 登出狀態或無效用戶ID，跳過排行榜刷新");
+            return;
+        }
         StartCoroutine(isWeekly ? FetchWeeklyRanking() : FetchDailyRanking());
     }
 
@@ -191,6 +197,9 @@ public class RankingManager : MonoBehaviour
 
     public void ClearAllUI()
     {
+        isLoggedOut = true;  // 設置登出狀態
+        currentUserId = 0;   // 重置用戶ID
+
         // 清空前10名的所有 UI 項目
         foreach (var item in rankItems)
         {
@@ -202,6 +211,14 @@ public class RankingManager : MonoBehaviour
         userNameText.text = "";
         userPointsText.text = "";
         userAvatarImage.sprite = avatarManager.GetAvatarSprite(1); // 預設頭像
+    }
+
+    // 新增：重置登出狀態的方法
+    public void ResetLogoutState()
+    {
+        isLoggedOut = false;
+        currentUserId = PlayerPrefs.GetInt("UserID", 0);
+        Debug.Log("✅ 重置排行榜登出狀態");
     }
 
     [System.Serializable]

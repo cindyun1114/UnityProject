@@ -113,6 +113,12 @@ public class SettingsManager : MonoBehaviour
                 {
                     APIManager.Instance.StartCoroutine(APIManager.Instance.FetchUserData());
                 }
+
+                // 更新排行榜的數據
+                if (RankingManager.Instance != null)
+                {
+                    RankingManager.Instance.FetchRanking();
+                }
             }
             else
             {

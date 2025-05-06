@@ -97,6 +97,12 @@ public class AvatarManager : MonoBehaviour
                 PlayerPrefs.Save();
 
                 UpdateHomePageAvatar(avatarId);  // 立即刷新主頁頭像
+
+                // 更新排行榜的頭像
+                if (RankingManager.Instance != null)
+                {
+                    RankingManager.Instance.FetchRanking();
+                }
             }
             else
             {
