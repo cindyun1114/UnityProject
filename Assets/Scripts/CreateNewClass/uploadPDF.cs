@@ -51,6 +51,7 @@ public class uploadPDF : MonoBehaviour
             {
                 Debug.Log("Selected PDF: " + path);
                 StartCoroutine(UploadFile(path, "pdf", classNameInputFieldPDF.text));
+                classNameInputFieldPDF.text = "";
             }
         }, new string[] { "application/pdf" });
     }
@@ -66,10 +67,11 @@ public class uploadPDF : MonoBehaviour
             {
                 Debug.Log("Selected PDF: " + path);
                 StartCoroutine(UploadFile(path, "ppt", classNameInputFieldPPT.text));
+                classNameInputFieldPPT.text = "";
             }
         }, new string[] {
-             ".ppt", // .ppt
-        ".pptx" // .pptx
+             ".pptx", // .ppt
+        ".ppt" // .pptx
          });
     }
 
@@ -113,6 +115,7 @@ public class uploadPDF : MonoBehaviour
                 {
                     previewPagePanel.SetActive(true);
                     updatePagePanel.SetActive(false);
+                    previewPagePanel.GetComponent<Chat>().InitPreviewPagePanel();
                 }
             }
             else
@@ -134,6 +137,7 @@ public class uploadPDF : MonoBehaviour
         form.AddField("course_type", -1);
         form.AddField("course_format", "Text");
         form.AddField("course_context", uploadTextInputField.text);
+        uploadTextInputField.text = "";
         Debug.Log("User ID: " + PlayerPrefs.GetInt("UserID"));
         Debug.Log("Class Name: " + "文字課程");
 
@@ -160,6 +164,7 @@ public class uploadPDF : MonoBehaviour
                 {
                     previewPagePanel.SetActive(true);
                     updatePagePanel.SetActive(false);
+                    previewPagePanel.GetComponent<Chat>().InitPreviewPagePanel();
                 }
             }
             else

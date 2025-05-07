@@ -26,6 +26,29 @@ public class Chat : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    public void InitPreviewPagePanel()
+    {
+        // 1. 清除舊訊息
+        foreach (Transform child in Content.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Transform child in ToCSecondMenu_1.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         assistantID = PlayerPrefs.GetString("Assistant1_ID");
         threadID = PlayerPrefs.GetString("Thread1_ID");
         course_id = PlayerPrefs.GetInt("Course_ID");
@@ -53,12 +76,6 @@ public class Chat : MonoBehaviour
 
     }
 
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void playerSendMessage()
     {

@@ -73,6 +73,7 @@ public class presetCourses : MonoBehaviour
                 {
                     previewPagePanel.SetActive(true);
                     coursePagePanel.SetActive(false);
+                    previewPagePanel.GetComponent<Chat>().InitPreviewPagePanel();
                 }
             }
             else
