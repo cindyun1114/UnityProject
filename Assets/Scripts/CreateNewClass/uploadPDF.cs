@@ -45,7 +45,7 @@ public class uploadPDF : MonoBehaviour
         if (NativeFilePicker.IsFilePickerBusy())
             return;
 
-        NativeFilePicker.Permission permission = NativeFilePicker.PickFile((path) =>
+        NativeFilePicker.PickFile((path) =>
         {
             if (path != null)
             {
@@ -61,7 +61,7 @@ public class uploadPDF : MonoBehaviour
         if (NativeFilePicker.IsFilePickerBusy())
             return;
 
-        NativeFilePicker.Permission permission = NativeFilePicker.PickFile((path) =>
+        NativeFilePicker.PickFile((path) =>
         {
             if (path != null)
             {
