@@ -456,9 +456,9 @@ MonoBehaviour:
   goblinSprite: {fileID: 21300000, guid: 324fc43feea6c704a97192cbb2d947b4, type: 3}
   athenaSprite: {fileID: 21300000, guid: d6b5095137802f848ad68a3e773d16ef, type: 3}
   pirateSprite: {fileID: 21300000, guid: 70b99fed21c16fb4c9be3ce283df5fa7, type: 3}
-  teacherSprite: {fileID: 21300000, guid: 9148cee3400fabd42ba02c7ad843c2a5, type: 3}
+  teacherSprite: {fileID: 21300000, guid: 8a95ba353b7b2be41ba90e6409994a17, type: 3}
   santaSprite: {fileID: 21300000, guid: a8e15bb294eaf3644aa0a3ddc0558346, type: 3}
-  popeSprite: {fileID: 21300000, guid: 314c6ed84df082942b594898b16faaea, type: 3}
+  popeSprite: {fileID: 21300000, guid: 614b923610e09274bbaf21a2496f868c, type: 3}
   cardBackSprite: {fileID: 21300000, guid: b88bb1745a4e33d43aaf7aad5ca881b6, type: 3}
 --- !u!1 &8316019159181233589
 GameObject:
