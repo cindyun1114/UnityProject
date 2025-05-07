@@ -29,7 +29,7 @@ public class VRLessonManager : MonoBehaviour
 
     [Header("額外 UI 元件")]
     public GameObject continuePanel;  // **繼續上課確認視窗**
-    public GameObject reviewPage;     // **複習頁面**
+    public GameObject reviewPagePanel;     // **複習頁面**
     public TMP_Text reviewCourseName; // **複習頁面 - 課程名稱**
     public TMP_Text reviewCreatedAt;  // **複習頁面 - 課程創建時間**
     public Button confirmContinueButton; // **確認繼續按鈕**
@@ -101,8 +101,8 @@ public class VRLessonManager : MonoBehaviour
             {
                 reviewCreatedAt.text = createdAt;  // 如果解析失敗，顯示原始時間
             }
-
-            reviewPage.SetActive(true);
+            reviewPagePanel.GetComponent<reviewChat>().InitReviewPagePanel();
+            reviewPagePanel.SetActive(true);
             StartCoroutine(LoadCourseReview(courseId));  // 加载课程评价数据
             StartCoroutine(LoadToC(courseId));
             StartCoroutine(LoadAssistant(courseId));

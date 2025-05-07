@@ -26,12 +26,6 @@ public class reviewChat : MonoBehaviour
     void Start()
     {
 
-
-        GameObject welcomeMessage1 = Instantiate(feyndoraMessagePrefab, Content.transform);
-        welcomeMessage1.GetComponent<Message>().MessageText.text = "嗨! 這裡是複習空間";
-        GameObject welcomeMessage2 = Instantiate(feyndoraMessagePrefab, Content.transform);
-        welcomeMessage2.GetComponent<Message>().MessageText.text = "複習過程中遇到問題，歡迎向我提問";
-
         //StartCoroutine(InitializeReviewChat(course_id));
     }
 
@@ -40,6 +34,26 @@ public class reviewChat : MonoBehaviour
     {
 
     }
+
+    public void InitReviewPagePanel()
+    {
+        // 1. 清除舊訊息
+        foreach (Transform child in Content.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Transform child in ToCSecondMenu_1.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        GameObject welcomeMessage1 = Instantiate(feyndoraMessagePrefab, Content.transform);
+        welcomeMessage1.GetComponent<Message>().MessageText.text = "嗨! 這裡是複習空間";
+        GameObject welcomeMessage2 = Instantiate(feyndoraMessagePrefab, Content.transform);
+        welcomeMessage2.GetComponent<Message>().MessageText.text = "複習過程中遇到問題，歡迎向我提問";
+    }
+
 
     public void playerSendMessage()
     {
