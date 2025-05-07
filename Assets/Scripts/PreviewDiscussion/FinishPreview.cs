@@ -6,6 +6,10 @@ using TMPro;
 
 public class FinishPreview : MonoBehaviour
 {
+    public GameObject VRPagePanel;
+    public GameObject PreviewPagePanel;
+    public GameObject HomePagePanel;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -22,6 +26,14 @@ public class FinishPreview : MonoBehaviour
     {
         Debug.Log("Activate VR for course: " + PlayerPrefs.GetInt("Course_ID"));
         StartCoroutine(MarkCourseTeacherReady(PlayerPrefs.GetInt("Course_ID"), PlayerPrefs.GetInt("UserID")));
+    }
+
+    public void FinishVRBackToMain()
+    {
+        Debug.Log(("Finish VR back to HomePagePanel."));
+        VRPagePanel.SetActive(false);
+        PreviewPagePanel.SetActive(false);
+        HomePagePanel.SetActive(true);
     }
 
     IEnumerator MarkCourseTeacherReady(int courseId, int userId)

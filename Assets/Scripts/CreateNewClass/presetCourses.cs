@@ -9,11 +9,13 @@ using TMPro;
 public class presetCourses : MonoBehaviour
 {
     private string apiUrl = "https://feynman-server.onrender.com";
-    
+
     public TMP_Text classNameText;
     public TMP_Text classDateText;
     public GameObject previewPagePanel;
     public GameObject coursePagePanel;
+
+    public GameObject loadingPagePanel;
 
     [Header("課程參數")]
     public string courseName;
@@ -21,13 +23,13 @@ public class presetCourses : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void startPresetCourse()
@@ -38,7 +40,7 @@ public class presetCourses : MonoBehaviour
 
     IEnumerator UploadPresetCourse()
     {
-
+        loadingPagePanel.SetActive(true);
         classNameText.text = courseName;
         classDateText.text = DateTime.Now.ToString("yyyy-MM-dd");
 

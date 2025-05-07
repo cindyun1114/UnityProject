@@ -10,26 +10,37 @@ public class uploadPDF : MonoBehaviour
 {
     private string apiUrl = "https://feynman-server.onrender.com";
 
-    public TMP_InputField classNameInputField;
+    public TMP_InputField classNameInputFieldPDF;
+    public TMP_InputField classNameInputFieldPPT;
     public TMP_Text classNameText;
     public TMP_Text classDateText;
-    public GameObject previewDiscussionPanel;
+    public GameObject previewPagePanel;
     public GameObject updatePagePanel;
 
+    public TMP_InputField uploadTextInputField;
+
+    public GameObject loadingPagePanel;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void OpenFileBrowser()
+    public void triggerUploadText()
+    {
+        print("Starting a course with text uploaded.");
+        StartCoroutine(UploadText());
+    }
+
+
+    public void triggerUploadPDF()
     {
         if (NativeFilePicker.IsFilePickerBusy())
             return;
@@ -39,26 +50,46 @@ public class uploadPDF : MonoBehaviour
             if (path != null)
             {
                 Debug.Log("Selected PDF: " + path);
-                StartCoroutine(UploadPDF(path));
+                StartCoroutine(UploadFile(path, "pdf", classNameInputFieldPDF.text));
             }
         }, new string[] { "application/pdf" });
     }
 
-    IEnumerator UploadPDF(string filePath)
+    public void triggerUploadPPT()
     {
+        if (NativeFilePicker.IsFilePickerBusy())
+            return;
+
+        NativeFilePicker.Permission permission = NativeFilePicker.PickFile((path) =>
+        {
+            if (path != null)
+            {
+                Debug.Log("Selected PDF: " + path);
+                StartCoroutine(UploadFile(path, "ppt", classNameInputFieldPPT.text));
+            }
+        }, new string[] {
+             ".ppt", // .ppt
+        ".pptx" // .pptx
+         });
+    }
+
+    IEnumerator UploadFile(string filePath, string course_format, string class_name)
+    {
+        loadingPagePanel.SetActive(true);
         string fileName = Uri.EscapeDataString(Path.GetFileName(filePath));
 
-        classNameText.text = classNameInputField.text;
+        classNameText.text = class_name;
         classDateText.text = DateTime.Now.ToString("yyyy-MM-dd");
 
-        byte[] fileData = File.ReadAllBytes(filePath);  
+        byte[] fileData = File.ReadAllBytes(filePath);
         WWWForm form = new WWWForm();
         form.AddBinaryData("file", fileData, fileName, "application/pdf");
-        form.AddField("class_name", classNameInputField.text);
+        form.AddField("class_name", class_name);
         form.AddField("user_id", PlayerPrefs.GetInt("UserID"));
         form.AddField("course_type", 0);
+        form.AddField("course_format", course_format);
         Debug.Log("User ID: " + PlayerPrefs.GetInt("UserID"));
-        Debug.Log("Class Name: " + classNameInputField.text);
+        Debug.Log("Class Name: " + class_name);
 
         using (UnityWebRequest request = UnityWebRequest.Post(apiUrl + "/create", form))
         {
@@ -78,9 +109,9 @@ public class uploadPDF : MonoBehaviour
                 Debug.Log("Assistant ID: " + response.assistant_id_2);
                 Debug.Log("Thread ID: " + response.thread_id_2);
 
-                if (previewDiscussionPanel != null)
+                if (previewPagePanel != null)
                 {
-                    previewDiscussionPanel.SetActive(true);
+                    previewPagePanel.SetActive(true);
                     updatePagePanel.SetActive(false);
                 }
             }
@@ -90,7 +121,56 @@ public class uploadPDF : MonoBehaviour
             }
         }
     }
-   
+
+    IEnumerator UploadText()
+    {
+        loadingPagePanel.SetActive(true);
+
+        classDateText.text = DateTime.Now.ToString("yyyy-MM-dd");
+
+        WWWForm form = new WWWForm();
+        form.AddField("class_name", "文字課程");
+        form.AddField("user_id", PlayerPrefs.GetInt("UserID"));
+        form.AddField("course_type", -1);
+        form.AddField("course_format", "Text");
+        form.AddField("course_context", uploadTextInputField.text);
+        Debug.Log("User ID: " + PlayerPrefs.GetInt("UserID"));
+        Debug.Log("Class Name: " + "文字課程");
+
+        using (UnityWebRequest request = UnityWebRequest.Post(apiUrl + "/create", form))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var response = JsonUtility.FromJson<newAssistantCreateResponse>(request.downloadHandler.text);
+                PlayerPrefs.SetInt("Course_ID", response.course_id);
+                PlayerPrefs.SetString("Assistant1_ID", response.assistant_id_1);
+                PlayerPrefs.SetString("Assistant2_ID", response.assistant_id_2);
+                PlayerPrefs.SetString("Thread1_ID", response.thread_id_1);
+                PlayerPrefs.SetString("Thread2_ID", response.thread_id_2);
+
+                Debug.Log("Upload Success: " + request.downloadHandler.text);
+                Debug.Log("Assistant ID: " + response.assistant_id_1);
+                Debug.Log("Thread ID: " + response.thread_id_1);
+                Debug.Log("Assistant ID: " + response.assistant_id_2);
+                Debug.Log("Thread ID: " + response.thread_id_2);
+
+                if (previewPagePanel != null)
+                {
+                    previewPagePanel.SetActive(true);
+                    updatePagePanel.SetActive(false);
+                }
+            }
+            else
+            {
+                Debug.LogError("Upload Failed: " + request.error);
+            }
+        }
+    }
+
+
+
 }
 
 [System.Serializable]//�o�����O �i�ǦC�ƪ�

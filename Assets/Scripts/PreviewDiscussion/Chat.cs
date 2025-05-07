@@ -16,6 +16,8 @@ public class Chat : MonoBehaviour
     public GameObject ToCSecondMenu_1;
     public GameObject ToCTabPrefab;
 
+    public GameObject loadingPagePanel;
+
 
     private string assistantID;
     private string threadID;
@@ -55,13 +57,14 @@ public class Chat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void playerSendMessage()
     {
         Debug.Log("Sending a message......");
         string message = inputField.text;
+        inputField.text = "";
         GameObject newMessage = Instantiate(playerMessagePrefab, Content.transform);
         newMessage.GetComponent<Message>().MessageText.text = message;
         StartCoroutine(SendMessageToChatGPT($@"現在請完全遵守Instruction進行 Phrase1
@@ -186,6 +189,7 @@ public class Chat : MonoBehaviour
             }
         }
 
+        loadingPagePanel.SetActive(false);
     }
 
     string CleanJsonString(string jsonString)

@@ -25,7 +25,7 @@ public class reviewChat : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
 
         GameObject welcomeMessage1 = Instantiate(feyndoraMessagePrefab, Content.transform);
         welcomeMessage1.GetComponent<Message>().MessageText.text = "嗨! 這裡是複習空間";
@@ -38,12 +38,13 @@ public class reviewChat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void playerSendMessage()
     {
         string message = inputField.text;
+        inputField.text = "";
         GameObject newMessage = Instantiate(playerMessagePrefab, Content.transform);
         newMessage.GetComponent<Message>().MessageText.text = message;
         StartCoroutine(SendMessageToChatGPT($"{message}"));
@@ -96,11 +97,11 @@ public class reviewChat : MonoBehaviour
     //     course_id = PlayerPrefs.GetInt("Course_ID");
     //     assistantID = PlayerPrefs.GetString("Assistant1_ID");
     //     threadID = PlayerPrefs.GetString("Thread1_ID");
-        
+
     //     Debug.Log("ReviewChat 拿到 CourseID: " + course_id);
     //     Debug.Log("ReviewChat 拿到 assistantID: " + assistantID);
     //     Debug.Log("ReviewChat 拿到 threadID: " + threadID);
-        
+
 
     //     //    這裡你就可以繼續做下一步，比如打開聊天室畫面
     // }
