@@ -45,6 +45,12 @@ public class uploadPDF : MonoBehaviour
         if (NativeFilePicker.IsFilePickerBusy())
             return;
 
+        string[] allowedTypes = new string[]
+        {
+            "public.pdf",                          // PDF for iOS
+            "com.adobe.pdf"                        // PDF for other platforms
+        };
+
         NativeFilePicker.PickFile((path) =>
         {
             if (path != null)
@@ -53,7 +59,7 @@ public class uploadPDF : MonoBehaviour
                 StartCoroutine(UploadFile(path, "pdf", classNameInputFieldPDF.text));
                 classNameInputFieldPDF.text = "";
             }
-        }, new string[] { "application/pdf" });
+        }, allowedTypes);
     }
 
     public void triggerUploadPPT()
@@ -61,18 +67,23 @@ public class uploadPDF : MonoBehaviour
         if (NativeFilePicker.IsFilePickerBusy())
             return;
 
+        string[] allowedTypes = new string[]
+        {
+            "com.microsoft.powerpoint.ppt",           // PPT for iOS
+            "org.openxmlformats.presentationml.presentation", // PPTX for iOS
+            ".ppt",                                  // PPT for other platforms
+            ".pptx"                                  // PPTX for other platforms
+        };
+
         NativeFilePicker.PickFile((path) =>
         {
             if (path != null)
             {
-                Debug.Log("Selected PDF: " + path);
+                Debug.Log("Selected PPT: " + path);
                 StartCoroutine(UploadFile(path, "ppt", classNameInputFieldPPT.text));
                 classNameInputFieldPPT.text = "";
             }
-        }, new string[] {
-             ".pptx", // .ppt
-        ".ppt" // .pptx
-         });
+        }, allowedTypes);
     }
 
     IEnumerator UploadFile(string filePath, string course_format, string class_name)

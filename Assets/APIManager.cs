@@ -144,13 +144,20 @@ public class APIManager : MonoBehaviour
         if (openingIntroPanel != null) openingIntroPanel.SetActive(false);
         if (introPagePanel != null) introPagePanel.SetActive(false);
 
-        // 預加載 ProfilePagePanel
-        if (ProfilePanel != null) ProfilePanel.SetActive(true);
-        yield return null; // 等一幀，確保 ProfileManager.OnEnable 執行
-        if (ProfilePanel != null) ProfilePanel.SetActive(false);
-
         // 顯示 OpeningPanel
         if (openingPanel != null) openingPanel.SetActive(true);
+
+        // 預先加載 ProfilePagePanel 但放在螢幕外
+        if (ProfilePanel != null)
+        {
+            ProfilePanel.SetActive(true);
+            RectTransform rectTransform = ProfilePanel.GetComponent<RectTransform>();
+            if (rectTransform != null)
+            {
+                // 將面板移到螢幕外
+                rectTransform.anchoredPosition = new Vector2(2000f, 0f);
+            }
+        }
 
         // 等待資料加載完成
         yield return StartCoroutine(RefreshAllData());
@@ -158,6 +165,17 @@ public class APIManager : MonoBehaviour
         // 資料加載完畢後直接切換到主頁
         if (openingPanel != null) openingPanel.SetActive(false);
         if (HomePagePanel != null) HomePagePanel.SetActive(true);
+
+        // 將 ProfilePagePanel 移回原位但保持隱藏
+        if (ProfilePanel != null)
+        {
+            RectTransform rectTransform = ProfilePanel.GetComponent<RectTransform>();
+            if (rectTransform != null)
+            {
+                rectTransform.anchoredPosition = Vector2.zero;
+            }
+            ProfilePanel.SetActive(false);
+        }
     }
 
     void ShowCorrectPanel()
@@ -179,7 +197,6 @@ public class APIManager : MonoBehaviour
         }
     }
 
-    // 一次刷新：用戶資料、進度與課程列表，同時通知 ProfileManager 更新，再檢查簽到狀態
     public IEnumerator RefreshAllData()
     {
         yield return StartCoroutine(FetchUserData());
@@ -207,7 +224,10 @@ public class APIManager : MonoBehaviour
         yield return StartCoroutine(courseManager.LoadCourses());
 
         // 呼叫 ProfileManager 更新最新數據
-        ProfileManager.Instance?.RefreshProfile();
+        if (ProfileManager.Instance != null)
+        {
+            ProfileManager.Instance.RefreshProfile();
+        }
 
         // 檢查簽到狀態
         yield return StartCoroutine(CheckSigninStatus());
@@ -522,6 +542,13 @@ public class APIManager : MonoBehaviour
 
                 // 刷新用戶資料（獎勵數值）
                 yield return StartCoroutine(FetchUserData());
+
+                // 新增：更新任務進度
+                if (WeeklyTaskManager.Instance != null)
+                {
+                    WeeklyTaskManager.Instance.RefreshTasks();
+                    Debug.Log("✅ 簽到後已更新任務進度");
+                }
             }
             else
             {

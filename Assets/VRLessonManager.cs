@@ -29,7 +29,7 @@ public class VRLessonManager : MonoBehaviour
 
     [Header("額外 UI 元件")]
     public GameObject continuePanel;  // **繼續上課確認視窗**
-    public GameObject reviewPagePanel;     // **複習頁面**
+    public GameObject reviewPage;     // **複習頁面**
     public TMP_Text reviewCourseName; // **複習頁面 - 課程名稱**
     public TMP_Text reviewCreatedAt;  // **複習頁面 - 課程創建時間**
     public Button confirmContinueButton; // **確認繼續按鈕**
@@ -101,8 +101,8 @@ public class VRLessonManager : MonoBehaviour
             {
                 reviewCreatedAt.text = createdAt;  // 如果解析失敗，顯示原始時間
             }
-            reviewPagePanel.GetComponent<reviewChat>().InitReviewPagePanel();
-            reviewPagePanel.SetActive(true);
+
+            reviewPage.SetActive(true);
             StartCoroutine(LoadCourseReview(courseId));  // 加载课程评价数据
             StartCoroutine(LoadToC(courseId));
             StartCoroutine(LoadAssistant(courseId));
@@ -188,16 +188,16 @@ public class VRLessonManager : MonoBehaviour
                 {
                     Debug.LogError("Error: Parsed JSON is null. Check API response format.");
                 }
-                
+
                 DisplayChapters(chapterList.chapters);
-                
+
             }
             else
             {
                 Debug.LogError("Error fetching chapters: " + request.error);
             }
         }
-         Debug.Log("抓取目錄完成");
+        Debug.Log("抓取目錄完成");
     }
 
     void DisplayChapters(Chapter[] chapters)
@@ -217,7 +217,7 @@ public class VRLessonManager : MonoBehaviour
         foreach (Chapter chapter in chapters)
         {
             GameObject newChapter = Instantiate(chapterPrefab, chapterListContainer);
-            
+
             TMP_Text textComponent = newChapter.GetComponentInChildren<TMP_Text>();
             if (textComponent == null)
             {
@@ -244,8 +244,8 @@ public class VRLessonManager : MonoBehaviour
 
         using (UnityWebRequest request = new UnityWebRequest(apiFetchUrl, "POST"))
         {
-            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData); 
-            request.uploadHandler = new UploadHandlerRaw(bodyRaw); 
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
 
@@ -324,10 +324,10 @@ public class VRLessonManager : MonoBehaviour
         // 添加做得好的點
         if (data.good_points != null && data.good_points.Length > 0)
         {
-            reviewContent.AppendLine("<color=#4CAF50>✓ 做得好的點：</color>");
+            reviewContent.AppendLine("<color=#4CAF50>做得好的點：</color>");
             foreach (var point in data.good_points)
             {
-                reviewContent.AppendLine($"<color=#4CAF50>✓ {point}</color>");
+                reviewContent.AppendLine($"<color=#4CAF50>{point}</color>");
             }
             reviewContent.AppendLine();
         }
@@ -335,10 +335,10 @@ public class VRLessonManager : MonoBehaviour
         // 添加需要加強的點
         if (data.improvement_points != null && data.improvement_points.Length > 0)
         {
-            reviewContent.AppendLine("<color=#FF9800>! 需要加強的點：</color>");
+            reviewContent.AppendLine("<color=#FF9800>需要加強的點：</color>");
             foreach (var point in data.improvement_points)
             {
-                reviewContent.AppendLine($"<color=#FF9800>! {point}</color>");
+                reviewContent.AppendLine($"<color=#FF9800>{point}</color>");
             }
         }
 

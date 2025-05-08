@@ -17,7 +17,7 @@ public class CourseManager : MonoBehaviour
     [Header("課程圖標")]
     public Sprite pdfIconSprite;
     public Sprite textIconSprite;
-    public Sprite videoIconSprite;
+    public Sprite pptIconSprite;  // 改為 ppt 圖標
     public Sprite defaultIconSprite;
 
     private string baseUrl = "https://feyndora-api.onrender.com"; // Flask API 伺服器
@@ -154,8 +154,8 @@ public class CourseManager : MonoBehaviour
                     case "text":
                         courseIcon.sprite = textIconSprite;
                         break;
-                    case "video":
-                        courseIcon.sprite = videoIconSprite;
+                    case "ppt":  // 改為 ppt
+                        courseIcon.sprite = pptIconSprite;  // 使用 ppt 圖標
                         break;
                     default:
                         courseIcon.sprite = defaultIconSprite;
