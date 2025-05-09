@@ -24,7 +24,6 @@ public class reviewPageWebView : MonoBehaviour
         if (webViewObject == null)
         {
             webViewObject = (new GameObject("WebViewObject")).AddComponent<WebViewObject>();
-            webViewObject.Init();
 
             // 取得 panel 在螢幕的四個角的座標
             Vector3[] corners = new Vector3[4];
@@ -36,11 +35,10 @@ public class reviewPageWebView : MonoBehaviour
             float right = Screen.width - corners[2].x;
             float bottom = corners[0].y;
 
-
-
+            webViewObject.Init();
             webViewObject.LoadURL("https://docs.google.com/gview?embedded=true&url=https://res.cloudinary.com/dni1rb4zi/raw/upload/v1746721184/feyndora/discrete_math_ch1.pdf");
             //AndroidManifest.xml 要加<uses-permission android:name="android.permission.INTERNET" />
-            webViewObject.SetMargins((int)left, (int)top - 200, (int)right, (int)bottom); // 調整到 panel 對應位置
+            webViewObject.SetMargins((int)left, (int)top + 250, (int)right, (int)bottom); // 調整到 panel 對應位置
             webViewObject.SetVisibility(true);
         }
         else
