@@ -30,6 +30,8 @@ public class VRLessonManager : MonoBehaviour
     [Header("額外 UI 元件")]
     public GameObject continuePanel;  // **繼續上課確認視窗**
     public GameObject reviewPagePanel;     // **複習頁面**
+
+    public GameObject loadingPagePanel;
     public TMP_Text reviewCourseName; // **複習頁面 - 課程名稱**
     public TMP_Text reviewCreatedAt;  // **複習頁面 - 課程創建時間**
     public Button confirmContinueButton; // **確認繼續按鈕**
@@ -91,6 +93,7 @@ public class VRLessonManager : MonoBehaviour
 
         if (progress >= 100)
         {
+            loadingPagePanel.SetActive(true);
             // **✅ 進度 100%，顯示複習頁**
             reviewCourseName.text = courseName;
 
@@ -110,10 +113,12 @@ public class VRLessonManager : MonoBehaviour
                 reviewChatScript.InitReviewPagePanel();
                 Debug.Log("Cleaning ReviewPagePanel...");
             }
-            reviewPagePanel.SetActive(true);
+
             StartCoroutine(LoadCourseReview(courseId));  // 加载课程评价数据
             StartCoroutine(LoadToC(courseId));
             StartCoroutine(LoadAssistant(courseId));
+
+            reviewPagePanel.SetActive(true);
         }
         else
         {
@@ -235,6 +240,8 @@ public class VRLessonManager : MonoBehaviour
 
             textComponent.text = chapter.chapter_name;
         }
+
+        loadingPagePanel.SetActive(false);
     }
 
     public IEnumerator LoadAssistant(int courseId)
