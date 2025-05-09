@@ -19,7 +19,8 @@ public class reviewPageWebView : MonoBehaviour
 
     public void ShowWebView()
     {
-        filePanel.SetActive(true); // 顯示 UI 介面
+        // filePanel.SetActive(true); // 顯示 UI 介面
+        Debug.Log("Open WebView");
         if (webViewObject == null)
         {
             webViewObject = (new GameObject("WebViewObject")).AddComponent<WebViewObject>();
@@ -50,7 +51,8 @@ public class reviewPageWebView : MonoBehaviour
 
     public void HideWebView()
     {
-        filePanel.SetActive(false); // 關掉 UI Panel
+        Debug.Log("Close WebView");
+        //filePanel.SetActive(false); // 關掉 UI Panel
         if (webViewObject != null)
         {
             webViewObject.SetVisibility(false);
