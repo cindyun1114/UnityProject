@@ -48,7 +48,8 @@ public class uploadPDF : MonoBehaviour
         string[] allowedTypes = new string[]
         {
             "public.pdf",                          // PDF for iOS
-            "com.adobe.pdf"                        // PDF for other platforms
+            "com.adobe.pdf",                      // PDF for other platforms
+            "application/pdf"                    // MIME type for PDF on Android
         };
 
         NativeFilePicker.PickFile((path) =>

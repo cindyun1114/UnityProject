@@ -24,7 +24,6 @@ public class previewPageWebView : MonoBehaviour
         if (webViewObject == null)
         {
             webViewObject = (new GameObject("WebViewObject")).AddComponent<WebViewObject>();
-            webViewObject.Init();
 
             // 取得 panel 在螢幕的四個角的座標
             Vector3[] corners = new Vector3[4];
@@ -36,11 +35,10 @@ public class previewPageWebView : MonoBehaviour
             float right = Screen.width - corners[2].x;
             float bottom = corners[0].y;
 
-
-
+            webViewObject.Init();
             webViewObject.LoadURL("https://docs.google.com/gview?embedded=true&url=https://res.cloudinary.com/dni1rb4zi/raw/upload/v1746721184/feyndora/discrete_math_ch1.pdf");
             //AndroidManifest.xml 要加<uses-permission android:name="android.permission.INTERNET" />
-            webViewObject.SetMargins((int)left, (int)top - 200, (int)right, (int)bottom + 300); // 調整到 panel 對應位置
+            webViewObject.SetMargins((int)left, (int)top + 130, (int)right, (int)bottom + 230); // 調整到 panel 對應位置
             webViewObject.SetVisibility(true);
         }
         else
@@ -57,5 +55,22 @@ public class previewPageWebView : MonoBehaviour
         {
             webViewObject.SetVisibility(false);
         }
+    }
+
+    public void ToCToFilePage()
+    {
+        Debug.Log("Show WebView");
+        if(filePanel.activeInHierarchy)
+        {
+            webViewObject.SetVisibility(true);
+        }
+        
+    }
+
+    public void DestoryWebView()
+    {
+        Debug.Log("Destory WebView");
+        Destroy(webViewObject.gameObject);  // 完全刪掉
+        webViewObject = null;               // 清掉變數引用（可選但好習慣）
     }
 }

@@ -38,7 +38,7 @@ public class reviewPageWebView : MonoBehaviour
             webViewObject.Init();
             webViewObject.LoadURL("https://docs.google.com/gview?embedded=true&url=https://res.cloudinary.com/dni1rb4zi/raw/upload/v1746721184/feyndora/discrete_math_ch1.pdf");
             //AndroidManifest.xml 要加<uses-permission android:name="android.permission.INTERNET" />
-            webViewObject.SetMargins((int)left, (int)top + 250, (int)right, (int)bottom); // 調整到 panel 對應位置
+            webViewObject.SetMargins((int)left, (int)top + 233, (int)right, (int)bottom); // 調整到 panel 對應位置
             webViewObject.SetVisibility(true);
         }
         else
@@ -57,5 +57,21 @@ public class reviewPageWebView : MonoBehaviour
         }
     }
 
+    public void ToCToFilePage()
+    {
+        Debug.Log("Show WebView");
+        if(filePanel.activeInHierarchy)
+        {
+            webViewObject.SetVisibility(true);
+        }
+        
+    }
+
+    public void DestoryWebView()
+    {
+        Debug.Log("Destory WebView");
+        Destroy(webViewObject.gameObject);  // 完全刪掉
+        webViewObject = null;               // 清掉變數引用（可選但好習慣）
+    }
 
 }
