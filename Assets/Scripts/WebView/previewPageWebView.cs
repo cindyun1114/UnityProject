@@ -5,6 +5,7 @@ public class previewPageWebView : MonoBehaviour
     public GameObject filePanel; // 指到你的 UI Panel
     public RectTransform filePanelRect;
     private WebViewObject webViewObject;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,7 +21,8 @@ public class previewPageWebView : MonoBehaviour
     public void ShowWebView()
     {
         // filePanel.SetActive(true); // 顯示 UI 介面
-        Debug.Log("Open WebView");
+        string url = PlayerPrefs.GetString("Cloud_Link");
+        Debug.Log("Open WebView: " + url);
         if (webViewObject == null)
         {
             webViewObject = (new GameObject("WebViewObject")).AddComponent<WebViewObject>();
@@ -36,7 +38,7 @@ public class previewPageWebView : MonoBehaviour
             float bottom = corners[0].y;
 
             webViewObject.Init();
-            webViewObject.LoadURL("https://docs.google.com/gview?embedded=true&url=https://res.cloudinary.com/dni1rb4zi/raw/upload/v1746721184/feyndora/discrete_math_ch1.pdf");
+            webViewObject.LoadURL("https://docs.google.com/gview?embedded=true&url=" + url);
             //AndroidManifest.xml 要加<uses-permission android:name="android.permission.INTERNET" />
             webViewObject.SetMargins((int)left, (int)top + 130, (int)right, (int)bottom + 230); // 調整到 panel 對應位置
             webViewObject.SetVisibility(true);
@@ -60,11 +62,11 @@ public class previewPageWebView : MonoBehaviour
     public void ToCToFilePage()
     {
         Debug.Log("Show WebView");
-        if(filePanel.activeInHierarchy)
+        if (filePanel.activeInHierarchy)
         {
             webViewObject.SetVisibility(true);
         }
-        
+
     }
 
     public void DestoryWebView()

@@ -117,11 +117,14 @@ public class uploadPDF : MonoBehaviour
                 PlayerPrefs.SetString("Assistant2_ID", response.assistant_id_2);
                 PlayerPrefs.SetString("Thread1_ID", response.thread_id_1);
                 PlayerPrefs.SetString("Thread2_ID", response.thread_id_2);
+                PlayerPrefs.SetString("Cloud_Link", response.cloud_link);
+
                 Debug.Log("Upload Success: " + request.downloadHandler.text);
                 Debug.Log("Assistant ID: " + response.assistant_id_1);
                 Debug.Log("Thread ID: " + response.thread_id_1);
                 Debug.Log("Assistant ID: " + response.assistant_id_2);
                 Debug.Log("Thread ID: " + response.thread_id_2);
+                Debug.Log("Cloud_Link: " + response.cloud_link);
 
                 if (previewPagePanel != null)
                 {
@@ -199,4 +202,6 @@ public class newAssistantCreateResponse
     public string thread_id_1;
     public string assistant_id_2;
     public string thread_id_2;
+    public string cloud_link;
 }
+

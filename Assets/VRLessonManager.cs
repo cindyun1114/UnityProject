@@ -45,6 +45,8 @@ public class VRLessonManager : MonoBehaviour
     private string baseUrl = "https://feyndora-api.onrender.com"; // Flask API 伺服器
     private string apiFetchUrl = "https://feynman-server.onrender.com/fetch";
     public string apiUrl = "https://feynman-server.onrender.com/get_chapters";
+
+    public string apiFetchCloudLink = "https://feynman-server.onrender.com/get_cloud_link";
     private int selectedCourseId;  // **目前選中的課程 ID**
     private string selectedCourseName; // **目前選中的課程名稱**
     private string selectedCourseCreatedAt; // **目前選中的課程建立時間**
@@ -117,6 +119,7 @@ public class VRLessonManager : MonoBehaviour
             StartCoroutine(LoadCourseReview(courseId));  // 加载课程评价数据
             StartCoroutine(LoadToC(courseId));
             StartCoroutine(LoadAssistant(courseId));
+            StartCoroutine(LoadCloudLink(courseId));
 
             reviewPagePanel.SetActive(true);
         }
@@ -282,6 +285,39 @@ public class VRLessonManager : MonoBehaviour
         }
     }
 
+    public IEnumerator LoadCloudLink(int courseId)
+    {
+        Debug.Log("找Cloud Url...");
+
+        string jsonData = JsonUtility.ToJson(new fetchRequest
+        {
+            action = "get_cloud",
+            course_id = courseId,
+        });
+
+        using (UnityWebRequest request = new UnityWebRequest(apiFetchCloudLink, "POST"))
+        {
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var response = JsonUtility.FromJson<fetchCloudLink>(request.downloadHandler.text);
+                PlayerPrefs.SetString("Cloud_Link", response.cloud_link);
+                Debug.Log("assistant_Id and thread_id fetched successfully");
+                Debug.Log("Fetched Cloud_Link: " + response.cloud_link);
+            }
+            else
+            {
+                Debug.Log("Error: " + request.error);
+            }
+        }
+    }
+
     [System.Serializable]
     private class CourseReviewData
     {
@@ -416,4 +452,11 @@ public class fetchResponse
     public string action;
     public string assistant_id;
     public string thread_id;
+}
+
+[System.Serializable]
+public class fetchCloudLink
+{
+    public string action;
+    public string cloud_link;
 }
