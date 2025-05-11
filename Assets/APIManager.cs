@@ -323,18 +323,16 @@ public class APIManager : MonoBehaviour
 
                 welcomeText.text = "你好, " + jsonResponse.username;
 
-                // 先激活 TeacherPagePanel 但保持不可見
+                // 先激活 TeacherPagePanel 但移到視窗外
                 if (TeacherPagePanel != null)
                 {
                     TeacherPagePanel.SetActive(true);
-                    CanvasGroup canvasGroup = TeacherPagePanel.GetComponent<CanvasGroup>();
-                    if (canvasGroup == null)
+                    RectTransform teacherRectTransform = TeacherPagePanel.GetComponent<RectTransform>();
+                    if (teacherRectTransform != null)
                     {
-                        canvasGroup = TeacherPagePanel.AddComponent<CanvasGroup>();
+                        // 將面板移到螢幕外
+                        teacherRectTransform.anchoredPosition = new Vector2(2000f, 0f);
                     }
-                    canvasGroup.alpha = 0f;
-                    canvasGroup.blocksRaycasts = false;
-                    canvasGroup.interactable = false;
 
                     // 確保 LevelSelector 被正確初始化
                     var levelSelector = FindFirstObjectByType<LevelSelector>();
@@ -1048,17 +1046,15 @@ public class APIManager : MonoBehaviour
     {
         if (TeacherPagePanel != null)
         {
-            // 先设置面板为激活状态，但暂时保持不可见
+            // 先设置面板为激活状态
             TeacherPagePanel.SetActive(true);
 
-            CanvasGroup canvasGroup = TeacherPagePanel.GetComponent<CanvasGroup>();
-            if (canvasGroup == null)
+            // 將面板移回原位
+            RectTransform teacherRectTransform = TeacherPagePanel.GetComponent<RectTransform>();
+            if (teacherRectTransform != null)
             {
-                canvasGroup = TeacherPagePanel.AddComponent<CanvasGroup>();
+                teacherRectTransform.anchoredPosition = Vector2.zero;
             }
-            canvasGroup.alpha = 0f;
-            canvasGroup.blocksRaycasts = false;
-            canvasGroup.interactable = false;
 
             // 获取 LevelSelector 组件
             var levelSelector = TeacherPagePanel.GetComponentInChildren<LevelSelector>();
@@ -1069,7 +1065,7 @@ public class APIManager : MonoBehaviour
             }
 
             // 开启协程来处理卡片初始化和显示
-            StartCoroutine(InitializeAndShowCards(levelSelector, canvasGroup));
+            StartCoroutine(InitializeAndShowCards(levelSelector));
 
             // 隐藏红点并保存状态
             if (teacherRedDotImage != null)
@@ -1081,7 +1077,7 @@ public class APIManager : MonoBehaviour
         }
     }
 
-    private IEnumerator InitializeAndShowCards(LevelSelector levelSelector, CanvasGroup canvasGroup)
+    private IEnumerator InitializeAndShowCards(LevelSelector levelSelector)
     {
         // 清理现有卡片
         levelSelector.ClearCards();
@@ -1099,9 +1095,7 @@ public class APIManager : MonoBehaviour
         yield return null;
 
         // 显示面板
-        canvasGroup.alpha = 1f;
-        canvasGroup.blocksRaycasts = true;
-        canvasGroup.interactable = true;
+        TeacherPagePanel.SetActive(true);
 
         Debug.Log("✅ 显示老师页面，已完成卡片初始化和显示");
     }
@@ -1110,14 +1104,6 @@ public class APIManager : MonoBehaviour
     {
         if (TeacherPagePanel != null)
         {
-            CanvasGroup canvasGroup = TeacherPagePanel.GetComponent<CanvasGroup>();
-            if (canvasGroup == null)
-            {
-                canvasGroup = TeacherPagePanel.AddComponent<CanvasGroup>();
-            }
-            canvasGroup.alpha = 0f;
-            canvasGroup.blocksRaycasts = false;
-            canvasGroup.interactable = false;
             TeacherPagePanel.SetActive(false);
             Debug.Log("隱藏老師頁面面板");
         }
