@@ -71,6 +71,7 @@ public class APIManager : MonoBehaviour
 
     public AudioSource teacherPageAudioSource; // Inspector 指定
     public float musicFadeInDuration = 2f;    // 音樂漸進秒數
+    public float maxMusicVolume = 0.3f;       // 最大音量設定（0.0 到 1.0）
 
     private Coroutine fadeInCoroutine;
 
@@ -1195,9 +1196,9 @@ public class APIManager : MonoBehaviour
         while (timer < musicFadeInDuration)
         {
             timer += Time.deltaTime;
-            teacherPageAudioSource.volume = Mathf.Lerp(0f, 1f, timer / musicFadeInDuration);
+            teacherPageAudioSource.volume = Mathf.Lerp(0f, maxMusicVolume, timer / musicFadeInDuration);
             yield return null;
         }
-        teacherPageAudioSource.volume = 1f;
+        teacherPageAudioSource.volume = maxMusicVolume;
     }
 }
