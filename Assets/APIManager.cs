@@ -69,6 +69,11 @@ public class APIManager : MonoBehaviour
 
     private const string RED_DOT_STATE_KEY = "TeacherRedDotState";
 
+    public AudioSource teacherPageAudioSource; // Inspector 指定
+    public float musicFadeInDuration = 2f;    // 音樂漸進秒數
+
+    private Coroutine fadeInCoroutine;
+
     private void Awake()
     {
         if (Instance == null)
@@ -323,16 +328,15 @@ public class APIManager : MonoBehaviour
 
                 welcomeText.text = "你好, " + jsonResponse.username;
 
-                // 先激活 TeacherPagePanel 但移到視窗外
+                // 登入時移出去初始化 TeacherPagePanel 時加上靜音
                 if (TeacherPagePanel != null)
                 {
                     TeacherPagePanel.SetActive(true);
-                    RectTransform teacherRectTransform = TeacherPagePanel.GetComponent<RectTransform>();
-                    if (teacherRectTransform != null)
-                    {
-                        // 將面板移到螢幕外
-                        teacherRectTransform.anchoredPosition = new Vector2(2000f, 0f);
-                    }
+                    RectTransform rectTransform = TeacherPagePanel.GetComponent<RectTransform>();
+                    if (rectTransform != null)
+                        rectTransform.anchoredPosition = new Vector2(2000f, 0f); // 螢幕外
+                    if (teacherPageAudioSource != null)
+                        teacherPageAudioSource.mute = true; // 靜音
 
                     // 確保 LevelSelector 被正確初始化
                     var levelSelector = FindFirstObjectByType<LevelSelector>();
@@ -1046,26 +1050,50 @@ public class APIManager : MonoBehaviour
     {
         if (TeacherPagePanel != null)
         {
-            // 先设置面板为激活状态
             TeacherPagePanel.SetActive(true);
 
-            // 將面板移回原位
-            RectTransform teacherRectTransform = TeacherPagePanel.GetComponent<RectTransform>();
-            if (teacherRectTransform != null)
+            // 強制把面板移回螢幕中央
+            RectTransform rect = TeacherPagePanel.GetComponent<RectTransform>();
+            if (rect != null)
             {
-                teacherRectTransform.anchoredPosition = Vector2.zero;
+                rect.anchoredPosition = Vector2.zero;
+                rect.localScale = Vector3.one; // 順便確保縮放正常
             }
 
-            // 获取 LevelSelector 组件
+            // 強制還原 CanvasGroup 狀態
+            CanvasGroup cg = TeacherPagePanel.GetComponent<CanvasGroup>();
+            if (cg != null)
+            {
+                cg.alpha = 1f;
+                cg.interactable = true;
+                cg.blocksRaycasts = true;
+            }
+
+            // 只在第一次打開時載入卡片，或是當有新卡片時才更新
             var levelSelector = TeacherPagePanel.GetComponentInChildren<LevelSelector>();
-            if (levelSelector == null)
+            if (levelSelector != null)
             {
-                Debug.LogError("❌ TeacherPagePanel 中找不到 LevelSelector 组件，请检查预制体设置");
-                return;
-            }
+                // 檢查是否需要更新卡片
+                bool needUpdate = false;
 
-            // 开启协程来处理卡片初始化和显示
-            StartCoroutine(InitializeAndShowCards(levelSelector));
+                // 如果有紅點，表示有新卡片
+                if (teacherRedDotImage != null && teacherRedDotImage.gameObject.activeSelf)
+                {
+                    needUpdate = true;
+                }
+
+                // 如果卡片還沒載入過
+                if (levelSelector.GetCurrentBottomIndex() == -1)
+                {
+                    needUpdate = true;
+                }
+
+                if (needUpdate)
+                {
+                    levelSelector.ClearCards();
+                    levelSelector.LoadUserCards();
+                }
+            }
 
             // 隐藏红点并保存状态
             if (teacherRedDotImage != null)
@@ -1135,5 +1163,41 @@ public class APIManager : MonoBehaviour
         {
             introPagePanel.SetActive(true);
         }
+    }
+
+    public void OnUserOpenTeacherPage()
+    {
+        if (TeacherPagePanel != null)
+        {
+            TeacherPagePanel.SetActive(true);
+            RectTransform rectTransform = TeacherPagePanel.GetComponent<RectTransform>();
+            if (rectTransform != null)
+                rectTransform.anchoredPosition = Vector2.zero; // 回到螢幕中央
+        }
+        if (teacherPageAudioSource != null)
+        {
+            teacherPageAudioSource.mute = false; // 取消靜音
+            teacherPageAudioSource.loop = true;
+            teacherPageAudioSource.Stop();
+            teacherPageAudioSource.volume = 0f;
+            teacherPageAudioSource.Play();
+
+            if (fadeInCoroutine != null)
+                StopCoroutine(fadeInCoroutine);
+            fadeInCoroutine = StartCoroutine(FadeInMusic());
+        }
+        ShowTeacherPage();
+    }
+
+    private IEnumerator FadeInMusic()
+    {
+        float timer = 0f;
+        while (timer < musicFadeInDuration)
+        {
+            timer += Time.deltaTime;
+            teacherPageAudioSource.volume = Mathf.Lerp(0f, 1f, timer / musicFadeInDuration);
+            yield return null;
+        }
+        teacherPageAudioSource.volume = 1f;
     }
 }

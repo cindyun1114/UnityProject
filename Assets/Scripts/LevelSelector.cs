@@ -559,9 +559,18 @@ public class LevelSelector : MonoBehaviour
         int bottomIndex = sortOrders.IndexOf(sortOrders.Count / 2);
         if (bottomIndex >= 0 && bottomIndex < levelButtons.Count)
         {
-            return int.Parse(levelButtons[bottomIndex].name);
+            string buttonName = levelButtons[bottomIndex].name;
+            // 從 "Level_X" 格式中提取數字
+            if (buttonName.StartsWith("Level_"))
+            {
+                string numberStr = buttonName.Substring("Level_".Length);
+                if (int.TryParse(numberStr, out int result))
+                {
+                    return result;
+                }
+            }
         }
-        return -1; // 返回-1表示无效索引
+        return -1;
     }
 
     // 處理卡片選中事件

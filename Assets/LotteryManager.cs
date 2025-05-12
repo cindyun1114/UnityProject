@@ -142,7 +142,7 @@ public class LotteryManager : MonoBehaviour
         // 重置卡片的位置、縮放和旋轉
         resultCardImage.rectTransform.localScale = Vector3.zero;
         resultCardImage.rectTransform.localRotation = Quaternion.identity;
-        resultCardImage.rectTransform.anchoredPosition = new Vector2(0, -100);
+        resultCardImage.rectTransform.anchoredPosition = new Vector2(0, -200); // 初始位置往下移一點
 
         // 創建動畫序列
         Sequence sequence = DOTween.Sequence();
@@ -150,9 +150,9 @@ public class LotteryManager : MonoBehaviour
         float rotationDuration = 0.6f;  // 旋轉動畫總時間
         float switchImageTime = rotationDuration * 0.5f;  // 在旋轉到一半時切換圖片
 
-        // 卡片從下方彈出並旋轉
+        // 卡片從下方彈出並旋轉，目標位置往上移一點
         sequence.Append(resultCardImage.rectTransform.DOScale(1f, 0.4f).SetEase(Ease.OutBack))  // 縮放動畫
-                .Join(resultCardImage.rectTransform.DOAnchorPosY(0, 0.4f).SetEase(Ease.OutBack))  // 向上移動
+                .Join(resultCardImage.rectTransform.DOAnchorPosY(50, 0.4f).SetEase(Ease.OutBack))  // 向上移動到 y=50 的位置
                 .Join(resultCardImage.rectTransform.DORotate(new Vector3(0, 360, 0), rotationDuration, RotateMode.FastBeyond360));  // 旋轉一圈
 
         // 在旋轉到一半時切換到正面圖片
@@ -169,6 +169,6 @@ public class LotteryManager : MonoBehaviour
         // 重置卡片的位置、縮放和旋轉
         resultCardImage.rectTransform.localScale = Vector3.zero;
         resultCardImage.rectTransform.localRotation = Quaternion.identity;
-        resultCardImage.rectTransform.anchoredPosition = new Vector2(0, -100);
+        resultCardImage.rectTransform.anchoredPosition = new Vector2(0, -200);
     }
 }
