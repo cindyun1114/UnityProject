@@ -54,7 +54,7 @@ public class Chat : MonoBehaviour
         course_id = PlayerPrefs.GetInt("Course_ID");
 
         GameObject welcomeMessage1 = Instantiate(feyndoraMessagePrefab, Content.transform);
-        welcomeMessage1.GetComponent<Message>().MessageText.text = "嗨! 這裡是預習空間";
+        welcomeMessage1.GetComponent<Message>().MessageText.text = "嗨！ 這裡是預習空間";
         GameObject welcomeMessage2 = Instantiate(feyndoraMessagePrefab, Content.transform);
         welcomeMessage2.GetComponent<Message>().MessageText.text = "預習過程中遇到問題，歡迎向我提問";
 

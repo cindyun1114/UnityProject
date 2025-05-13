@@ -49,7 +49,7 @@ public class reviewChat : MonoBehaviour
         }
 
         GameObject welcomeMessage1 = Instantiate(feyndoraMessagePrefab, Content.transform);
-        welcomeMessage1.GetComponent<Message>().MessageText.text = "嗨! 這裡是複習空間";
+        welcomeMessage1.GetComponent<Message>().MessageText.text = "嗨！ 這裡是複習空間";
         GameObject welcomeMessage2 = Instantiate(feyndoraMessagePrefab, Content.transform);
         welcomeMessage2.GetComponent<Message>().MessageText.text = "複習過程中遇到問題，歡迎向我提問";
     }
