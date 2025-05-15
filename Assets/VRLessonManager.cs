@@ -293,6 +293,7 @@ public class VRLessonManager : MonoBehaviour
         {
             action = "get_cloud",
             course_id = courseId,
+            role = ""
         });
 
         using (UnityWebRequest request = new UnityWebRequest(apiFetchCloudLink, "POST"))
