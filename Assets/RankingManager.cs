@@ -30,6 +30,22 @@ public class RankingManager : MonoBehaviour
     private int currentUserId;
     private bool isLoggedOut = false;  // 新增：登出狀態標記
 
+    // 新增：緩存機制
+    private DailyRankingResponse cachedDailyRanking;
+    private WeeklyRankingResponse cachedWeeklyRanking;
+    private UserData cachedUserData;
+    private float lastDailyFetchTime = 0f;
+    private float lastWeeklyFetchTime = 0f;
+    private float lastUserDataFetchTime = 0f;
+    private const float CACHE_DURATION = 300f; // 緩存時間（秒），設為5分鐘
+    private const float USER_DATA_CACHE_DURATION = 60f; // 用戶數據緩存時間（秒）
+
+    // 新增：檢查緩存是否有效
+    private bool IsCacheValid(float lastFetchTime, float duration)
+    {
+        return Time.time - lastFetchTime < duration;
+    }
+
     private void Awake()
     {
         if (Instance == null)
@@ -71,10 +87,30 @@ public class RankingManager : MonoBehaviour
             return;
         }
 
-        dailyButton.onClick.AddListener(() => { isWeekly = false; FetchRanking(); });
-        weeklyButton.onClick.AddListener(() => { isWeekly = true; FetchRanking(); });
+        // 修改按鈕監聽，添加立即切換功能
+        dailyButton.onClick.AddListener(() => {
+            isWeekly = false;
+            // 如果有緩存，立即顯示
+            if (cachedDailyRanking != null && IsCacheValid(lastDailyFetchTime, CACHE_DURATION))
+            {
+                UpdateRankingUI(cachedDailyRanking.rankings, cachedDailyRanking.userRank, cachedUserData);
+            }
+            // 無論如何都重新獲取數據
+            FetchRanking();
+        });
 
-        // 初次載入也呼叫一次
+        weeklyButton.onClick.AddListener(() => {
+            isWeekly = true;
+            // 如果有緩存，立即顯示
+            if (cachedWeeklyRanking != null && IsCacheValid(lastWeeklyFetchTime, CACHE_DURATION))
+            {
+                UpdateRankingUI(cachedWeeklyRanking.rankings, cachedWeeklyRanking.userRank, cachedUserData);
+            }
+            // 無論如何都重新獲取數據
+            FetchRanking();
+        });
+
+        // 初次載入時獲取數據
         FetchRanking();
     }
 
@@ -90,6 +126,21 @@ public class RankingManager : MonoBehaviour
 
     IEnumerator FetchDailyRanking()
     {
+        // 如果有有效緩存，直接使用
+        if (cachedDailyRanking != null && IsCacheValid(lastDailyFetchTime, CACHE_DURATION))
+        {
+            Debug.Log("使用日排名緩存數據");
+            if (cachedUserData != null && IsCacheValid(lastUserDataFetchTime, USER_DATA_CACHE_DURATION))
+            {
+                UpdateRankingUI(cachedDailyRanking.rankings, cachedDailyRanking.userRank, cachedUserData);
+            }
+            else
+            {
+                yield return StartCoroutine(FetchAndUpdateUserData(cachedDailyRanking.rankings, cachedDailyRanking.userRank));
+            }
+            yield break;
+        }
+
         string url = $"{baseUrl}/daily_rankings?user_id={currentUserId}";
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
@@ -97,9 +148,9 @@ public class RankingManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                DailyRankingResponse response = JsonUtility.FromJson<DailyRankingResponse>(request.downloadHandler.text);
-                // 呼叫FetchAndUpdateUserData來同時取得最新的用戶資料
-                StartCoroutine(FetchAndUpdateUserData(response.rankings, response.userRank));
+                cachedDailyRanking = JsonUtility.FromJson<DailyRankingResponse>(request.downloadHandler.text);
+                lastDailyFetchTime = Time.time;
+                yield return StartCoroutine(FetchAndUpdateUserData(cachedDailyRanking.rankings, cachedDailyRanking.userRank));
             }
             else
             {
@@ -110,6 +161,21 @@ public class RankingManager : MonoBehaviour
 
     IEnumerator FetchWeeklyRanking()
     {
+        // 如果有有效緩存，直接使用
+        if (cachedWeeklyRanking != null && IsCacheValid(lastWeeklyFetchTime, CACHE_DURATION))
+        {
+            Debug.Log("使用週排名緩存數據");
+            if (cachedUserData != null && IsCacheValid(lastUserDataFetchTime, USER_DATA_CACHE_DURATION))
+            {
+                UpdateRankingUI(cachedWeeklyRanking.rankings, cachedWeeklyRanking.userRank, cachedUserData);
+            }
+            else
+            {
+                yield return StartCoroutine(FetchAndUpdateUserData(cachedWeeklyRanking.rankings, cachedWeeklyRanking.userRank));
+            }
+            yield break;
+        }
+
         string url = $"{baseUrl}/weekly_rankings?user_id={currentUserId}";
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
@@ -117,8 +183,9 @@ public class RankingManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                WeeklyRankingResponse response = JsonUtility.FromJson<WeeklyRankingResponse>(request.downloadHandler.text);
-                StartCoroutine(FetchAndUpdateUserData(response.rankings, response.userRank));
+                cachedWeeklyRanking = JsonUtility.FromJson<WeeklyRankingResponse>(request.downloadHandler.text);
+                lastWeeklyFetchTime = Time.time;
+                yield return StartCoroutine(FetchAndUpdateUserData(cachedWeeklyRanking.rankings, cachedWeeklyRanking.userRank));
             }
             else
             {
@@ -129,22 +196,28 @@ public class RankingManager : MonoBehaviour
 
     IEnumerator FetchAndUpdateUserData(List<RankData> top10, RankData userRankData)
     {
+        // 如果有有效的用戶數據緩存，直接使用
+        if (cachedUserData != null && IsCacheValid(lastUserDataFetchTime, USER_DATA_CACHE_DURATION))
+        {
+            UpdateRankingUI(top10, userRankData, cachedUserData);
+            yield break;
+        }
+
         string url = $"{baseUrl}/user/{currentUserId}";
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
             yield return request.SendWebRequest();
 
-            UserData latestUser = null;
             if (request.result == UnityWebRequest.Result.Success)
             {
-                latestUser = JsonUtility.FromJson<UserData>(request.downloadHandler.text);
+                cachedUserData = JsonUtility.FromJson<UserData>(request.downloadHandler.text);
+                lastUserDataFetchTime = Time.time;
+                UpdateRankingUI(top10, userRankData, cachedUserData);
             }
             else
             {
                 Debug.LogError("❌ 取得用戶資料失敗：" + request.error);
             }
-
-            UpdateRankingUI(top10, userRankData, latestUser);
         }
     }
 
@@ -195,30 +268,47 @@ public class RankingManager : MonoBehaviour
         item.transform.Find("Avatar").GetComponent<Image>().sprite = avatarManager.GetAvatarSprite(data.avatar_id);
     }
 
+    // 修改：清除緩存的方法
     public void ClearAllUI()
     {
         isLoggedOut = true;  // 設置登出狀態
         currentUserId = 0;   // 重置用戶ID
 
-        // 清空前10名的所有 UI 項目
+        // 清除所有緩存
+        cachedDailyRanking = null;
+        cachedWeeklyRanking = null;
+        cachedUserData = null;
+        lastDailyFetchTime = 0f;
+        lastWeeklyFetchTime = 0f;
+        lastUserDataFetchTime = 0f;
+
+        // 清空 UI
         foreach (var item in rankItems)
         {
             ClearRankItem(item);
         }
 
-        // 清空用戶自己的排名區
         userRankText.text = "";
         userNameText.text = "";
         userPointsText.text = "";
-        userAvatarImage.sprite = avatarManager.GetAvatarSprite(1); // 預設頭像
+        userAvatarImage.sprite = avatarManager.GetAvatarSprite(1);
     }
 
-    // 新增：重置登出狀態的方法
+    // 修改：重置登出狀態時也重置緩存
     public void ResetLogoutState()
     {
         isLoggedOut = false;
         currentUserId = PlayerPrefs.GetInt("UserID", 0);
-        Debug.Log("✅ 重置排行榜登出狀態");
+
+        // 清除所有緩存，強制重新獲取數據
+        cachedDailyRanking = null;
+        cachedWeeklyRanking = null;
+        cachedUserData = null;
+        lastDailyFetchTime = 0f;
+        lastWeeklyFetchTime = 0f;
+        lastUserDataFetchTime = 0f;
+
+        Debug.Log("✅ 重置排行榜登出狀態和緩存");
     }
 
     [System.Serializable]
