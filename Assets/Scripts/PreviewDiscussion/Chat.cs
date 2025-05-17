@@ -71,7 +71,7 @@ public class Chat : MonoBehaviour
                             {""title"": ""AI 未來展望""}...
                         ]
                     }
-                    每個title的文字不要超過16個，不然拔你電源
+                    每個title的文字不要超過16個，不然拔你電源，title的數量最多不要超過5個最少1個，也就是目錄最多不超過五個最少1個。
                     不要生成其他文字，生成目錄JSON給我就好，每個title內容的字不要超過60字。 我只要Json目錄，只有一這次要請你生目錄，後面就請依據instruction進行，請用JSON!!"));
 
     }
