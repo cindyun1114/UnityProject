@@ -116,12 +116,8 @@ public class VRLessonManager : MonoBehaviour
                 Debug.Log("Cleaning ReviewPagePanel...");
             }
 
-            StartCoroutine(LoadCourseReview(courseId));  // 加载课程评价数据
-            StartCoroutine(LoadToC(courseId));
-            StartCoroutine(LoadAssistant(courseId));
-            StartCoroutine(LoadCloudLink(courseId));
-
-            reviewPagePanel.SetActive(true);
+            // 使用协程等待所有数据加载完成
+            StartCoroutine(LoadAllCourseData(courseId));
         }
         else
         {
@@ -163,24 +159,102 @@ public class VRLessonManager : MonoBehaviour
         }
     }
 
+    // 新增：加载所有课程数据的协程
+    private IEnumerator LoadAllCourseData(int courseId)
+    {
+        Debug.Log("🔄 开始加载所有课程数据...");
+        bool reviewLoaded = false;
+        bool tocLoaded = false;
+        bool assistantLoaded = false;
+        bool cloudLinkLoaded = false;
+
+        // 启动所有加载协程
+        StartCoroutine(LoadCourseReviewWithCallback(courseId, () => reviewLoaded = true));
+        StartCoroutine(LoadToCWithCallback(courseId, () => tocLoaded = true));
+        StartCoroutine(LoadAssistantWithCallback(courseId, () => assistantLoaded = true));
+        StartCoroutine(LoadCloudLinkWithCallback(courseId, () => cloudLinkLoaded = true));
+
+        // 等待所有数据加载完成
+        while (!reviewLoaded || !tocLoaded || !assistantLoaded || !cloudLinkLoaded)
+        {
+            yield return null;
+        }
+
+        Debug.Log("✅ 所有课程数据加载完成");
+        loadingPagePanel.SetActive(false);
+        reviewPagePanel.SetActive(true);
+    }
+
+    // 修改现有的加载方法，添加回调
+    private IEnumerator LoadCourseReviewWithCallback(int courseId, System.Action onComplete)
+    {
+        yield return StartCoroutine(LoadCourseReview(courseId));
+        onComplete?.Invoke();
+    }
+
+    private IEnumerator LoadToCWithCallback(int courseId, System.Action onComplete)
+    {
+        yield return StartCoroutine(LoadToC(courseId));
+        onComplete?.Invoke();
+    }
+
+    private IEnumerator LoadAssistantWithCallback(int courseId, System.Action onComplete)
+    {
+        yield return StartCoroutine(LoadAssistant(courseId));
+        onComplete?.Invoke();
+    }
+
+    private IEnumerator LoadCloudLinkWithCallback(int courseId, System.Action onComplete)
+    {
+        yield return StartCoroutine(LoadCloudLink(courseId));
+        onComplete?.Invoke();
+    }
+
     private IEnumerator LoadCourseReview(int courseId)
     {
+        Debug.Log($"🔍 开始加载课程回顾 - CourseID: {courseId}");
         string url = $"{baseUrl}/course_review/{courseId}";
+        Debug.Log($"🌐 请求URL: {url}");
+
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
+            request.timeout = 30; // 设置30秒超时
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            Debug.Log("⏳ 发送请求...");
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success)
             {
                 string responseText = request.downloadHandler.text;
-                Debug.Log($"API Response: {responseText}");
+                Debug.Log($"✅ 请求成功，响应内容: {responseText}");
 
-                CourseReviewData reviewData = JsonUtility.FromJson<CourseReviewData>(responseText);
-                UpdateReviewUI(reviewData);
+                try
+                {
+                    CourseReviewData reviewData = JsonUtility.FromJson<CourseReviewData>(responseText);
+                    if (reviewData == null)
+                    {
+                        Debug.LogError("❌ JSON解析失败：返回的数据格式不正确");
+                        yield break;
+                    }
+                    UpdateReviewUI(reviewData);
+                    Debug.Log("✅ 课程回顾数据更新成功");
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError($"❌ JSON解析错误: {e.Message}\n响应内容: {responseText}");
+                }
             }
             else
             {
-                Debug.LogError("无法载入课程回顾：" + request.error);
+                string errorMessage = $"❌ 加载课程回顾失败: {request.error}\n状态码: {request.responseCode}\n响应内容: {request.downloadHandler.text}";
+                Debug.LogError(errorMessage);
+
+                // 显示用户友好的错误信息
+                if (teacherCommentText != null)
+                {
+                    teacherCommentText.text = "加载课程回顾时发生错误，请稍后重试";
+                }
             }
         }
     }
@@ -243,8 +317,6 @@ public class VRLessonManager : MonoBehaviour
 
             textComponent.text = chapter.chapter_name;
         }
-
-        loadingPagePanel.SetActive(false);
     }
 
     public IEnumerator LoadAssistant(int courseId)
@@ -363,6 +435,16 @@ public class VRLessonManager : MonoBehaviour
         interactionText.text = $"{data.interaction_score}%";
 
         // 更新評語
+        if (teacherCommentText != null)
+        {
+            teacherCommentText.text = data.teacher_comment;
+            Debug.Log($"✅ 更新老師評語: {data.teacher_comment}");
+        }
+        else
+        {
+            Debug.LogError("❌ teacherCommentText 未設置");
+        }
+
         studentFeedbackTexts[0].text = data.student1_feedback;
         studentFeedbackTexts[1].text = data.student2_feedback;
         studentFeedbackTexts[2].text = data.student3_feedback;
