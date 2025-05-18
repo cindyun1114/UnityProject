@@ -32,6 +32,7 @@ public class APIManager : MonoBehaviour
     public GameObject HomePagePanel;
     public GameObject ProfilePanel;
     public GameObject SettingsPanel;
+    public GameObject LoadingPanel;  // 新增 LoadingPanel 引用
 
     [Header("主頁 UI")]
     public TMP_Text welcomeText;
@@ -300,6 +301,12 @@ public class APIManager : MonoBehaviour
             yield break;
         }
 
+        // 顯示 LoadingPanel
+        if (LoadingPanel != null)
+        {
+            LoadingPanel.SetActive(true);
+        }
+
         string jsonData = $"{{\"email\": \"{email}\", \"password\": \"{password}\"}}";
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
 
@@ -313,7 +320,7 @@ public class APIManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log("登入成功！跳轉到主頁");
+                Debug.Log("登入成功！開始加載用戶數據");
 
                 var jsonResponse = JsonUtility.FromJson<LoginResponse>(request.downloadHandler.text);
 
@@ -385,11 +392,22 @@ public class APIManager : MonoBehaviour
                     Debug.Log("已更新 ProfileManager 中的老師卡片");
                 }
 
+                // 所有數據加載完成後，隱藏 LoadingPanel 並切換界面
+                if (LoadingPanel != null)
+                {
+                    LoadingPanel.SetActive(false);
+                }
+
                 LoginPanel.SetActive(false);
                 HomePagePanel.SetActive(true);
             }
             else
             {
+                // 登入失敗時也要隱藏 LoadingPanel
+                if (LoadingPanel != null)
+                {
+                    LoadingPanel.SetActive(false);
+                }
                 Debug.LogError("登入失敗：" + request.downloadHandler.text);
             }
         }
