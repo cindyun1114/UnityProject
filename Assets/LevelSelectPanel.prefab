@@ -152,7 +152,7 @@ MonoBehaviour:
     type: 3}
   levelGroup: {fileID: 2489073572497088454}
   levelCount: 6
-  radius: 840
+  radius: 820
   moveDuration: 0.3
   yOffsetStep: 50
   nextLevelButton: {fileID: 4643211238084379490}

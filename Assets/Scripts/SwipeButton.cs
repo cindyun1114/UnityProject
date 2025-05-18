@@ -50,39 +50,27 @@ public class SwipeableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         if (!isDragging) return;
 
-        // 計算移動距離
         float deltaX = eventData.position.x - lastPointerPosition.x;
         lastPointerPosition = eventData.position;
 
-        // 如果移動距離小於最小閾值，忽略這次移動
         if (Mathf.Abs(deltaX) < minMovementThreshold)
         {
             return;
         }
 
-        // 計算目標位置
-        targetPosX = startPosX + deltaX;
-
-        // 限制只能往左滑動
-        targetPosX = Mathf.Clamp(targetPosX, -buttonWidth / 2, 0);
-
-        // 使用 SmoothDamp 平滑過渡到目標位置
-        currentPosX = Mathf.SmoothDamp(currentPosX, targetPosX, ref velocityX, smoothTime);
-
-        // 更新位置
-        contentRect.anchoredPosition = new Vector2(currentPosX, 0);
-
-        // 更新起始位置，為下一次移動做準備
-        startPosX = currentPosX;
+        // 直接根據手指移動
+        float newPosX = contentRect.anchoredPosition.x + deltaX;
+        newPosX = Mathf.Clamp(newPosX, -buttonWidth / 2, 0);
+        contentRect.anchoredPosition = new Vector2(newPosX, 0);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         isDragging = false;
-        float velocity = eventData.delta.x;
+        float endPosX = contentRect.anchoredPosition.x;
 
-        // 只有當滑動距離足夠時才打開刪除按鈕
-        if (Mathf.Abs(velocity) > swipeThreshold && velocity < 0)
+        // 只要滑動超過按鈕寬度的 1/4 就展開
+        if (endPosX < -buttonWidth / 4)
         {
             OpenLeftSide();
         }

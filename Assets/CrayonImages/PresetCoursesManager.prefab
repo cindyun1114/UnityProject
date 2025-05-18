@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2138218296321168497
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5159161272797750779}
+  - component: {fileID: 2489445536602244346}
+  m_Layer: 0
+  m_Name: PresetCoursesManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5159161272797750779
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138218296321168497}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 227.76823, y: 1366.3676, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2489445536602244346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138218296321168497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb3625b80b63ffd4ca597af1f6516452, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recommendedCourseObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  recommendedScrollRect: {fileID: 0}
+  savedCoursesContainer: {fileID: 0}
+  savedCoursePrefab: {fileID: 7790546749822242513, guid: 4c90858b2e9658c408136443c706535e,
+    type: 3}
+  coursePages:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  courseListPage: {fileID: 0}
+  searchInput: {fileID: 0}
+  searchButton: {fileID: 0}
+  courseImageMappings:
+  - courseName: "\u80A1\u7968\u5165\u9580\u89C0\u5FF5"
+    courseSprite: {fileID: 21300000, guid: 2e2fab8d90f09284984763fa99cbec8d, type: 3}
+  - courseName: "\u7D44\u7E54\u8A2D\u8A08"
+    courseSprite: {fileID: 21300000, guid: 1a8dd20356ea0f94698de6d96d7dae51, type: 3}
+  - courseName: "\u5047\u8A2D\u6AA2\u5B9A"
+    courseSprite: {fileID: 21300000, guid: 777337f1a210c354eb5e6b89f207a09d, type: 3}
