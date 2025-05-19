@@ -54,7 +54,7 @@ public class ShareManager : MonoBehaviour
         string promo = promoPhrases[Random.Range(0, promoPhrases.Count)];
 
         string message = $"🎉 我在 Feyndora 解鎖「{achievementName}」徽章！{description}\n" +
-                         $"👉 {promo}：https://reurl.cc/RYEv8G";
+                         $"👉 {promo}：https://www.youtube.com/watch?v=YoT0wXPW_18";
 
         Debug.Log("📤 分享內容：\n" + message);
         ShareBridge.Share(message);
