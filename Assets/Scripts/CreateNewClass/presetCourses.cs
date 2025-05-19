@@ -17,6 +17,10 @@ public class presetCourses : MonoBehaviour
 
     public GameObject loadingPagePanel;
 
+    public GameObject coursePage1;
+    public GameObject coursePage2;
+    public GameObject coursePage3;
+
     [Header("課程參數")]
     public string courseName;
     public int courseChoice;
@@ -75,6 +79,9 @@ public class presetCourses : MonoBehaviour
                     previewPagePanel.SetActive(true);
                     coursePagePanel.SetActive(false);
                     previewPagePanel.GetComponent<Chat>().InitPreviewPagePanel();
+                    coursePage1.SetActive(false);
+                    coursePage2.SetActive(false);
+                    coursePage3.SetActive(false);
                 }
             }
             else
